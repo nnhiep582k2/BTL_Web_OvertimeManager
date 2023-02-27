@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\main.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\assets\icons\" />
   </ItemGroup>
 
