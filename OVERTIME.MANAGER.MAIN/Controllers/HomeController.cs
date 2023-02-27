@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OVERTIME.MANAGER.MAIN.Models;
-using System.Diagnostics;
 
 namespace OVERTIME.MANAGER.MAIN.Controllers
 {
@@ -16,12 +14,6 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         public IActionResult Index()
         {
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
