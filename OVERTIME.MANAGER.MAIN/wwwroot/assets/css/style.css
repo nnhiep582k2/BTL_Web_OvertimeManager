@@ -1,1 +1,30 @@
 ﻿@import './main.css';
+
+/* Scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 10px !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--color-seashell) !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary) !important;
+    border: 10px !important;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary) !important;
+}
+/* End Scrollbar */
+
+/* Override css of template */
+.feature-box:hover {
+    cursor: pointer;
+}
+/* End Override */
