@@ -18,7 +18,7 @@
 
     <!-- Google Fonts - font chữ -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-    
+
     <!-- Icons -->
     <script src="https://kit.fontawesome.com/ef6eeeb025.js" crossorigin="anonymous"></script>
 
@@ -43,21 +43,14 @@
 
 <body>
     <!-- Phần Header -->
-    <partial name="~/Views/Shared/_Header.cshtml" />
+    @RenderSection("header", required: false)
 
-    <!-- Phần Main -->
+    <!-- Phần Nội dung -->
     @RenderBody()
-
-    <!-- Phần Footer -->
-    <partial name="~/Views/Shared/_Footer.cshtml" />
-
-    <!-- Chức năng cuộn lên đầu trang -->
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <!-- Embedded - Phần nhúng thư viện -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 
     <!-- Vendor JS Files - Phần nhúng file js của template -->
     <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
