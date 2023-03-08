@@ -1,7 +1,7 @@
 ﻿@import './main.css';
 
 /* Scrollbar */
-/* width */
+/* Width */
 ::-webkit-scrollbar {
     width: 10px !important;
 }
@@ -14,7 +14,7 @@
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: var(--color-primary) !important;
-    border: 10px !important;
+    border-radius: 10px !important;
 }
 
 /* Handle on hover */
@@ -23,8 +23,97 @@
 }
 /* End Scrollbar */
 
+/* Margin */
+.mr-8 {
+    margin-right: 8px !important;
+}
+
+.ml-8 {
+    margin-left: 8px !important;
+}
+
+.mr-20 {
+    margin-right: 20px !important;
+}
+
+.ml-20 {
+    margin-left: 20px !important;
+}
+/* End Margin */
+
+/* Unselect */
+::selection {
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+}
+
+.unselect {
+    user-select: none !important;
+}
+/* EndUnselect */
+
+
+
+/* Override css of library */
+.container-fluid {
+    padding: 0 24px !important;
+}
+
+.btn-check:checked + .btn, 
+.btn.active, 
+.btn.show, 
+.btn:first-child:active, 
+:not(.btn-check) + .btn:active {
+    border-color: transparent !important;
+}
+/* End Override */
+
+
+
 /* Override css of template */
 .feature-box:hover {
     cursor: pointer;
 }
 /* End Override */
+
+
+
+/* Icon */
+/* Chung */
+.icon-notification,
+.icon-support,
+.icon-more {
+    -webkit-mask-image: url(/assets/icons/Icon.9fb0e0e.svg);
+    mask-image: url(/assets/icons/Icon.9fb0e0e.svg);
+    background-color: #707070;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+/* Riêng */
+.icon-notification {
+    -webkit-mask-position: -267px -2px;
+    mask-position: -267px -2px;
+    width: 18px;
+    height: 20px;
+    opacity: 1;
+}
+
+.icon-support {
+    -webkit-mask-position: -290px -170px;
+    mask-position: -290px -170px;
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+}
+
+.icon-more {
+    -webkit-mask-position: -146px -194px;
+    mask-position: -146px -194px;
+    width: 20px;
+    height: 20px;
+    opacity: 1;
+}
+/* End Icon */

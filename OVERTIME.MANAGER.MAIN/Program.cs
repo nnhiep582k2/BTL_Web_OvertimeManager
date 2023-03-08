@@ -12,6 +12,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+/*
+ * 404 Page
+ * Created by nnhiep 04.03.2023
+ */
+app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
