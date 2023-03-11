@@ -34,14 +34,10 @@
     background-repeat: no-repeat;
     position: relative;
     border-radius: 10px 0 0 10px;
+   
 }
 
-img {
-    width: 35px;
-    position: absolute;
-    top: 30px;
-    left: 30px;
-}
+
 
 .text {
     position: absolute;
@@ -183,13 +179,7 @@ small {
         border-radius: 10px 10px 0 0;
     }
 
-    img {
-        width: 35px;
-        position: absolute;
-        top: 20px;
-        left: 47%;
-    }
-
+   
     .text {
         position: absolute;
         top: 70%;
