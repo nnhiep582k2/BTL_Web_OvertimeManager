@@ -1,7 +1,7 @@
 ﻿* {
     font-family: "Nunito", sans-serif;
-    
 }
+
 :root {
     --color-primary: #4154f1;
     --color-white: #fff;
@@ -50,10 +50,10 @@ img {
     transform: translate(-50%, -50%);
 }
 
-    .text p {
-        color: #fff;
-        font-size: 18px;
-    }
+.text p {
+    color: #fff;
+    font-size: 18px;
+}
 
 i {
     font-weight: 400;
@@ -65,7 +65,6 @@ i {
     justify-content: center;
     align-items: center;
     position: relative;
-  
     background-color: var(--color-primary);
     color: var(--color-white);
 }
@@ -75,11 +74,11 @@ i {
     box-sizing: border-box;
 }
 
-    .input-box header {
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 45px;
-    }
+.input-box header {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 45px;
+}
 
 .input-field {
     display: flex;
@@ -107,9 +106,11 @@ i {
     transition: .5s;
     opacity: 0.4;
 }
+
 header {
     font-size: 25px;
 }
+
 .input-field .input:focus ~ label {
     top: -3px;
     font-size: 13px;
@@ -120,17 +121,16 @@ header {
     top: -3px;
     font-size: 13px;
     color: var(--color-white);
-  
-    
 }
 
 .input-field .input:focus, .input-field .input:valid {
- 
     border-bottom: 1px solid var(--color-white);
 }
+
 .signin a {
     color: var(--color-white);
 }
+
 .submit {
     border: none;
     outline: none;
@@ -142,14 +142,15 @@ header {
     font-weight: bold;
 }
 
-    .submit:hover {
-        background: rgba(37, 95, 156,0.9);
-        color: var(--color-white);
+.submit:hover {
+    background: rgba(37, 95, 156,0.9);
+    color: var(--color-white);
+}
 
-    }
 .inpSubmit {
     margin-top: 10px;
 }
+
 .signin {
     text-align: center;
     font-size: small;
@@ -163,10 +164,10 @@ span a {
     transition: .5s;
 }
 
-    span a:hover {
-        text-decoration: underline;
-        color: #000;
-    }
+span a:hover {
+    text-decoration: underline;
+    color: #000;
+}
 
 small {
     position: absolute;
@@ -195,9 +196,9 @@ small {
         text-align: center;
     }
 
-        .text p, i {
-            font-size: 17px;
-        }
+    .text p, i {
+        font-size: 17px;
+    }
 
     .row {
         max-width: 420px;

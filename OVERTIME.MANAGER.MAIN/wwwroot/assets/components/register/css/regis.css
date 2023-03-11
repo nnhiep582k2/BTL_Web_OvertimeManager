@@ -50,10 +50,10 @@ img {
     transform: translate(-50%, -50%);
 }
 
-    .text p {
-        color: #fff;
-        font-size: 18px;
-    }
+.text p {
+    color: #fff;
+    font-size: 18px;
+}
 
 i {
     font-weight: 400;
@@ -74,11 +74,11 @@ i {
     box-sizing: border-box;
 }
 
-    .input-box header {
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 45px;
-    }
+.input-box header {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 45px;
+}
 
 .input-field {
     display: flex;
@@ -90,15 +90,12 @@ i {
 .input {
     height: 45px;
     width: 100%;
-
     background: transparent;
-   
     border: none;
     border-bottom: 1px solid rgba(0,0,0,0.2);
     outline: none;
     margin-bottom: 20px;
     color: var(--color-white);
-
 }
 
 .input-box .input-field label {
@@ -127,7 +124,6 @@ header {
 }
 
 .input-field .input:focus, .input-field .input:valid {
-   
     border-bottom: 1px solid var(--color-white);
 }
 
@@ -146,19 +142,20 @@ header {
     font-weight: bold;
 }
 
-    .submit:hover {
-        background: rgba(37, 95, 156,0.9);
-        color: var(--color-white);
-    }
+.submit:hover {
+    background: rgba(37, 95, 156,0.9);
+    color: var(--color-white);
+}
+
 .ipsubmit{
     margin-top:10px;
 }
+
 .signin {
     text-align: center;
     font-size: small;
     margin-top: 25px;
 }
-
 
 span a {
     text-decoration: none;
@@ -167,10 +164,10 @@ span a {
     transition: .5s;
 }
 
-    span a:hover {
-        text-decoration: underline;
-        color: #000;
-    }
+span a:hover {
+    text-decoration: underline;
+    color: #000;
+}
 
 small {
     position: absolute;
@@ -190,27 +187,27 @@ small {
 
     img {
         width: 35px;
-        
         position: absolute;
         top: 20px;
         left: 47%;
     }
+
     .right {
         border-radius: 10px 10px 0 0;
     }
+
     .text {
         position: absolute;
         top: 70%;
         text-align: center;
     }
 
-        .text p, i {
-            font-size: 17px;
-        }
+    .text p, i {
+        font-size: 17px;
+    }
 
     .row {
         max-width: 420px;
-       
         width: 100%;
     }
 }

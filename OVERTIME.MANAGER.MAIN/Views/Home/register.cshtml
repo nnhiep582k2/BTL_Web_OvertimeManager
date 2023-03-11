@@ -1,12 +1,11 @@
 ﻿@{
     ViewData["Title"] = "login";
     Layout = "_LayOutRegister";
-
 }
+
 <div class="wrapper">
     <div class="container main">
         <div class="row">
-          
             <div class="col-md-6 right">
                 <div class="input-box">
                     <header>Creative Signup Form</header>
@@ -35,20 +34,18 @@
                         <label for="repassword">Repeat Password</label>
                         <small></small>
                     </div>
-
                     <div class="input-field ipsubmit">
                         <input type="submit" class="submit" value="Sign Up">
 
                     </div>
                     <div class="signin">
-                        <span>Already have account? <a asp-controller="Home" asp-action="login"> Login here</a></span>
+                        <span>Already have account? <a asp-controller="Home" asp-action="Login"> Login here</a></span>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 side-image">
                 <!-------Image-------->
                 <img src="images/white.png" alt="">
-
             </div>
         </div>
     </div>
