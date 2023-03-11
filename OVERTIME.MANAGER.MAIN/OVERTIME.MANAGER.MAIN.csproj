@@ -18,6 +18,37 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.rtl.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.rtl.min.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.rtl.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.rtl.min.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.min.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.rtl.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.rtl.min.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap.rtl.css.map" />
+    <None Include="wwwroot\assets\components\login\css\bootstrap.rtl.min.css.map" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.js" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.js.map" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.min.js" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.min.js.map" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.js" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.js.map" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.min.js" />
+    <None Include="wwwroot\assets\components\login\js\bootstrap.min.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">

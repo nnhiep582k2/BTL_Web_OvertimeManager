@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "login";
+    Layout = "_LayOutRegister";
+
+}
+<div class="wrapper">
+    <div class="container main">
+        <div class="row">
+          
+            <div class="col-md-6 right">
+                <div class="input-box">
+                    <header>Creative Signup Form</header>
+                    <div class="input-field">
+                        <input type="text" class="input" id="fullname" required autocomplete="off">
+                        <label for="name">Full Name</label>
+                        <small></small>
+                    </div>
+                    <div class="input-field">
+                        <input type="email" class="input" id="email" required autocomplete="off">
+                        <label for="email">Email</label>
+                        <small></small>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" class="input" id="username" required autocomplete="off">
+                        <label for="username">User Name</label>
+                        <small></small>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" class="input" id="password" required autocomplete="off">
+                        <label for="password">Password</label>
+                        <small></small>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" class="input" id="repassword" required autocomplete="off">
+                        <label for="repassword">Repeat Password</label>
+                        <small></small>
+                    </div>
+
+                    <div class="input-field ipsubmit">
+                        <input type="submit" class="submit" value="Sign Up">
+
+                    </div>
+                    <div class="signin">
+                        <span>Already have account? <a asp-controller="Home" asp-action="login"> Login here</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 side-image">
+                <!-------Image-------->
+                <img src="images/white.png" alt="">
+
+            </div>
+        </div>
+    </div>
+</div>
+
