@@ -12,14 +12,17 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         {
             _logger = logger;
         }
-        public IActionResult login()
+
+        public IActionResult Login()
         {
 			return View();
 		}
-        public IActionResult register()
+
+        public IActionResult Register()
         {
             return View();
         }
+
         public IActionResult Index()
         {
             return View();
