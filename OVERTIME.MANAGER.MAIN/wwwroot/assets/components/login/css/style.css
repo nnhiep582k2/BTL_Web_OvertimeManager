@@ -34,9 +34,7 @@
     background-repeat: no-repeat;
     position: relative;
     border-radius: 10px 0 0 10px;
-   
 }
-
 
 
 .text {
@@ -179,7 +177,6 @@ small {
         border-radius: 10px 10px 0 0;
     }
 
-   
     .text {
         position: absolute;
         top: 70%;
