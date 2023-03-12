@@ -32,15 +32,21 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         public IActionResult TermsOfService()
 		{
 			return View();
-		}
+        }
 
-		/// <summary>
-		/// 404 page
-		/// </summary>
-		/// <param name="statusCode">Giá trị trạng thái trả về</param>
-		/// <returns>View NotFound</returns>
-		/// Created by nnhiep 04.03.2023
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        // Chính sách bảo mật
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 404 page
+        /// </summary>
+        /// <param name="statusCode">Giá trị trạng thái trả về</param>
+        /// <returns>View NotFound</returns>
+        /// Created by nnhiep 04.03.2023
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int statusCode)
         {
             if(statusCode == 404)
@@ -49,10 +55,6 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             }
             // ! Xử lý tạm
             return View("NotFound");
-        }
-        public IActionResult PrivacyPolicy() 
-        { 
-            return View();
         }
     }
 }
