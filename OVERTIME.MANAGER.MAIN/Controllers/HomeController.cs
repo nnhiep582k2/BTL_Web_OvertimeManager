@@ -50,5 +50,9 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             // ! Xử lý tạm
             return View("NotFound");
         }
+        public IActionResult PrivacyPolicy() 
+        { 
+            return View();
+        }
     }
 }
