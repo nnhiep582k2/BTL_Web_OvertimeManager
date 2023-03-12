@@ -1,6 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Register";
-    Layout = "_LayOutRegister";
+    Layout = "_LayoutAccount";
+}
+
+@section link {
+    <link rel="stylesheet" href="~/assets/components/register/css/regis.css" />
+}
+
+@section script {
+    <script src="../assets/components/register/js/regis.js"></script>
 }
 
 <div class="wrapper">
@@ -8,7 +16,7 @@
         <div class="row">
             <div class="col-md-6 right">
                 <div class="input-box">
-                    <header>Creative Signup Form</header>
+                    <header>Register</header>
                     <div class="input-field">
                         <input type="text" class="input" id="fullname" required autocomplete="off">
                         <label for="name">Full Name</label>

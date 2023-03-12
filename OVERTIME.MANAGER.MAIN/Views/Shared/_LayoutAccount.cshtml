@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Thông tin website -->
+    <title>@ViewData["Title"] | OVERTIME MANAGER</title>
+    <!-- Logo -->
+    <link rel="icon" href="@Url.Content("~/assets/images/logo/logo-circle.png")" />
+
+    <!-- SEO - tối ưu tìm kiếm -->
+    <meta content="Website to manage overtime applications" name="description">
+    <meta content="Overtime, OvertimeManager, Overtime Manager, OM" name="keywords">
+    <meta content="nnhiep" name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Chứa style bootstrap version 5.3 -->
+    <link href="~/assets/lib/bootstrap_v5.3/bootstrap-grid.css" rel="stylesheet">
+    @RenderSection("link")
+    <!-- Main CSS File - File chứa css của chính của chương trình -->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+    @RenderBody()
+    @RenderSection("script")
+</body>
+</html>

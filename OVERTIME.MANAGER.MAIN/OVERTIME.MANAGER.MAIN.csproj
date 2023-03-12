@@ -7,22 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-grid.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-grid.min.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-grid.rtl.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-grid.rtl.min.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-reboot.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-reboot.min.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-reboot.rtl.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-reboot.rtl.min.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-utilities.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-utilities.min.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-utilities.rtl.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap-utilities.rtl.min.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap.min.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap.rtl.css.map" />
-    <Content Remove="wwwroot\assets\components\register\css\bootstrap.rtl.min.css.map" />
     <Content Remove="wwwroot\assets\components\register\js\bootstrap.bundle.js" />
     <Content Remove="wwwroot\assets\components\register\js\bootstrap.bundle.js.map" />
     <Content Remove="wwwroot\assets\components\register\js\bootstrap.bundle.min.js" />
@@ -35,6 +19,10 @@
     <Content Remove="wwwroot\assets\components\register\js\bootstrap.js.map" />
     <Content Remove="wwwroot\assets\components\register\js\bootstrap.min.js" />
     <Content Remove="wwwroot\assets\components\register\js\bootstrap.min.js.map" />
+    <Content Remove="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.css.map" />
+    <Content Remove="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.min.css.map" />
+    <Content Remove="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.rtl.css.map" />
+    <Content Remove="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.rtl.min.css.map" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,62 +37,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.min.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.rtl.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-grid.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.min.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.rtl.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-reboot.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.min.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.rtl.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap-utilities.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap.min.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap.rtl.css.map" />
-    <None Include="wwwroot\assets\components\login\css\bootstrap.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.js" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.js.map" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.min.js" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.bundle.min.js.map" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.js" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.js.map" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.min.js" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.esm.min.js.map" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.js" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.js.map" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.min.js" />
-    <None Include="wwwroot\assets\components\login\js\bootstrap.min.js.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-grid.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-grid.min.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-grid.rtl.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-grid.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-reboot.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-reboot.min.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-reboot.rtl.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-reboot.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-utilities.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-utilities.min.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-utilities.rtl.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap-utilities.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap.min.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap.rtl.css.map" />
-    <None Include="wwwroot\assets\components\register\css\bootstrap.rtl.min.css.map" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.bundle.js" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.bundle.js.map" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.bundle.min.js" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.bundle.min.js.map" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.esm.js" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.esm.js.map" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.esm.min.js" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.esm.min.js.map" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.js" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.js.map" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.min.js" />
-    <None Include="wwwroot\assets\components\register\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-grid.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-grid.rtl.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-grid.rtl.min.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-reboot.rtl.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-reboot.rtl.min.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-utilities.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-utilities.min.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-utilities.rtl.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-utilities.rtl.min.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.bundle.js" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.esm.js" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.esm.js.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.esm.min.js" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.esm.min.js.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.js" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.js.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.min.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.min.js" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.min.js.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.rtl.css.map" />
+    <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap.rtl.min.css.map" />
   </ItemGroup>
 
   <ItemGroup>
