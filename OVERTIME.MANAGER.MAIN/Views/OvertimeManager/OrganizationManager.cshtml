@@ -1,0 +1,18 @@
+﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
+
+@{
+    ViewData["Title"] = "Quản lý đơn vị công tác";
+    Layout = "~/Views/Shared/_LayoutDefault.cshtml";
+}
+
+@{
+    var navigatorActive = new NavigatorActive { navigatorActive = "OrganizationManager" };
+}
+
+@section header
+{
+    <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
+}
+
+<h1>OrganizationManager</h1>
+

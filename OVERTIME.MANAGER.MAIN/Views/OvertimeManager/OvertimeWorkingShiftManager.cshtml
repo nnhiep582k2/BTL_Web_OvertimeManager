@@ -1,0 +1,18 @@
+﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
+
+@{
+    ViewData["Title"] = "Quản lý thời điểm làm thêm";
+    Layout = "~/Views/Shared/_LayoutDefault.cshtml";
+}
+
+@{
+    var navigatorActive = new NavigatorActive { navigatorActive = "OvertimeWorkingShiftManager" };
+}
+
+@section header
+{
+    <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
+}
+
+<h1>OvertimeWorkingShiftManager</h1>
+
