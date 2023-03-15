@@ -1,11 +1,17 @@
-﻿@{
+﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
+
+@{
     ViewData["Title"] = "MAIN";
     Layout = "_LayoutDefault";
 }
 
+@{
+    var navigatorActive = new NavigatorActive { navigatorActive = "Index" };
+}
+
 @section header
 {
-    <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" />
+    <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
 
 <main class="container-fluid overtime-main">
