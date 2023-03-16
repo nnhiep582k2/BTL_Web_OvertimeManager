@@ -2,13 +2,13 @@
     --color-primary: #4154f1;
     --color-secondary: #717ef4;
     --color-hover: #717ef4;
-    --color-seashell: #f1f1f1;
     --color-gallery: #EEEEEE;
+    --color-seashell: #f1f1f1;
+    --color-alto: #DDDDDD;
     --color-white: #fff;
     --color-black: #000;
     --color-resolution-blue: #013289;
     --color-wild-sand: #f5f5f5;
     --color-cinnabar: #e74c3c;
-    
     --header-height: 52px;
 }

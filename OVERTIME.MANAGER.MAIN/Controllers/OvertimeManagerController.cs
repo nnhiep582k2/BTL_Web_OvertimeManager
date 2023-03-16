@@ -58,5 +58,15 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Chi tiết đơn làm thêm
+        /// </summary>
+        /// <returns>View</returns>
+        /// @author nnhiep 15.03.2023
+        public IActionResult OvertimeDetail()
+        {
+            return View();
+        }
     }
 }
