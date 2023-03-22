@@ -3,14 +3,11 @@
 @{
     ViewData["Title"] = "Overtime Detail";
     Layout = "~/Views/Shared/_LayoutDefault.cshtml";
-}
-
-@{
     var navigatorActive = new NavigatorActive { navigatorActive = "Index" };
 }
 
 @section header
-    {
+{
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
 
@@ -34,100 +31,3 @@
         </div>
     </div>
 </main>
-
-<style>
-    .overtime-main {
-        background-color: var(--color-gallery) !important;
-        width: 100%;
-        overflow: auto;
-        height: calc(100vh - var(--header-height)) !important;
-    }
-
-    .overtime-wrapper {
-        height: calc(100%) !important;
-    }
-
-    .overtime-heading {
-        width: 100%;
-        height: 54px !important;
-    }
-
-    .overtime-content {
-        width: 100%;
-        background-color: var(--color-white);
-        border-radius: 4px;
-        height: calc(100% - 54px) !important;
-        box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-add {
-        position: relative;
-    }
-
-        .btn-add span {
-            margin: 0 4px;
-        }
-
-    .overtime-table {
-        width: 100%;
-        height: calc(100% - 46px - 62px);
-        overflow: auto;
-    }
-
-        .overtime-table table {
-            overflow: auto;
-            min-width: max-content;
-        }
-
-        .overtime-table::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-            background: var(--border-color);
-        }
-
-        .overtime-table::-webkit-scrollbar-thumb {
-            background: #ccc !important;
-            border-radius: 8px;
-        }
-
-            .overtime-table::-webkit-scrollbar-thumb:hover {
-                background: rgba(0, 0, 0, 0.2) !important;
-            }
-
-        .overtime-table th:first-child input,
-        .overtime-table td:first-child input {
-            width: 16px;
-            height: 16px;
-        }
-
-        .overtime-table th:first-child,
-        .overtime-table td:first-child {
-            padding-left: 12px;
-        }
-
-        .overtime-table table tbody tr:hover {
-            background-color: var(--color-hover) !important;
-            cursor: pointer;
-        }
-
-        .overtime-table table thead th {
-            background-color: var(--color-wild-sand) !important;
-        }
-
-        .overtime-table table tr {
-            height: 46px !important;
-            font-size: 14px;
-        }
-
-        .overtime-table table tbody tr:hover td {
-            color: var(--color-white) !important;
-        }
-
-        .overtime-table table th {
-            padding: 8px 10px;
-        }
-
-        .overtime-table table td {
-            padding: 8px 10px;
-        }
-</style>

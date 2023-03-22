@@ -39,18 +39,19 @@
     <link href="~/assets/css/main.css" rel="stylesheet">
     <!-- Main CSS File - File chứa css của chính của chương trình -->
     <link href="~/assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/components/overtime_detail/css/style.css" />
+    @RenderSection("link", required: false)
 </head>
 
 <body>
     <!-- Phần Header -->
     @RenderSection("header", required: false)
 
+    <!-- Phần chứa dialog -->
+    <partial name="~/Views/OvertimeManager/_Dialog.cshtml" />
+
     <!-- Phần Nội dung -->
     @RenderBody()
-
-    <!-- Embedded - Phần nhúng thư viện -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Vendor JS Files - Phần nhúng file js của template -->
     <script src="~/assets/vendor/purecounter/purecounter_vanilla.js"></script>
@@ -63,8 +64,16 @@
 
     <!-- Template JS File - Phần chứa file js của template -->
     <script src="~/assets/js/template.js"></script>
+
+    <!-- Embedded - Phần nhúng thư viện -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- Phần chứa js chính của chương trình -->
     <script src="~/assets/js/script.js"></script>
+
+    <!-- Phần Script -->
+    @RenderSection("script", required: false)
 </body>
 
 </html>
