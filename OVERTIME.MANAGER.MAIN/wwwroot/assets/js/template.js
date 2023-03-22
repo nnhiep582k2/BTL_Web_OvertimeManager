@@ -20,7 +20,7 @@
     if (all) {
       select(el, all).forEach(e => e.addEventListener(type, listener))
     } else {
-      select(el, all).addEventListener(type, listener)
+      select(el, all)?.addEventListener(type, listener)
     }
   }
 

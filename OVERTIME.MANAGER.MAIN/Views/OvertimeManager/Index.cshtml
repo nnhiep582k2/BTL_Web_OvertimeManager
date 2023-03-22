@@ -1,17 +1,58 @@
-﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
+﻿@using Microsoft.AspNetCore.Html;
+@using OVERTIME.MANAGER.MAIN.ViewModels;
+@using X.PagedList.Mvc.Core
+@model ListOvertime
 
 @{
     ViewData["Title"] = "MAIN";
     Layout = "_LayoutDefault";
-}
-
-@{
     var navigatorActive = new NavigatorActive { navigatorActive = "Index" };
 }
 
+@{
+    // Hàm định dạng ngày
+    IHtmlContent formatDate(DateTime item)
+    {
+        string resultDate = item.Day.ToString().Length > 1 ? item.Day.ToString() : "0" + item.Day.ToString();
+        string resultMonth = item.Month.ToString().Length > 1 ? item.Month.ToString() : "0" + item.Month.ToString();
+        string resultYear = item.Year.ToString();
+        string resultHour = item.Hour.ToString().Length > 1 ? item.Hour.ToString() : "0" + item.Hour.ToString();
+        string resultMinute = item.Minute.ToString().Length > 1 ? item.Minute.ToString() : "0" + item.Minute.ToString();
+        string result = resultDate + "/" + resultMonth + "/" + resultYear + " " + resultHour + ":" + resultMinute;
+        return Html.Raw($@"<span>{result}</span>");
+    }
+}
+
 @section header
-{
+    {
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
+}
+
+@section link {
+    <link rel="stylesheet" href="../assets/components/overtime/css/style.css" />
+}
+
+@section script {
+    <script src="../assets/components/overtime/js/script.js"></script>
+    <script>
+        document.querySelectorAll('.overtime-table tbody tr').forEach(item => {
+            item.addEventListener('click', (e) => {
+                window.location.href = `/OvertimeManager/OvertimeDetail/overtimeId=${item.getAttribute('data-overtime-id')}`;
+            })
+        })
+
+        document.querySelector('.overtime-table thead tr th:first-child').addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.querySelector('.overtime-toolbar-show').style.display = 'none';
+                document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
+                console.log(document.querySelector('.overtime-toolbar-show').style.display)
+            } else {
+                document.querySelector('.overtime-toolbar-hide').style.display = 'none';
+                document.querySelector('.overtime-toolbar-show').style.display = 'flex';
+                console.log(document.querySelector('.overtime-toolbar-show').style.display)
+            }
+        })
+    </script>
 }
 
 <main class="container-fluid overtime-main">
@@ -25,9 +66,9 @@
                     <span>Add</span>
                 </a>
                 <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button id="btnGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop">
                         <li>
                             <a class="dropdown-item" href="#">
                                 <i class="fa-solid fa-file-import"></i>
@@ -38,50 +79,57 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Content -->
         <div class="overtime-content flex-row align-items-center justify-content-between">
-            <!-- Toolbar -->
-            <div class="row overtime-toolbar d-flex align-items-center justify-content-between">
-                <div class="col-5 col-md-6 overtime-toolbar-left d-flex align-items-center">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <!-- Toolbar khi chưa tick -->
+            <div class="row overtime-toolbar overtime-toolbar-show align-items-center justify-content-between">
+                <div class="col-5 col-md-6 overtime-toolbar-left input-group">
+                    <form asp-action="Index" method="get">
+                        <input type="text" name="searchQuery" class="form-control overtime-search" placeholder="Search" value="@Model.searchQuery" />
+                    </form>
                 </div>
 
                 <div class="col-7 col-md-6 justify-content-end overtime-toolbar-right d-flex align-items-center">
                     <div class="d-flex align-items-center status-wrapper">
                         <span>Status</span>
-                        <div class="dropdown selectbox">
-                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                All
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item active" href="#">All</a></li>
-                                <li><a class="dropdown-item" href="#">Pending</a></li>
-                                <li><a class="dropdown-item" href="#">Approved</a></li>
-                                <li><a class="dropdown-item" href="#">Refused</a></li>
-                            </ul>
-                        </div>
+                        <select class="form-select" name="status">
+                            <option>All</option>
+                            <option>Pending</option>
+                            <option>Approved</option>
+                            <option>Refused</option>
+                        </select>
                     </div>
 
-                    <div class="dropdown dropdown-outline-primary dropdown-organization mr-8">
-                        <button class="btn dropdown-toggle btn-organization" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            All Organizations
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item active" href="#">All Organizations</a></li>
-                            <li><a class="dropdown-item" href="#">Ngoại Giao Đoàn</a></li>
-                            <li><a class="dropdown-item" href="#">Cầu Giấy</a></li>
-                            <li><a class="dropdown-item" href="#">Hoàng Mai</a></li>
-                        </ul>
+                    <div class="dropdown dropdown-organization mr-8">
+                        <select class="form-select" name="organization">
+                            <option>All Organizations</option>
+                            <option>Ngoại giao đoàn</option>
+                            <option>Cầu Giấy</option>
+                            <option>Hoàng Mai</option>
+                        </select>
                     </div>
 
-                    <button class="btn btn-outline-primary mr-8" type="button">
+                    <a href="OvertimeManager?searchQuery=@Model.searchQuery&pageIndex=@Model.pageIndex&pageSize=@Model.pageSize" class="btn btn-outline-primary mr-8" type="button">
                         <i class="fa-solid fa-arrows-rotate"></i>
-                    </button>
+                    </a>
 
                     <button class="btn btn-outline-primary mr-8" type="button">
-                        <i class="fa-solid fa-filter"></i>
+                        <i class="fa-solid fa-file-export"></i>
                     </button>
+
+                    <button class="btn btn-outline-primary" type="button">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Toolbar khi đã tick -->
+            <div class="row overtime-toolbar overtime-toolbar-hide align-items-center justify-content-between">
+                <div class="col-12 col-md-12 overtime-toolbar-left input-group">
+                    <a href="OvertimeManager?searchQuery=@Model.searchQuery&pageIndex=@Model.pageIndex&pageSize=@Model.pageSize" class="btn btn-outline-primary mr-8" type="button">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </a>
 
                     <button class="btn btn-outline-primary mr-8" type="button">
                         <i class="fa-solid fa-file-export"></i>
@@ -95,286 +143,81 @@
 
             <!-- Table -->
             <div class="overtime-table">
-                <table class="table table-hover">
-                    <thead class="unselect">
-                        <tr>
-                            <th>
-                                <input type="checkbox" />
-                            </th>
-                            <th width="140px">Employee Code</th>
-                            <th width="180px">Employee Name</th>
-                            <th width="120px">JobPosition</th>
-                            <th width="140px">Organization</th>
-                            <th>Apply Date</th>
-                            <th>From Date</th>
-                            <th>To Date</th>
-                            <th>Overtime WorkingShift</th>
-                            <th>WorkingShift</th>
-                            <th>Reason</th>
-                            <th>Approval</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="checkbox" />
-                            </td>
-                            <td>NV1</td>
-                            <td>Nguyễn Ngọc Hiệp</td>
-                            <td>Lập trình viên</td>
-                            <td>Ngoại Giao Đoàn</td>
-                            <td>10/01/2023</td>
-                            <td>08/03/2023</td>
-                            <td>10/03/2023</td>
-                            <td>Sau ca</td>
-                            <td>Ngoài giờ</td>
-                            <td>Cải thiện năng suất</td>
-                            <td>Nguyễn Ngọc Hiệp</td>
-                            <td></td>
-                            <td>Đã duyệt</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" />
-                            </td>
-                            <td>NV2</td>
-                            <td>Nguyễn Phương Bắc</td>
-                            <td>Lập trình viên</td>
-                            <td>Cầu Giấy</td>
-                            <td>10/01/2023</td>
-                            <td>08/03/2023</td>
-                            <td>10/03/2023</td>
-                            <td>Sau ca</td>
-                            <td>Ngoài giờ</td>
-                            <td>Cải thiện năng suất</td>
-                            <td>Nguyễn Ngọc Hiệp</td>
-                            <td></td>
-                            <td>Đã duyệt</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" />
-                            </td>
-                            <td>NV3</td>
-                            <td>Mai Duy Chinh</td>
-                            <td>Lập trình viên</td>
-                            <td>Hoàng Mai</td>
-                            <td>10/01/2023</td>
-                            <td>08/03/2023</td>
-                            <td>10/03/2023</td>
-                            <td>Sau ca</td>
-                            <td>Ngoài giờ</td>
-                            <td>Cải thiện năng suất</td>
-                            <td>Nguyễn Ngọc Hiệp</td>
-                            <td></td>
-                            <td>Đã duyệt</td>
-                        </tr>
-                    </tbody>
-                </table>
+                @if (Model.totalRecord > 0)
+                {
+                    <table class="table table-hover">
+                        <thead class="unselect">
+                            <tr>
+                                <th>
+                                    <input type="checkbox" />
+                                </th>
+                                <th width="140px">Employee Code</th>
+                                <th width="180px">Employee Name</th>
+                                <th width="120px">JobPosition</th>
+                                <th width="140px">Organization</th>
+                                <th class="text-center">Apply Date</th>
+                                <th class="text-center">From Date</th>
+                                <th class="text-center">To Date</th>
+                                <th>OW</th>
+                                <th>WorkingShift</th>
+                                <th>Reason</th>
+                                <th>Approval</th>
+                                <th>Description</th>
+                                <th class="text-center">Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.list)
+                            {
+                                <tr data-overtime-id="@item.OverTimeId">
+                                    <td>
+                                        <input type="checkbox" />
+                                    </td>
+                                    <td>@item.EmployeeCode</td>
+                                    <td>@item.EmployeeName</td>
+                                    <td>@item.JobPositionName</td>
+                                    <td>@item.OrganizationName</td>
+                                    <td class="text-center">@formatDate(@item.ApplyDate)</td>
+                                    <td class="text-center">@formatDate(@item.FromDate)</td>
+                                    <td class="text-center">@formatDate(@item.ToDate)</td>
+                                    <td>@item.OverTimeInWorkingShiftName</td>
+                                    <td>@item.WorkingShiftName</td>
+                                    <td>@item.Reason</td>
+                                    <td>@item.ApprovalName</td>
+                                    <td>@item.Dsc</td>
+                                    <td class="text-center"><span class="overtime-status approved">@item.StatusOvertime</span></td>
+                                    <td>
+                                        <a class="overtime-action" asp-action="" asp-route-overtimeId="@item.OverTimeId">Duplicate</a> |
+                                        <a class="overtime-action" asp-action="" asp-route-overtimeId="@item.OverTimeId">Edit</a> |
+                                        <a class="overtime-action delete" asp-action="" asp-route-overtimeId="@item.OverTimeId">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="no-data">Không có dữ liệu</div>
+                }
             </div>
 
             <!-- Pagination-->
             <div class="overtime-pagination d-flex align-items-center justify-content-between">
-                <div class="pagination-total">Tổng số bản ghi: <b>3</b></div>
+                <div class="pagination-total">Tổng số bản ghi: <b>@Model.totalRecord</b></div>
                 <div class="pagination-paging d-flex align-items-center">
                     <div class="dropdown mr-20">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            15
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item active" href="#">15</a></li>
-                            <li><a class="dropdown-item" href="#">25</a></li>
-                            <li><a class="dropdown-item" href="#">50</a></li>
-                            <li><a class="dropdown-item" href="#">100</a></li>
-                        </ul>
+                        <select class="form-select pageSize-navigation" name="pageSize">
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
                     </div>
-                    <div class="from-to-record mr-20">
-                        Từ <b>1</b> đến <b>15</b> bản ghi
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                    <i class="fa-solid fa-angle-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="fa-solid fa-angle-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    @Html.PagedListPager(Model.list, page => Url.Action("Index", new {pageIndex=page, pageSize=Model.pageSize, searchQuery=Model.searchQuery}))
                 </div>
             </div>
         </div>
     </div>
 </main>
-
-<style>
-    .overtime-main {
-        background-color: var(--color-gallery) !important;
-        width: 100%;
-        overflow: auto;
-        height: calc(100vh - var(--header-height)) !important;
-    }
-
-    .overtime-wrapper {
-        height: calc(100%) !important;
-    }
-
-    .overtime-heading {
-        width: 100%;
-        height: 54px !important;
-    }
-
-    .overtime-content {
-        width: 100%;
-        background-color: var(--color-white);
-        border-radius: 4px;
-        height: calc(100% - 54px) !important;
-        box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.1);
-    }
-
-    .overtime-toolbar {
-        width: 100%;
-        padding: 12px;
-        margin-left: 0;
-    }
-
-    .overtime-toolbar-left {
-        padding-left: 0;
-    }
-    
-    .overtime-toolbar-right {
-        padding-right: 0;
-    }
-
-    .overtime-toolbar input {
-        width: 320px;
-    }
-
-    .status-wrapper {
-        margin-right: 50px;
-    }
-
-    .btn-add {
-        position: relative;
-    }
-
-    .btn-add span {
-        margin: 0 4px;
-    }
-
-    .btn-add::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: 60%;
-        width: 1px;
-        background-color: var(--color-white) !important;
-    }
-
-    .selectbox .btn.dropdown-toggle {
-        border: none !important;
-    }
-
-    .dropdown-organization {
-        border: 1px solid var(--color-primary) !important;
-        border-radius: 8px;
-        width: 320px;
-    }
-
-    .btn-organization {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .overtime-table {
-        width: 100%;
-        height: calc(100% - 46px - 62px);
-        overflow: auto;
-    }
-
-    .overtime-table table {
-        overflow: auto;
-        min-width: max-content;
-    }
-
-    .overtime-table::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-        background: var(--border-color);
-    }
-
-    .overtime-table::-webkit-scrollbar-thumb {
-        background: #ccc !important;
-        border-radius: 8px;
-    }
-
-    .overtime-table::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 0, 0, 0.2) !important;
-    }
-
-    .overtime-table th:first-child input,
-    .overtime-table td:first-child input {
-        width: 16px;
-        height: 16px;
-    }
-
-    .overtime-table th:first-child,
-    .overtime-table td:first-child {
-        padding-left: 12px;
-    }
-
-    .overtime-table table tbody tr:hover {
-        background-color: var(--color-hover) !important;
-        cursor: pointer;
-    }
-
-    .overtime-table table thead th {
-        background-color: var(--color-wild-sand) !important;
-    }
-
-    .overtime-table table tr {
-        height: 46px !important;
-        font-size: 14px;
-    }
-
-    .overtime-table table tbody tr:hover td {
-        color: var(--color-white) !important;
-    }
-
-    .overtime-table table th {
-        padding: 8px 10px;
-    }
-
-    .overtime-table table td {
-        padding: 8px 10px;
-    }
-
-    .overtime-pagination {
-        width: 100%;
-        height: 46px;
-        font-size: 15px !important;
-        padding: 0 12px;
-        background-color: var(--color-wild-sand) !important;
-    }
-
-    .pagination-paging > nav {
-        height: 100%;
-        display: flex;
-        justify-content: end;
-        align-items: center;
-    }
-
-    .pagination-paging > nav ul {
-        margin-bottom: 0px;
-    }
-</style>

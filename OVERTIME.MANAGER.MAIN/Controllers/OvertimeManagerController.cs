@@ -1,10 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OVERTIME.MANAGER.MAIN.Models;
+using OVERTIME.MANAGER.MAIN.ViewModels;
+using X.PagedList;
 
 namespace OVERTIME.MANAGER.MAIN.Controllers
 {
     public class OvertimeManagerController : Controller
     {
-        public IActionResult Index()
+        OvertimeManagerContext db = new OvertimeManagerContext();
+
+        /// <summary>
+        /// Hàm filter, sort and paging
+        /// </summary>
+        /// <param name="pageIndex">Trang hiện tại</param>
+        /// <param name="pageSize">Số bản ghi trên trang</param>
+        /// <param name="searchQuery">Giá trị tìm kiếm</param>
+        /// <returns>Danh sách đơn làm thêm thỏa mãn điều kiện lọc</returns>
+        /// @author nnhiep 20.03.2023
+        public IActionResult Index(string searchQuery = "", int pageIndex = 1, int pageSize = 15)
+        {
+            var lstOvertime = db.Overtimes.AsNoTracking().Where(x => x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower())).OrderByDescending(x => x.ModifiedDate);
+
+            ListOvertime lst = new ListOvertime()
+            {
+                list = new PagedList<Overtime>(lstOvertime, pageIndex, pageSize),
+                searchQuery = searchQuery,
+                pageIndex = pageIndex,
+                pageSize = pageSize,
+                totalRecord = lstOvertime.Count(),
+            };
+
+            return View(lst);
+        }
+
+        /// <summary>
+        /// Chi tiết đơn làm thêm
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// Làm giao diện cho chi tiết nhân viên
+        /// </returns>
+        public IActionResult Detail(int id)
         {
             return View();
         }
