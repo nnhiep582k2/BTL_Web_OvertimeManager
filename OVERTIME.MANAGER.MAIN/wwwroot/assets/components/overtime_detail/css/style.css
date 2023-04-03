@@ -14,81 +14,109 @@
     height: 54px !important;
 }
 
-.overtime-content {
+.overtime-container-detail {
     width: 100%;
-    background-color: var(--color-white);
+    padding: 16px;
     border-radius: 4px;
-    height: calc(100% - 54px) !important;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-white);
+    overflow: auto;
+    height: calc(100vh - var(--header-height) - 32px - 54px);
     box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.1);
+}
+
+.overtime-content-detail {
+    width: 100%;
+    display: flex;
+    align-items: start;
+    margin-bottom: 28px;
 }
 
 .btn-add {
     position: relative;
 }
 
-    .btn-add span {
-        margin: 0 4px;
-    }
-
-.overtime-table {
-    width: 100%;
-    height: calc(100% - 46px - 62px);
-    overflow: auto;
+.btn-add span {
+    margin: 0 4px;
 }
 
-    .overtime-table table {
-        overflow: auto;
-        min-width: max-content;
-    }
+.overtime-content-left,
+.overtime-content-right {
+    width: 44%;
+}
 
-    .overtime-table::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-        background: var(--border-color);
-    }
+.overtime-field {
+    display: flex;
+}
 
-    .overtime-table::-webkit-scrollbar-thumb {
-        background: #ccc !important;
-        border-radius: 8px;
-    }
+.overtime-field label {
+    width: 40%;
+    font-weight: 600;
+}
 
-        .overtime-table::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.2) !important;
-        }
+.overtime-field p:last-child {
+    width: 60%;
+    text-align: left;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-silver);
+}
 
-    .overtime-table th:first-child input,
-    .overtime-table td:first-child input {
-        width: 16px;
-        height: 16px;
-    }
+.heading-left i:first-child {
+    cursor: pointer;
+}
 
-    .overtime-table th:first-child,
-    .overtime-table td:first-child {
-        padding-left: 12px;
-    }
+.heading-left {
+    display: flex;
+    align-items: center;
+}
 
-    .overtime-table table tbody tr:hover {
-        background-color: var(--color-hover) !important;
-        cursor: pointer;
-    }
+.heading-left a {
+    color: var(--color-black);
+    text-decoration: none;
+}
 
-    .overtime-table table thead th {
-        background-color: var(--color-wild-sand) !important;
-    }
+.heading-left .heading-title {
+    margin-left: 18px;
+}
 
-    .overtime-table table tr {
-        height: 46px !important;
-        font-size: 14px;
-    }
+.details-status.approved {
+    color: var(--color-mountain-meadow);
+    border: 1px solid var(--color-mountain-meadow);
+    background-color: var(--color-ice-cold);
+    border-radius: 4px;
+    padding: 6px 16px;
+}
 
-    .overtime-table table tbody tr:hover td {
-        color: var(--color-white) !important;
-    }
+.details-status.refused {
+    background-color: var(--color-bridesmaid);
+    border: 1px solid var(--color-omegranate);
+    color: var(--color-omegranate);
+    border-radius: 4px;
+    padding: 6px 16px;
+}
 
-    .overtime-table table th {
-        padding: 8px 10px;
-    }
+.details-status.pending {
+    color: var(--color-royal-blue);
+    border: 1px solid var(--color-royal-blue);
+    background-color: var(--color-selago);
+    border-radius: 4px;
+    padding: 6px 16px;
+}
 
-    .overtime-table table td {
-        padding: 8px 10px;
-    }
+.btn-text {
+    margin-left: 10px !important;
+}
+
+.overtime-details-search {
+    width: 320px;
+    margin: 10px 0 20px;
+}
+
+.overtime-content-below span:first-child {
+    font-weight: 600;
+}
+
+.content-below-data {
+    font-style: italic;
+}

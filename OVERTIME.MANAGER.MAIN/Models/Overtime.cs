@@ -70,7 +70,7 @@ public partial class Overtime : BaseModel
     public string ApprovalName { get; set; } = null!;
 
     // Trạng thái đơn làm thêm
-    public byte StatusOvertime { get; set; }
+    public Byte StatusOvertime { get; set; }
 
     // Ghi chú của đơn làm thêm
     public string? Dsc { get; set; }

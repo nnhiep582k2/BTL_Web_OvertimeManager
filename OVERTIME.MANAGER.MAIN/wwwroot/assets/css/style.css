@@ -1,5 +1,11 @@
 ﻿@import './main.css';
 
+.required {
+    color: var(--color-red);
+    margin-left: 4px;
+}
+
+
 /* Scrollbar */
 /* Width */
 ::-webkit-scrollbar {
