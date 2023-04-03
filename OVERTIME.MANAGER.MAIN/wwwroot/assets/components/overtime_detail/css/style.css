@@ -55,6 +55,11 @@
     font-weight: 600;
 }
 
+.overtime-field label + .form-select,
+.overtime-field label + .form-control {
+    width: 55%;
+}
+
 .overtime-field p:last-child {
     width: 60%;
     text-align: left;

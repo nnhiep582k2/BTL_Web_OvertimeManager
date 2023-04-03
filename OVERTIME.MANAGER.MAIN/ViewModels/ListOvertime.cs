@@ -13,7 +13,5 @@ namespace OVERTIME.MANAGER.MAIN.ViewModels
         public int pageSize { get; set; } = 15;
         public int totalRecord { get; set; } = 0;
         public string? status { get; set; }
-        public List<SelectListItem> pageSizes { get; set; }
-        public List<SelectListItem> statuses { get; set; }
     }
 }
