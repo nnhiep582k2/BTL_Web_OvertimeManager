@@ -42,45 +42,12 @@
 }
 
 @section header
-    {
+{
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
 
 @section link {
     <link rel="stylesheet" href="../assets/components/overtime/css/style.css" />
-}
-
-@section script {
-    <script src="../assets/components/overtime/js/script.js"></script>
-    <script>
-        // Focus vào input search khi vừa vào trang - nnhiep
-        document.querySelector('.overtime-search')?.focus();
-
-        // Ẩn/Hiển thị toolbar khi click chọn ít nhất một hàng bất kỳ - nnhiep
-        document.querySelector('.overtime-table thead tr th:first-child')?.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                document.querySelector('.overtime-toolbar-show').style.display = 'none';
-                document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
-                console.log(document.querySelector('.overtime-toolbar-show').style.display)
-            } else {
-                document.querySelector('.overtime-toolbar-hide').style.display = 'none';
-                document.querySelector('.overtime-toolbar-show').style.display = 'flex';
-                console.log(document.querySelector('.overtime-toolbar-show').style.display)
-            }
-        })
-
-        // Lắng nghe thay đổi số bản ghi một trang - nnhiep
-        document.querySelector('.pageSize-navigation')?.addEventListener('change', (e) => {
-            var searchQuery = '@(Model.searchQuery)';
-            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${e.target.value}&searchQuery=${searchQuery}`;
-        })
-
-        // Lắng nghe thay đổi trạng thái đơn làm thêm
-        document.querySelector('.status-overtime-sort')?.addEventListener('change', (e) => {
-            var searchQuery = '@(Model.searchQuery)';
-            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${searchQuery}&status=${e.target.value}`;
-        })
-    </script>
 }
 
 <main class="container-fluid overtime-main">
@@ -119,7 +86,7 @@
                 <div class="col-7 col-md-6 justify-content-end overtime-toolbar-right d-flex align-items-center">
                     <div class="d-flex align-items-center status-wrapper">
                         <span>Status</span>
-                        <select class="form-select status-overtime-sort" name="status" asp-for="status" asp-items="@Model.statuses">
+                        <select class="form-select status-overtime-sort" name="status" asp-for="status" asp-items="@ViewBag.Statuses">
                         </select>
                     </div>
 
@@ -138,18 +105,26 @@
             </div>
 
             <!-- Toolbar khi đã tick -->
-            <div class="row overtime-toolbar overtime-toolbar-hide align-items-center justify-content-between">
-                <div class="col-12 col-md-12 overtime-toolbar-left input-group">
-                    <a href="OvertimeManager?searchQuery=@Model.searchQuery&pageIndex=@Model.pageIndex&pageSize=@Model.pageSize" class="btn btn-outline-primary mr-8" type="button">
-                        <i class="fa-solid fa-arrows-rotate"></i>
-                    </a>
+            <div class="row overtime-toolbar overtime-toolbar-hide">
+                <div class="col-12 col-md-12 align-items-center input-group">
+                    <span>Selected <b class="selectedItem">0</b></span>
+                    <span class="unselect-all">Unselect</span>
 
-                    <button class="btn btn-outline-primary mr-8" type="button">
-                        <i class="fa-solid fa-file-export"></i>
+                    <button class="btn btn-outline-warning mr-8" type="button">
+                        <i class="fa-solid fa-ban"></i>
+                        Refuse
                     </button>
-
-                    <button class="btn btn-outline-primary" type="button">
-                        <i class="fa-solid fa-gear"></i>
+                    <button class="btn btn-outline-success mr-8" type="button">
+                        <i class="fa-regular fa-circle-check"></i>
+                        Approve
+                    </button>
+                    <button class="btn btn-outline-primary mr-8" type="button">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        Export
+                    </button>
+                    <button class="btn btn-outline-danger mr-8" type="button">
+                        <i class="fa-solid fa-trash"></i>
+                        Delete
                     </button>
                 </div>
             </div>
@@ -185,7 +160,7 @@
                             {
                                 <tr>
                                     <td>
-                                        <input type="checkbox" />
+                                        <input my-data="@item.OverTimeId" type="checkbox" />
                                     </td>
                                     <td>@item.EmployeeCode</td>
                                     <td>@item.EmployeeName</td>
@@ -227,7 +202,7 @@
                 <div class="pagination-total">Total records: <b>@Model.totalRecord</b></div>
                 <div class="pagination-paging d-flex align-items-center">
                     <div class="dropdown mr-20">
-                        <select class="form-select pageSize-navigation" name="pageSize" asp-for="pageSize" asp-items="@Model.pageSizes">
+                        <select class="form-select pageSize-navigation" name="pageSize" asp-for="pageSize" asp-items="@ViewBag.PageSizes">
                         </select>
                     </div>
                     @Html.PagedListPager(Model.list, page => Url.Action("Index", new {pageIndex=page, pageSize=Model.pageSize, searchQuery=Model.searchQuery}))
@@ -236,3 +211,65 @@
         </div>
     </div>
 </main>
+
+
+@section script {
+    <script src="../assets/components/overtime/js/script.js"></script>
+    <script>
+        // Focus vào input search khi vừa vào trang - nnhiep
+        document.querySelector('.overtime-search')?.focus();
+
+        // Ẩn/Hiển thị toolbar khi click chọn ít nhất một hàng bất kỳ - nnhiep
+        document.querySelector('.overtime-table thead tr th:first-child')?.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.querySelector('.overtime-toolbar-show').style.display = 'none';
+                document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
+            } else {
+                document.querySelector('.overtime-toolbar-hide').style.display = 'none';
+                document.querySelector('.overtime-toolbar-show').style.display = 'flex';
+            }
+        })
+
+        // Lắng nghe thay đổi số bản ghi một trang - nnhiep
+        document.querySelector('.pageSize-navigation')?.addEventListener('change', (e) => {
+            var searchQuery = '@(Model.searchQuery)';
+            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${e.target.value}&searchQuery=${searchQuery}`;
+        })
+
+        // Lắng nghe thay đổi trạng thái đơn làm thêm
+        document.querySelector('.status-overtime-sort')?.addEventListener('change', (e) => {
+            var searchQuery = '@(Model.searchQuery)';
+            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${searchQuery}&status=${e.target.value}`;
+        })
+
+        let selectedData = [];
+
+        // Xử lý tick chọn table - nnhiep
+        let checkAll = document.querySelector('.overtime-table table thead th:first-child input');
+        checkAll.addEventListener('change', (e) => {
+            document.querySelectorAll('.overtime-table table tbody td:first-child input').forEach(item => {
+                let selectedKey = item.getAttribute("my-data");
+                item.checked = checkAll.checked;
+                if (checkAll.checked) {
+                    selectedData.push(selectedKey);
+                } else {
+                    selectedData = selectedData.filter(item => item !== selectedKey);
+                }
+            });
+            document.querySelector('.selectedItem').innerHTML = selectedData.length;
+        });
+
+        // Xử lý bỏ chọn hết - nnhiep
+        document.querySelector('.unselect-all').addEventListener('click', () => {
+            document.querySelectorAll('.overtime-table table tbody td:first-child input').forEach(item => {
+                let selectedKey = item.getAttribute("my-data");
+                item.checked = false;
+            });
+            checkAll.checked = false;
+            selectedData = [];
+            document.querySelector('.selectedItem').innerHTML = 0;
+            document.querySelector('.overtime-toolbar-hide').style.display = 'none';
+            document.querySelector('.overtime-toolbar-show').style.display = 'flex';
+        });
+    </script>
+}

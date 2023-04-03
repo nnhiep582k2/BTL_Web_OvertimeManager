@@ -74,79 +74,53 @@
                 <div class="overtime-content-left">
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.EmployeeName">Employee Name<span class="required">*</span></label>
-                        <select asp-for="@Model.overtime.EmployeeName">
-                            <option>Nguyễn Ngọc Hiệp</option>
-                            <option>Ứng Phương Thảo</option>
-                            <option>Nguyễn Ngọc Sơn</option>
-                            <option>Nguyễn Thị Hoa</option>
-                            <option>Nguyễn Ngọc Điệp</option>
-                        </select>
+                        <select class="form-select" asp-items="@ViewBag.Employees"></select>
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.OrganizationName">Organization Name</label>
-                        <input asp-for="@Model.overtime.OrganizationName" type="text" />
+                        <input readonly asp-for="@Model.overtime.OrganizationName" type="text" name="searchQuery" class="form-control overtime-search" placeholder="CTCP NNHIEP" />
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.ApplyDate">Apply Date<span class="required">*</span></label>
-                        <input asp-for="@Model.overtime.ApplyDate" type="datetime" />
+                        <input class="form-control" asp-for="@Model.overtime.ApplyDate" type="datetime-local" />
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.FromDate">From Date<span class="required">*</span></label>
-                        <input asp-for="@Model.overtime.FromDate" type="datetime" />
+                        <input class="form-control" asp-for="@Model.overtime.FromDate" type="datetime-local" />
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.BreakTimeFrom">Breaktime From</label>
-                        <input asp-for="@Model.overtime.BreakTimeFrom" type="datetime" />
+                        <input class="form-control" asp-for="@Model.overtime.BreakTimeFrom" type="datetime-local" />
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.BreakTimeTo">Breaktime To</label>
-                        <input asp-for="@Model.overtime.BreakTimeTo" type="datetime" />
+                        <input class="form-control" asp-for="@Model.overtime.BreakTimeTo" type="datetime-local" />
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.ToDate">To Date<span class="required">*</span></label>
-                        <input asp-for="@Model.overtime.ToDate" type="datetime" />
+                        <input class="form-control" asp-for="@Model.overtime.ToDate" type="datetime-local" />
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.WorkingShiftName">Workingshift<span class="required">*</span></label>
-                        <select asp-for="@Model.overtime.WorkingShiftName">
-                            <option>Hành chính</option>
-                            <option>Cuối tuần</option>
-                            <option>Ngày lễ</option>
-                            <option>Ngoài giờ</option>
-                        </select>
+                        <select class="form-select" asp-items="@ViewBag.WorkingShifts"></select>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.OverTimeInWorkingShiftName">Overtime Workingshift<span class="required">*</span></label>
-                        <select asp-for="@Model.overtime.OverTimeInWorkingShiftName">
-                            <option>Trước ca</option>
-                            <option>Giữa ca</option>
-                            <option>Sau ca</option>
-                            <option>Cuối tuần</option>
-                        </select>
+                        <label asp-for="@Model.overtime.OverTimeInWorkingShiftName" title="Overtime Workingshift">OW<span class="required">*</span></label>
+                        <select class="form-select" asp-for="@Model.overtime.OverTimeInWorkingShiftName" asp-items="@ViewBag.OWs"></select>
                     </div>
                 </div>
                 <div class="overtime-content-right">
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.Reason">Reason<span class="required">*</span></label>
-                        <textarea asp-for="@Model.overtime.Reason"></textarea>
+                        <textarea asp-for="@Model.overtime.Reason" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.ApprovalName">Approval<span class="required">*</span></label>
-                        <select asp-for="@Model.overtime.ApprovalName">
-                            <option>Nguyễn Ngọc Hiệp</option>
-                            <option>Ứng Phương Thảo</option>
-                            <option>Nguyễn Ngọc Sơn</option>
-                            <option>Nguyễn Thị Hoa</option>
-                            <option>Nguyễn Ngọc Điệp</option>
-                        </select>
+                        <select class="form-select" asp-items="@ViewBag.Approvels"></select>
                     </div>
                     <div class="overtime-field unselect">
                         <label asp-for="@Model.overtime.StatusOvertime">Status<span class="required">*</span></label>
-                        <select asp-for="@Model.overtime.StatusOvertime">
-                            <option>Chờ duyệt</option>
-                            <option>Đã duyệt</option>
-                            <option>Từ chối</option>
-                        </select>
+                        <select class="form-select" asp-items="@ViewBag.StatusOvertimes"></select>
                     </div>
                 </div>
             </div>

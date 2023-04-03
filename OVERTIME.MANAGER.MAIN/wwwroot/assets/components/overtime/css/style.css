@@ -311,3 +311,13 @@ tr:hover .overtime-action {
     align-items: center;
     justify-content: center;
 }
+
+.unselect-all {
+    color: var(--color-red);
+    margin: 0 20px !important;
+    cursor: pointer;
+}
+
+.input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    border-radius: 4px !important;
+}
