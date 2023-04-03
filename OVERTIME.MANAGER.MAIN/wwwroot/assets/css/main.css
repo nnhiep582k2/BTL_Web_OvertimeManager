@@ -15,7 +15,9 @@
     --color-bridesmaid: #FEE8E7;
     --color-omegranate: #EF292F;
     --color-royal-blue: #6153DF;
-    --color-selago: #EBE9FB; 
-
+    --color-selago: #EBE9FB;
+    --color-red: red;
+    --color-silver: #ccc;
+    
     --header-height: 52px;
 }

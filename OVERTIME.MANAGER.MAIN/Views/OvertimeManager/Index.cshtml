@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Html;
 @using OVERTIME.MANAGER.MAIN.ViewModels;
 @using X.PagedList.Mvc.Core
+@using OVERTIME.MANAGER.MAIN.Utils.Enums;
 @model ListOvertime
 
 @{
@@ -21,6 +22,23 @@
         string result = resultDate + "/" + resultMonth + "/" + resultYear + " " + resultHour + ":" + resultMinute;
         return Html.Raw($@"<span>{result}</span>");
     }
+    // Hàm định dạng trạng thái
+    IHtmlContent formatStatus(int status)
+    {
+        if (status == (int)OvertimeStatus.pending)
+        {
+            return Html.Raw("<span class=\"overtime-status pending\">Pending</span>");
+        }
+        else if (status == (int)OvertimeStatus.approved)
+        {
+            return Html.Raw("<span class=\"overtime-status approved\">Approved</span>");
+        }
+        else if (status == (int)OvertimeStatus.refused)
+        {
+            return Html.Raw("<span class=\"overtime-status refused\">Refused</span>");
+        }
+        return Html.Raw("<span>--</span>");
+    }
 }
 
 @section header
@@ -35,13 +53,11 @@
 @section script {
     <script src="../assets/components/overtime/js/script.js"></script>
     <script>
-        document.querySelectorAll('.overtime-table tbody tr').forEach(item => {
-            item.addEventListener('click', (e) => {
-                window.location.href = `/OvertimeManager/OvertimeDetail/overtimeId=${item.getAttribute('data-overtime-id')}`;
-            })
-        })
+        // Focus vào input search khi vừa vào trang - nnhiep
+        document.querySelector('.overtime-search')?.focus();
 
-        document.querySelector('.overtime-table thead tr th:first-child').addEventListener('change', (e) => {
+        // Ẩn/Hiển thị toolbar khi click chọn ít nhất một hàng bất kỳ - nnhiep
+        document.querySelector('.overtime-table thead tr th:first-child')?.addEventListener('change', (e) => {
             if (e.target.checked) {
                 document.querySelector('.overtime-toolbar-show').style.display = 'none';
                 document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
@@ -52,6 +68,18 @@
                 console.log(document.querySelector('.overtime-toolbar-show').style.display)
             }
         })
+
+        // Lắng nghe thay đổi số bản ghi một trang - nnhiep
+        document.querySelector('.pageSize-navigation')?.addEventListener('change', (e) => {
+            var searchQuery = '@(Model.searchQuery)';
+            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${e.target.value}&searchQuery=${searchQuery}`;
+        })
+
+        // Lắng nghe thay đổi trạng thái đơn làm thêm
+        document.querySelector('.status-overtime-sort')?.addEventListener('change', (e) => {
+            var searchQuery = '@(Model.searchQuery)';
+            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${searchQuery}&status=${e.target.value}`;
+        })
     </script>
 }
 
@@ -61,21 +89,19 @@
         <div class="overtime-heading d-flex align-items-center justify-content-between pb-3">
             <div class="fs-5 fw-bold">Register Overtime</div>
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                <a type="button" class="btn btn-primary btn-add" asp-controller="OvertimeManager" asp-action="OvertimeDetail">
+                <a type="button" class="btn btn-primary btn-add" asp-controller="OvertimeManager" asp-action="OvertimeAdd">
                     <i class="fa-solid fa-plus"></i>
                     <span>Add</span>
                 </a>
                 <div class="btn-group" role="group">
-                    <button id="btnGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button id="btnGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop">
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <i class="fa-solid fa-file-import"></i>
-                                <span class="ml-8">Import</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop">
+                        <a class="dropdown-item" href="#">
+                            <i class="fa-solid fa-file-import"></i>
+                            <span class="ml-8">Import</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,20 +119,7 @@
                 <div class="col-7 col-md-6 justify-content-end overtime-toolbar-right d-flex align-items-center">
                     <div class="d-flex align-items-center status-wrapper">
                         <span>Status</span>
-                        <select class="form-select" name="status">
-                            <option>All</option>
-                            <option>Pending</option>
-                            <option>Approved</option>
-                            <option>Refused</option>
-                        </select>
-                    </div>
-
-                    <div class="dropdown dropdown-organization mr-8">
-                        <select class="form-select" name="organization">
-                            <option>All Organizations</option>
-                            <option>Ngoại giao đoàn</option>
-                            <option>Cầu Giấy</option>
-                            <option>Hoàng Mai</option>
+                        <select class="form-select status-overtime-sort" name="status" asp-for="status" asp-items="@Model.statuses">
                         </select>
                     </div>
 
@@ -170,7 +183,7 @@
                         <tbody>
                             @foreach (var item in Model.list)
                             {
-                                <tr data-overtime-id="@item.OverTimeId">
+                                <tr>
                                     <td>
                                         <input type="checkbox" />
                                     </td>
@@ -186,11 +199,17 @@
                                     <td>@item.Reason</td>
                                     <td>@item.ApprovalName</td>
                                     <td>@item.Dsc</td>
-                                    <td class="text-center"><span class="overtime-status approved">@item.StatusOvertime</span></td>
-                                    <td>
-                                        <a class="overtime-action" asp-action="" asp-route-overtimeId="@item.OverTimeId">Duplicate</a> |
-                                        <a class="overtime-action" asp-action="" asp-route-overtimeId="@item.OverTimeId">Edit</a> |
-                                        <a class="overtime-action delete" asp-action="" asp-route-overtimeId="@item.OverTimeId">Delete</a>
+                                    <td class="text-center">@formatStatus(@item.StatusOvertime)</td>
+                                    <td class="overtime-action-wrapper">
+                                        <a class="overtime-action" asp-action="" asp-route-overtimeId="@item.OverTimeId">
+                                            <i class="fa-regular fa-clipboard"></i>
+                                        </a>
+                                        <a class="overtime-action" asp-controller="OvertimeManager" asp-action="OvertimeDetail" asp-route-overtimeId="@item.OverTimeId">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </a>
+                                        <a class="overtime-action delete" asp-action="" asp-route-overtimeId="@item.OverTimeId">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             }
@@ -199,20 +218,16 @@
                 }
                 else
                 {
-                    <div class="no-data">Không có dữ liệu</div>
+                    <div class="no-data">No data to display</div>
                 }
             </div>
 
             <!-- Pagination-->
             <div class="overtime-pagination d-flex align-items-center justify-content-between">
-                <div class="pagination-total">Tổng số bản ghi: <b>@Model.totalRecord</b></div>
+                <div class="pagination-total">Total records: <b>@Model.totalRecord</b></div>
                 <div class="pagination-paging d-flex align-items-center">
                     <div class="dropdown mr-20">
-                        <select class="form-select pageSize-navigation" name="pageSize">
-                            <option value="15">15</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
+                        <select class="form-select pageSize-navigation" name="pageSize" asp-for="pageSize" asp-items="@Model.pageSizes">
                         </select>
                     </div>
                     @Html.PagedListPager(Model.list, page => Url.Action("Index", new {pageIndex=page, pageSize=Model.pageSize, searchQuery=Model.searchQuery}))

@@ -1,0 +1,162 @@
+﻿@using Microsoft.AspNetCore.Html;
+@using OVERTIME.MANAGER.MAIN.Utils.Enums;
+@using OVERTIME.MANAGER.MAIN.ViewModels;
+@model OvertimeDetails;
+
+@{
+    ViewData["Title"] = "Overtime Add";
+    Layout = "~/Views/Shared/_LayoutDefault.cshtml";
+    var navigatorActive = new NavigatorActive { navigatorActive = "Index" };
+}
+
+@section header
+    {
+    <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
+}
+
+@section link {
+    <link rel="stylesheet" href="../assets/components/overtime_add/css/style.css" />
+}
+
+@{
+    // Hàm định dạng ngày
+    IHtmlContent formatDate(DateTime? item)
+    {
+#nullable disable
+        string resultDate = item?.Day.ToString().Length > 1 ? item?.Day.ToString() : "0" + item?.Day.ToString();
+        string resultMonth = item?.Month.ToString().Length > 1 ? item?.Month.ToString() : "0" + item?.Month.ToString();
+        string resultYear = item?.Year.ToString();
+        string resultHour = item?.Hour.ToString().Length > 1 ? item?.Hour.ToString() : "0" + item?.Hour.ToString();
+        string resultMinute = item?.Minute.ToString().Length > 1 ? item?.Minute.ToString() : "0" + item?.Minute.ToString();
+        string result = resultDate + "/" + resultMonth + "/" + resultYear + " " + resultHour + ":" + resultMinute;
+        return Html.Raw($@"<span>{result}</span>");
+    }
+    // Hàm định dạng trạng thái
+    IHtmlContent formatStatus(int status)
+    {
+        if (status == (int)OvertimeStatus.pending)
+        {
+            return Html.Raw("<span class=\"details-status pending\">Pending</span>");
+        }
+        else if (status == (int)OvertimeStatus.approved)
+        {
+            return Html.Raw("<span class=\"details-status approved\">Approved</span>");
+        }
+        else if (status == (int)OvertimeStatus.refused)
+        {
+            return Html.Raw("<span class=\"details-status refused\">Refused</span>");
+        }
+        return Html.Raw("<span>--</span>");
+    }
+}
+
+<main class="container-fluid overtime-main">
+    <div class="overtime-wrapper py-3">
+        <!-- Heading -->
+        <div class="overtime-heading d-flex align-items-center justify-content-between pb-3">
+            <div class="heading-left">
+                <a asp-action="Index" asp-controller="OvertimeManager"><i class="fa-solid fa-arrow-left"></i></a>
+                <div class="fs-5 fw-bold heading-title"> Overtime Add</div>
+            </div>
+            <div class="btn-group-wrapper">
+                <button type="button" class="btn btn-primary btn-add">
+                    <span>Save</span>
+                </button>
+                <a type="button" class="btn btn-danger btn-add" asp-controller="OvertimeManager" asp-action="Index">
+                    <span>Cancel</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="overtime-container-detail overtime-container-add">
+            <div class="overtime-content-detail flex-row justify-content-between">
+                <div class="overtime-content-left">
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.EmployeeName">Employee Name<span class="required">*</span></label>
+                        <select asp-for="@Model.overtime.EmployeeName">
+                            <option>Nguyễn Ngọc Hiệp</option>
+                            <option>Ứng Phương Thảo</option>
+                            <option>Nguyễn Ngọc Sơn</option>
+                            <option>Nguyễn Thị Hoa</option>
+                            <option>Nguyễn Ngọc Điệp</option>
+                        </select>
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.OrganizationName">Organization Name</label>
+                        <input asp-for="@Model.overtime.OrganizationName" type="text" />
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.ApplyDate">Apply Date<span class="required">*</span></label>
+                        <input asp-for="@Model.overtime.ApplyDate" type="datetime" />
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.FromDate">From Date<span class="required">*</span></label>
+                        <input asp-for="@Model.overtime.FromDate" type="datetime" />
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.BreakTimeFrom">Breaktime From</label>
+                        <input asp-for="@Model.overtime.BreakTimeFrom" type="datetime" />
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.BreakTimeTo">Breaktime To</label>
+                        <input asp-for="@Model.overtime.BreakTimeTo" type="datetime" />
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.ToDate">To Date<span class="required">*</span></label>
+                        <input asp-for="@Model.overtime.ToDate" type="datetime" />
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.WorkingShiftName">Workingshift<span class="required">*</span></label>
+                        <select asp-for="@Model.overtime.WorkingShiftName">
+                            <option>Hành chính</option>
+                            <option>Cuối tuần</option>
+                            <option>Ngày lễ</option>
+                            <option>Ngoài giờ</option>
+                        </select>
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.OverTimeInWorkingShiftName">Overtime Workingshift<span class="required">*</span></label>
+                        <select asp-for="@Model.overtime.OverTimeInWorkingShiftName">
+                            <option>Trước ca</option>
+                            <option>Giữa ca</option>
+                            <option>Sau ca</option>
+                            <option>Cuối tuần</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="overtime-content-right">
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.Reason">Reason<span class="required">*</span></label>
+                        <textarea asp-for="@Model.overtime.Reason"></textarea>
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.ApprovalName">Approval<span class="required">*</span></label>
+                        <select asp-for="@Model.overtime.ApprovalName">
+                            <option>Nguyễn Ngọc Hiệp</option>
+                            <option>Ứng Phương Thảo</option>
+                            <option>Nguyễn Ngọc Sơn</option>
+                            <option>Nguyễn Thị Hoa</option>
+                            <option>Nguyễn Ngọc Điệp</option>
+                        </select>
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.overtime.StatusOvertime">Status<span class="required">*</span></label>
+                        <select asp-for="@Model.overtime.StatusOvertime">
+                            <option>Chờ duyệt</option>
+                            <option>Đã duyệt</option>
+                            <option>Từ chối</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="overtime-content-below">
+                <span>LIST OVERTIME EMPLOYEES</span>
+                <form asp-action="Index" method="get">
+                    <input type="text" name="searchQuery" class="form-control overtime-details-search" placeholder="Search" value="" />
+                </form>
+                <div class="content-below-data">No data to display</div>
+            </div>
+        </div>
+    </div>
+</main>
