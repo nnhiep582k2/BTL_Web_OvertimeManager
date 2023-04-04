@@ -1,0 +1,19 @@
+﻿@model OVERTIME.MANAGER.MAIN.ViewModels.DialogInformation;
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>@Model.description</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn @Model.negativeColor" data-bs-dismiss="modal">@Model.negativeButton</button>
+                <button type="button" class="btn @Model.positiveColor">@Model.positiveButton</button>
+            </div>
+        </div>
+    </div>
+</div>

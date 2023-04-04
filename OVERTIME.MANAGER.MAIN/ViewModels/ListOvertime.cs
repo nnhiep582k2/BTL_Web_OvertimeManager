@@ -12,6 +12,6 @@ namespace OVERTIME.MANAGER.MAIN.ViewModels
         public int pageIndex { get; set; } = 1;
         public int pageSize { get; set; } = 15;
         public int totalRecord { get; set; } = 0;
-        public string? status { get; set; }
+        public Byte status { get; set; }
     }
 }

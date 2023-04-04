@@ -5,6 +5,11 @@
     margin-left: 4px;
 }
 
+.modal-dialog {
+    transform: translateY(50%) !important;
+}
+
+
 
 /* Scrollbar */
 /* Width */

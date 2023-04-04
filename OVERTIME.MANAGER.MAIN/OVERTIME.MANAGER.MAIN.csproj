@@ -30,8 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewComponents\" />
     <Folder Include="Repository\" />
+    <Folder Include="ViewComponents\" />
     <Folder Include="Views\Shared\Components\" />
   </ItemGroup>
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OVERTIME.MANAGER.MAIN.Models;
+using OVERTIME.MANAGER.MAIN.Utils.Enums;
 using OVERTIME.MANAGER.MAIN.ViewModels;
 using X.PagedList;
 
@@ -9,7 +10,8 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 {
     public class OvertimeManagerController : Controller
     {
-        OvertimeManagerContext db = new OvertimeManagerContext();
+        #nullable disable
+        private readonly OvertimeManagerContext db = new OvertimeManagerContext();
 
         /// <summary>
         /// Hàm filter, sort and paging
@@ -35,23 +37,12 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 searchQuery = searchQuery,
                 pageIndex = pageIndex,
                 pageSize = pageSize,
+                status = status,
                 totalRecord = lstOvertime.Count(),
             };
-            ViewBag.PageSizes = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "15", Value = "15" },
-                    new SelectListItem { Text = "25", Value = "25" },
-                    new SelectListItem { Text = "50", Value = "50" },
-                    new SelectListItem { Text = "100", Value = "100" },
-                };
 
-            ViewBag.Statuses = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "All", Value = "3" },
-                    new SelectListItem { Text = "Pending", Value = "0" },
-                    new SelectListItem { Text = "Approved", Value = "1" },
-                    new SelectListItem { Text = "Refused", Value = "2" },
-                };
+            ViewBag.PageSizes = GetSelectListItems(SelectedItem.pageSize);
+            ViewBag.Statuses = GetSelectListItems(SelectedItem.status);
 
             return View(lst);
         }
@@ -78,43 +69,112 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// @author nnhiep
         public IActionResult OvertimeAdd()
         {
-            ViewBag.Employees = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "Nguyễn Ngọc Hiệp", Value = "Nguyễn Ngọc Hiệp" },
-                    new SelectListItem { Text = "Ứng Phương Thảo", Value = "Ứng Phương Thảo" },
-                    new SelectListItem { Text = "Nguyễn Ngọc Sơn", Value = "Nguyễn Ngọc Sơn" },
-                    new SelectListItem { Text = "Nguyễn Thị Hoa", Value = "Nguyễn Thị Hoa" },
-                    new SelectListItem { Text = "Nguyễn Ngọc Điệp", Value = "Nguyễn Ngọc Điệp" },
-                };
-            ViewBag.WorkingShifts = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "Hành chính", Value = "Hành chính" },
-                    new SelectListItem { Text = "Cuối tuần", Value = "Cuối tuần" },
-                    new SelectListItem { Text = "Ngày lễ", Value = "Ngày lễ" },
-                    new SelectListItem { Text = "Ngoài giờ", Value = "Ngoài giờ" },
-                };
-            ViewBag.OWs = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "Trước ca", Value = "Trước ca" },
-                    new SelectListItem { Text = "Sau ca", Value = "Sau ca" },
-                    new SelectListItem { Text = "Giữa ca", Value = "Giữa ca" },
-                    new SelectListItem { Text = "Cuối tuần", Value = "Cuối tuần" },
-                };
-            ViewBag.Approvels = new List<SelectListItem> 
-                {
-                    new SelectListItem { Text = "Nguyễn Ngọc Hiệp", Value = "Nguyễn Ngọc Hiệp" },
-                    new SelectListItem { Text = "Ứng Phương Thảo", Value = "Ứng Phương Thảo" },
-                    new SelectListItem { Text = "Nguyễn Ngọc Sơn", Value = "Nguyễn Ngọc Sơn" },
-                    new SelectListItem { Text = "Nguyễn Thị Hoa", Value = "Nguyễn Thị Hoa" },
-                    new SelectListItem { Text = "Nguyễn Ngọc Điệp", Value = "Nguyễn Ngọc Điệp" },
-                };
-            ViewBag.StatusOvertimes = new List<SelectListItem>
-                {
-                    new SelectListItem { Text = "Chờ duyệt", Value = "0" },
-                    new SelectListItem { Text = "Đã duyệt", Value = "1" },
-                    new SelectListItem { Text = "Từ chối", Value = "2" },
-                };    
+            ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
+            ViewBag.WorkingShifts = GetSelectListItems(SelectedItem.workingshift);
+            ViewBag.OWs = GetSelectListItems(SelectedItem.overtime_workingshift);
+            ViewBag.Approvels = GetSelectListItems(SelectedItem.approvel);
+            ViewBag.StatusOvertimes = GetSelectListItems(SelectedItem.status_overtime);
             return View();
+        }
+
+        [AutoValidateAntiforgeryToken]
+        public IActionResult AddOvertime(Overtime ot)
+        {
+            try
+            {
+                db.Add(ot);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                ViewBag.Title = "Adding Failed";
+                ViewBag.Description = "Add";
+                return RedirectToAction("OvertimeAdd");
+            }
+        }
+
+        /// <summary>
+        /// Hàm lấy giá trị dropdown
+        /// </summary>
+        /// <param name="item">Dropdown cần lấy</param>
+        /// <returns>Danh sách các giá trị của dropdown</returns>
+        /// @author nnhiep
+        public List<SelectListItem> GetSelectListItems(SelectedItem item)
+        {
+            List<SelectListItem> items;
+            switch (item)
+            {
+                case (SelectedItem.pageSize):
+                    items = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "15", Value = "15" },
+                        new SelectListItem { Text = "25", Value = "25" },
+                        new SelectListItem { Text = "50", Value = "50" },
+                        new SelectListItem { Text = "100", Value = "100" },
+                    };
+                    break;
+                case (SelectedItem.status):
+                    items = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "All", Value = "3" },
+                        new SelectListItem { Text = "Pending", Value = "0" },
+                        new SelectListItem { Text = "Approved", Value = "1" },
+                        new SelectListItem { Text = "Refused", Value = "2" },
+                    };
+                    break;
+                case (SelectedItem.employee):
+                    items = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Nguyễn Ngọc Hiệp", Value = "Nguyễn Ngọc Hiệp" },
+                        new SelectListItem { Text = "Ứng Phương Thảo", Value = "Ứng Phương Thảo" },
+                        new SelectListItem { Text = "Nguyễn Ngọc Sơn", Value = "Nguyễn Ngọc Sơn" },
+                        new SelectListItem { Text = "Nguyễn Thị Hoa", Value = "Nguyễn Thị Hoa" },
+                        new SelectListItem { Text = "Nguyễn Ngọc Điệp", Value = "Nguyễn Ngọc Điệp" },
+                    };
+                    break;
+                case (SelectedItem.workingshift):
+                    items = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Hành chính", Value = "Hành chính" },
+                        new SelectListItem { Text = "Cuối tuần", Value = "Cuối tuần" },
+                        new SelectListItem { Text = "Ngày lễ", Value = "Ngày lễ" },
+                        new SelectListItem { Text = "Ngoài giờ", Value = "Ngoài giờ" },
+                    };
+                    break;
+                case (SelectedItem.overtime_workingshift):
+                    items = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Trước ca", Value = "Trước ca" },
+                        new SelectListItem { Text = "Sau ca", Value = "Sau ca" },
+                        new SelectListItem { Text = "Giữa ca", Value = "Giữa ca" },
+                        new SelectListItem { Text = "Cuối tuần", Value = "Cuối tuần" },
+                    };
+                    break;
+                case (SelectedItem.approvel):
+                    items = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Nguyễn Ngọc Hiệp", Value = "Nguyễn Ngọc Hiệp" },
+                        new SelectListItem { Text = "Ứng Phương Thảo", Value = "Ứng Phương Thảo" },
+                        new SelectListItem { Text = "Nguyễn Ngọc Sơn", Value = "Nguyễn Ngọc Sơn" },
+                        new SelectListItem { Text = "Nguyễn Thị Hoa", Value = "Nguyễn Thị Hoa" },
+                        new SelectListItem { Text = "Nguyễn Ngọc Điệp", Value = "Nguyễn Ngọc Điệp" },
+                    };
+                    break;
+                case (SelectedItem.status_overtime):
+                    items = new List<SelectListItem>
+                    {
+                        new SelectListItem { Text = "Chờ duyệt", Value = "0" },
+                        new SelectListItem { Text = "Đã duyệt", Value = "1" },
+                        new SelectListItem { Text = "Từ chối", Value = "2" },
+                    };
+                    break;
+                default:
+                    items = new List<SelectListItem>();
+                    break;
+            }
+            return items;
         }
 
         /// <summary>
