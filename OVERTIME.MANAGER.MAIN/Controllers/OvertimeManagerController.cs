@@ -67,14 +67,29 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// Thêm đơn làm thêm mới
         /// </summary>
         /// @author nnhiep
-        public IActionResult OvertimeAdd()
+        public IActionResult OvertimeAdd(string searchQuery = "", int pageIndex = 1, int pageSize = 15)
         {
             ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
             ViewBag.WorkingShifts = GetSelectListItems(SelectedItem.workingshift);
             ViewBag.OWs = GetSelectListItems(SelectedItem.overtime_workingshift);
             ViewBag.Approvels = GetSelectListItems(SelectedItem.approvel);
             ViewBag.StatusOvertimes = GetSelectListItems(SelectedItem.status_overtime);
-            return View();
+
+            var lstEmployee = db.Employees.AsNoTracking().Where(x => (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower()))).OrderByDescending(x => x.ModifiedDate);
+
+            OvertimeAdd lst = new OvertimeAdd()
+            {
+                list = new PagedList<Employee>(lstEmployee, pageIndex, pageSize),
+                searchQuery = searchQuery,
+                pageIndex = pageIndex,
+                pageSize = pageSize,
+                totalRecord = lstEmployee.Count(),
+            };
+
+            ViewBag.PageSizes = GetSelectListItems(SelectedItem.pageSize);
+            ViewBag.Statuses = GetSelectListItems(SelectedItem.status);
+
+            return View(lst);
         }
 
         [AutoValidateAntiforgeryToken]
