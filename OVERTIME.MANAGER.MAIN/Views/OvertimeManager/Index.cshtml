@@ -42,13 +42,22 @@
 }
 
 @section header
-{
+    {
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
 
 @section link {
     <link rel="stylesheet" href="../assets/components/overtime/css/style.css" />
 }
+
+@await Html.PartialAsync("DialogPartial", new DialogInformation {
+    title = "Delete overtime",
+    description = "Are you sure to delete this overtime?",
+    negativeButton = "Cancel",
+    positiveButton = "Delete",
+    negativeColor = "btn-secondary",
+    positiveColor = "btn-danger"
+})
 
 <main class="container-fluid overtime-main">
     <div class="overtime-wrapper py-3">
@@ -78,9 +87,7 @@
             <!-- Toolbar khi chưa tick -->
             <div class="row overtime-toolbar overtime-toolbar-show align-items-center justify-content-between">
                 <div class="col-5 col-md-6 overtime-toolbar-left input-group">
-                    <form asp-action="Index" method="get">
-                        <input type="text" name="searchQuery" class="form-control overtime-search" placeholder="Search" value="@Model.searchQuery" />
-                    </form>
+                    <input type="text" name="searchQuery" class="form-control overtime-search" placeholder="Search" value="@Model.searchQuery" />
                 </div>
 
                 <div class="col-7 col-md-6 justify-content-end overtime-toolbar-right d-flex align-items-center">
@@ -90,7 +97,7 @@
                         </select>
                     </div>
 
-                    <a href="OvertimeManager?searchQuery=@Model.searchQuery&pageIndex=@Model.pageIndex&pageSize=@Model.pageSize" class="btn btn-outline-primary mr-8" type="button">
+                    <a href="OvertimeManager?searchQuery=@Model.searchQuery&pageIndex=@Model.pageIndex&pageSize=@Model.pageSize&status=@Model.status" class="btn btn-outline-primary mr-8" type="button">
                         <i class="fa-solid fa-arrows-rotate"></i>
                     </a>
 
@@ -182,7 +189,7 @@
                                         <a class="overtime-action" asp-controller="OvertimeManager" asp-action="OvertimeDetail" asp-route-overtimeId="@item.OverTimeId">
                                             <i class="fa-solid fa-circle-info"></i>
                                         </a>
-                                        <a class="overtime-action delete" asp-action="" asp-route-overtimeId="@item.OverTimeId">
+                                        <a class="overtime-action delete" asp-action="" asp-route-overtimeId="@item.OverTimeId" data-bs-toggle="modal" data-bs-target="#deleteModal">
                                             <i class="fa-solid fa-trash"></i>
                                         </a>
                                     </td>
@@ -205,7 +212,7 @@
                         <select class="form-select pageSize-navigation" name="pageSize" asp-for="pageSize" asp-items="@ViewBag.PageSizes">
                         </select>
                     </div>
-                    @Html.PagedListPager(Model.list, page => Url.Action("Index", new {pageIndex=page, pageSize=Model.pageSize, searchQuery=Model.searchQuery}))
+                    @Html.PagedListPager(Model.list, page => Url.Action("Index", new {pageIndex=page, pageSize=Model.pageSize, searchQuery=Model.searchQuery, status=Model.status}))
                 </div>
             </div>
         </div>
@@ -233,25 +240,28 @@
         // Lắng nghe thay đổi số bản ghi một trang - nnhiep
         document.querySelector('.pageSize-navigation')?.addEventListener('change', (e) => {
             var searchQuery = '@(Model.searchQuery)';
-            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${e.target.value}&searchQuery=${searchQuery}`;
+            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${e.target.value}&searchQuery=${searchQuery}&status=${@Model.status}`;
         })
 
         // Lắng nghe thay đổi trạng thái đơn làm thêm
         document.querySelector('.status-overtime-sort')?.addEventListener('change', (e) => {
             var searchQuery = '@(Model.searchQuery)';
-            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${searchQuery}&status=${e.target.value}`;
+            let status = Number.parseInt(e.target.value);
+            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${searchQuery}&status=${status}`;
         })
 
         let selectedData = [];
 
-        // Xử lý tick chọn table - nnhiep
+        // Xử lý tick chọn hết trong table - nnhiep
         let checkAll = document.querySelector('.overtime-table table thead th:first-child input');
-        checkAll.addEventListener('change', (e) => {
+        checkAll?.addEventListener('change', (e) => {
             document.querySelectorAll('.overtime-table table tbody td:first-child input').forEach(item => {
                 let selectedKey = item.getAttribute("my-data");
                 item.checked = checkAll.checked;
                 if (checkAll.checked) {
-                    selectedData.push(selectedKey);
+                    if (selectedData.indexOf(selectedKey) == -1) {
+                        selectedData.push(selectedKey);
+                    }
                 } else {
                     selectedData = selectedData.filter(item => item !== selectedKey);
                 }
@@ -260,7 +270,7 @@
         });
 
         // Xử lý bỏ chọn hết - nnhiep
-        document.querySelector('.unselect-all').addEventListener('click', () => {
+        document.querySelector('.unselect-all')?.addEventListener('click', () => {
             document.querySelectorAll('.overtime-table table tbody td:first-child input').forEach(item => {
                 let selectedKey = item.getAttribute("my-data");
                 item.checked = false;
@@ -270,6 +280,33 @@
             document.querySelector('.selectedItem').innerHTML = 0;
             document.querySelector('.overtime-toolbar-hide').style.display = 'none';
             document.querySelector('.overtime-toolbar-show').style.display = 'flex';
+        });
+
+        // Xử lý tick chọn table - nnhiep
+        document.querySelectorAll('.overtime-table table tbody td:first-child input')?.forEach(item => {
+            item.addEventListener('change', () => {
+                let selectedKey = item.getAttribute("my-data");
+                if (selectedData.indexOf(selectedKey) == -1) {
+                    selectedData.push(selectedKey);
+                    if (selectedData.length == 1) {
+                        document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
+                        document.querySelector('.overtime-toolbar-show').style.display = 'none';
+                    }
+                } else {
+                    selectedData = selectedData.filter(item => item !== selectedKey);
+                    if (selectedData.length == 0) {
+                        document.querySelector('.overtime-toolbar-hide').style.display = 'none';
+                        document.querySelector('.overtime-toolbar-show').style.display = 'flex';
+                    }
+                }
+                document.querySelector('.selectedItem').innerHTML = selectedData.length;
+            });
+        });
+
+        let searchQuery = '';
+
+        document.querySelector('.overtime-search')?.addEventListener('change', (e) => {
+            window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${e.target.value}&status=${@Model.status}`;
         });
     </script>
 }
