@@ -31,7 +31,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 lstOvertime = db.Overtimes.AsNoTracking().Where(x => x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())).OrderByDescending(x => x.ModifiedDate);
             }
 
-            ListOvertime lst = new ListOvertime()
+            ListItem<Overtime> lst = new ListItem<Overtime>()
             {
                 list = new PagedList<Overtime>(lstOvertime, pageIndex, pageSize),
                 searchQuery = searchQuery,
@@ -67,6 +67,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// Thêm đơn làm thêm mới
         /// </summary>
         /// @author nnhiep
+        [HttpGet]
         public IActionResult OvertimeAdd(string searchQuery = "", int pageIndex = 1, int pageSize = 15)
         {
             ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
@@ -92,22 +93,19 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             return View(lst);
         }
 
-        [AutoValidateAntiforgeryToken]
-        public IActionResult AddOvertime(Overtime ot)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult OvertimeAdd(OvertimeAdd ot)
         {
-            try
+            if (ModelState.IsValid)
             {
-                db.Add(ot);
+                db.Overtimes.Add(ot.overtime);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                ViewBag.Title = "Adding Failed";
-                ViewBag.Description = "Add";
-                return RedirectToAction("OvertimeAdd");
-            }
+            ViewBag.Title = "Adding Failed";
+            ViewBag.Description = "Add";
+            return View(ot);
         }
 
         /// <summary>

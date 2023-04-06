@@ -2,7 +2,7 @@
 @using OVERTIME.MANAGER.MAIN.ViewModels;
 @using X.PagedList.Mvc.Core
 @using OVERTIME.MANAGER.MAIN.Utils.Enums;
-@model ListOvertime
+@model ListItem<Overtime>
 
 @{
     ViewData["Title"] = "MAIN";
@@ -310,10 +310,12 @@
 
         let searchQuery = '';
 
+        // Xử lý tìm kiếm - nnhiep
         document.querySelector('.overtime-search')?.addEventListener('change', (e) => {
             window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${e.target.value}&status=${@Model.status}`;
         });
 
+        // Xử lý xóa thành công - nnhiep
         document.querySelector(".dialog-btn-close").onclick = function () {
             var toastElList = [].slice.call(document.querySelectorAll('.toast'))
             var toastList = toastElList.map(function (toastEl) {
