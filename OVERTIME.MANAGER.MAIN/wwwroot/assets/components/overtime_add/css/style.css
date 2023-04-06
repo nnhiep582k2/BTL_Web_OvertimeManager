@@ -6,11 +6,29 @@
     margin-top: 10px;
 }
 
+.overtime-toolbar {
+    padding: 12px;
+    margin-left: 0;
+    display: flex;
+}
+
+.overtime-toolbar-hide {
+    display: none;
+    margin: 4px 0px;
+}
+
+.overtime-add-search {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 300px;
+    margin-left: 16px;
+}
+
 .modal-dialog-add-overtime {
     position: absolute;
     margin: 0;
     left: 50% !important;
-    top: 30px !important;
+    top: 16px !important;
     width: 768px !important;
     max-width: unset !important;
     transform: translateX(-50%) !important;
@@ -54,4 +72,10 @@
 
 .modal-dialog-add-overtime table thead {
     background-color: var(--color-wild-sand) !important;
+}
+
+.unselect-all {
+    color: var(--color-red);
+    margin: 0 20px !important;
+    cursor: pointer;
 }
