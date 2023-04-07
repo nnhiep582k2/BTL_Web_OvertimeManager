@@ -1,4 +1,7 @@
-﻿namespace OVERTIME.MANAGER.MAIN.Models;
+﻿using Microsoft.Build.Framework;
+using System.ComponentModel;
+
+namespace OVERTIME.MANAGER.MAIN.Models;
 
 // Đơn làm thêm
 public partial class Overtime : BaseModel
@@ -13,12 +16,15 @@ public partial class Overtime : BaseModel
     public string EmployeeCode { get; set; } = null!;
 
     // Tên nhân viên nộp đơn làm thêm
+    [Required]
+    [DisplayName("Employee Name")]
     public string EmployeeName { get; set; } = null!;
 
     // ID đơn vị công tác
     public string OrganizationId { get; set; } = null!;
 
     // Tên đơn vị công tác
+    [DisplayName("Organization Name")]
     public string? OrganizationName { get; set; }
 
     // ID vị trí công việc
@@ -28,18 +34,26 @@ public partial class Overtime : BaseModel
     public string? JobPositionName { get; set; }
 
     // Ngày nộp đơn
+    [Required]
+    [DisplayName("Apply Date")]
     public DateTime ApplyDate { get; set; }
 
     // Thời gian lmà thêm từ
+    [Required]
+    [DisplayName("From Date")]
     public DateTime FromDate { get; set; }
 
     // Thời gian nghỉ giữa ca từ
+    [DisplayName("Breaktime From")]
     public DateTime? BreakTimeFrom { get; set; }
 
     // Thời gian nghỉ giữa ca đến
+    [DisplayName("Breaktime To")]
     public DateTime? BreakTimeTo { get; set; }
 
     // Thời gian làm thêm đến
+    [Required]
+    [DisplayName("To Date")]
     public DateTime ToDate { get; set; }
 
     // ID của thời điểm làm thêm
@@ -49,6 +63,8 @@ public partial class Overtime : BaseModel
     public string OverTimeInWorkingShiftCode { get; set; } = null!;
 
     // Tên thời điểm làm thêm
+    [Required]
+    [DisplayName("OWs")]
     public string OverTimeInWorkingShiftName { get; set; } = null!;
 
     // ID ca làm việc
@@ -58,18 +74,26 @@ public partial class Overtime : BaseModel
     public string WorkingShiftCode { get; set; } = null!;
 
     // Tên ca làm việc
+    [Required]
+    [DisplayName("Workingshift Name")]
     public string WorkingShiftName { get; set; } = null!;
 
     // Lý do làm thêm
+    [Required]
+    [DisplayName("Reason")]
     public string Reason { get; set; } = null!;
 
     // ID người duyệt đơn
     public string ApprovalId { get; set; } = null!;
 
     // Tên người duyệt đơn
+    [Required]
+    [DisplayName("Approval Name")]
     public string ApprovalName { get; set; } = null!;
 
     // Trạng thái đơn làm thêm
+    [Required]
+    [DisplayName("Status")]
     public Byte StatusOvertime { get; set; }
 
     // Ghi chú của đơn làm thêm

@@ -68,43 +68,62 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// @author nnhiep
         [HttpGet]
-        public IActionResult OvertimeAdd(string searchQuery = "", int pageIndex = 1, int pageSize = 15)
+        public IActionResult OvertimeAdd()
         {
             ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
             ViewBag.WorkingShifts = GetSelectListItems(SelectedItem.workingshift);
             ViewBag.OWs = GetSelectListItems(SelectedItem.overtime_workingshift);
-            ViewBag.Approvels = GetSelectListItems(SelectedItem.approvel);
+            ViewBag.Approvals = GetSelectListItems(SelectedItem.approval);
             ViewBag.StatusOvertimes = GetSelectListItems(SelectedItem.status_overtime);
 
-            var lstEmployee = db.Employees.AsNoTracking().Where(x => (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower()))).OrderByDescending(x => x.ModifiedDate);
-
-            OvertimeAdd lst = new OvertimeAdd()
-            {
-                list = new PagedList<Employee>(lstEmployee, pageIndex, pageSize),
-                searchQuery = searchQuery,
-                pageIndex = pageIndex,
-                pageSize = pageSize,
-                totalRecord = lstEmployee.Count(),
-            };
-
-            ViewBag.PageSizes = GetSelectListItems(SelectedItem.pageSize);
-            ViewBag.Statuses = GetSelectListItems(SelectedItem.status);
-
-            return View(lst);
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult OvertimeAdd(OvertimeAdd ot)
+        public IActionResult OvertimeAdd(Overtime ot)
         {
+            DateTime now = DateTime.Now;
+            string employeeID = ot.EmployeeName;
+            string workingShiftID = ot.WorkingShiftName;
+            string owsID = ot.OverTimeInWorkingShiftName;
+            string approvalID = ot.ApprovalName;
+
+            ot.OverTimeId = Guid.NewGuid().ToString();
+            ot.ModifiedBy = "nnhiep";
+            ot.CreatedBy = "nnhiep";
+            ot.ModifiedDate = now;
+            ot.CreatedDate = now;
+            ot.EmployeeId = employeeID;
+            ot.EmployeeCode = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).EmployeeCode;
+            ot.EmployeeName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).EmployeeName;
+            ot.OrganizationName = db.Organizations.AsNoTracking().FirstOrDefault(x => x.OrganizationId == ot.OrganizationId).OrganizationName;
+            ot.OverTimeInWorkingShiftId = owsID;
+            ot.OverTimeInWorkingShiftCode = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == owsID).OverTimeInWorkingShiftCode;
+            ot.OverTimeInWorkingShiftName = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == owsID).OverTimeInWorkingShiftName;
+            ot.WorkingShiftId = workingShiftID;
+            ot.WorkingShiftCode = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == workingShiftID).WorkingShiftCode;
+            ot.WorkingShiftName = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == workingShiftID).WorkingShiftName;
+            ot.ApprovalId = approvalID;
+            ot.ApprovalName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == approvalID).EmployeeName;
+            ot.Dsc = ot.Dsc ?? "";
+            ot.OverTimeEmployeeIds = ot.OverTimeEmployeeIds ?? "";
+            ot.OverTimeEmployeeCodes = ot.OverTimeEmployeeCodes ?? "";
+            ot.OverTimeEmployeeNames = ot.OverTimeEmployeeNames ?? "";
+
             if (ModelState.IsValid)
             {
-                db.Overtimes.Add(ot.overtime);
+                db.Overtimes.Add(ot);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.Title = "Adding Failed";
-            ViewBag.Description = "Add";
+
+            ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
+            ViewBag.WorkingShifts = GetSelectListItems(SelectedItem.workingshift);
+            ViewBag.OWs = GetSelectListItems(SelectedItem.overtime_workingshift);
+            ViewBag.Approvals = GetSelectListItems(SelectedItem.approval);
+            ViewBag.StatusOvertimes = GetSelectListItems(SelectedItem.status_overtime);
+
             return View(ot);
         }
 
@@ -114,77 +133,53 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// <param name="item">Dropdown cần lấy</param>
         /// <returns>Danh sách các giá trị của dropdown</returns>
         /// @author nnhiep
-        public List<SelectListItem> GetSelectListItems(SelectedItem item)
+        public SelectList GetSelectListItems(SelectedItem item)
         {
-            List<SelectListItem> items;
+            SelectList items;
+            List<ListTemplate> temp = null;
             switch (item)
             {
                 case (SelectedItem.pageSize):
-                    items = new List<SelectListItem>
+                    temp = new List<ListTemplate>
                     {
-                        new SelectListItem { Text = "15", Value = "15" },
-                        new SelectListItem { Text = "25", Value = "25" },
-                        new SelectListItem { Text = "50", Value = "50" },
-                        new SelectListItem { Text = "100", Value = "100" },
+                        new ListTemplate { Text = "15", Value = "15" },
+                        new ListTemplate { Text = "25", Value = "25" },
+                        new ListTemplate { Text = "50", Value = "50" },
+                        new ListTemplate { Text = "100", Value = "100" },
                     };
+                    items = new SelectList(temp, "Value", "Text");
                     break;
                 case (SelectedItem.status):
-                    items = new List<SelectListItem>
+                    temp = new List<ListTemplate>
                     {
-                        new SelectListItem { Text = "All", Value = "3" },
-                        new SelectListItem { Text = "Pending", Value = "0" },
-                        new SelectListItem { Text = "Approved", Value = "1" },
-                        new SelectListItem { Text = "Refused", Value = "2" },
+                        new ListTemplate { Text = "All", Value = "3" },
+                        new ListTemplate { Text = "Pending", Value = "0" },
+                        new ListTemplate { Text = "Approved", Value = "1" },
+                        new ListTemplate { Text = "Refused", Value = "2" },
                     };
+                    items = new SelectList(temp, "Value", "Text");
                     break;
                 case (SelectedItem.employee):
-                    items = new List<SelectListItem>
-                    {
-                        new SelectListItem { Text = "Nguyễn Ngọc Hiệp", Value = "Nguyễn Ngọc Hiệp" },
-                        new SelectListItem { Text = "Ứng Phương Thảo", Value = "Ứng Phương Thảo" },
-                        new SelectListItem { Text = "Nguyễn Ngọc Sơn", Value = "Nguyễn Ngọc Sơn" },
-                        new SelectListItem { Text = "Nguyễn Thị Hoa", Value = "Nguyễn Thị Hoa" },
-                        new SelectListItem { Text = "Nguyễn Ngọc Điệp", Value = "Nguyễn Ngọc Điệp" },
-                    };
+                case (SelectedItem.approval):
+                    items = new SelectList(db.Employees.ToList(), "EmployeeId", "EmployeeName");
                     break;
                 case (SelectedItem.workingshift):
-                    items = new List<SelectListItem>
-                    {
-                        new SelectListItem { Text = "Hành chính", Value = "Hành chính" },
-                        new SelectListItem { Text = "Cuối tuần", Value = "Cuối tuần" },
-                        new SelectListItem { Text = "Ngày lễ", Value = "Ngày lễ" },
-                        new SelectListItem { Text = "Ngoài giờ", Value = "Ngoài giờ" },
-                    };
+                    items = new SelectList(db.WorkingShifts.ToList(), "WorkingShiftId", "WorkingShiftName");
                     break;
                 case (SelectedItem.overtime_workingshift):
-                    items = new List<SelectListItem>
-                    {
-                        new SelectListItem { Text = "Trước ca", Value = "Trước ca" },
-                        new SelectListItem { Text = "Sau ca", Value = "Sau ca" },
-                        new SelectListItem { Text = "Giữa ca", Value = "Giữa ca" },
-                        new SelectListItem { Text = "Cuối tuần", Value = "Cuối tuần" },
-                    };
-                    break;
-                case (SelectedItem.approvel):
-                    items = new List<SelectListItem>
-                    {
-                        new SelectListItem { Text = "Nguyễn Ngọc Hiệp", Value = "Nguyễn Ngọc Hiệp" },
-                        new SelectListItem { Text = "Ứng Phương Thảo", Value = "Ứng Phương Thảo" },
-                        new SelectListItem { Text = "Nguyễn Ngọc Sơn", Value = "Nguyễn Ngọc Sơn" },
-                        new SelectListItem { Text = "Nguyễn Thị Hoa", Value = "Nguyễn Thị Hoa" },
-                        new SelectListItem { Text = "Nguyễn Ngọc Điệp", Value = "Nguyễn Ngọc Điệp" },
-                    };
+                    items = new SelectList(db.OverTimeInWorkingShifts.ToList(), "OverTimeInWorkingShiftId", "OverTimeInWorkingShiftName");
                     break;
                 case (SelectedItem.status_overtime):
-                    items = new List<SelectListItem>
+                    temp = new List<ListTemplate>
                     {
-                        new SelectListItem { Text = "Chờ duyệt", Value = "0" },
-                        new SelectListItem { Text = "Đã duyệt", Value = "1" },
-                        new SelectListItem { Text = "Từ chối", Value = "2" },
+                        new ListTemplate { Text = "Chờ duyệt", Value = "0" },
+                        new ListTemplate { Text = "Đã duyệt", Value = "1" },
+                        new ListTemplate { Text = "Từ chối", Value = "2" },
                     };
+                    items = new SelectList(temp, "Value", "Text");
                     break;
                 default:
-                    items = new List<SelectListItem>();
+                    items = null;
                     break;
             }
             return items;

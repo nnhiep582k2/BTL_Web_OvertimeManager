@@ -1,81 +1,36 @@
-﻿.overtime-container-add .overtime-field {
-    margin-bottom: 14px;
+﻿.overtime-container-add .form-group + .form-group {
+    margin-top: 14px;
+}
+
+.overtime-container-add .control-label {
+    margin-bottom: 6px;
 }
 
 .overtime-below-right button {
     margin-top: 10px;
 }
 
-.overtime-toolbar {
-    padding: 12px;
-    margin-left: 0;
-    display: flex;
+.overtime-content-detail form {
+    width: 100% !important;
 }
 
-.overtime-toolbar-hide {
-    display: none;
-    margin: 4px 0px;
+.overtime-content-row {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
-.overtime-add-search {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    width: 300px;
-    margin-left: 16px;
+.overtime-container-add .overtime-content-left,
+.overtime-container-add .overtime-content-right {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
-.modal-dialog-add-overtime {
-    position: absolute;
-    margin: 0;
-    left: 50% !important;
-    top: 16px !important;
-    width: 768px !important;
-    max-width: unset !important;
-    transform: translateX(-50%) !important;
+.btn-submit-add {
+    margin-top: 20px !important;
+    width: 100% !important;
 }
 
-.modal-dialog-add-overtime table thead tr th:first-child,
-.modal-dialog-add-overtime table tbody tr td:first-child {
-    width: 40px;
-}
-
-.modal-dialog-add-overtime .modal-body {
-    padding: 0 !important;
-}
-
-.modal-dialog-add-overtime table tbody {
-    display: block;
-    overflow: auto;
-    height: 300px;
-    width: 100%;
-}
-
-.modal-dialog-add-overtime thead, tbody tr {
-    display: table;
-    width: 100%;
-    height: 48px !important;
-    table-layout: fixed;
-}
-
-.modal-dialog-add-overtime table,
-.modal-dialog-add-overtime thead {
-    width: 100%;
-}
-
-.modal-dialog-add-overtime table {
-    margin-bottom: 0;
-}
-
-.modal-dialog-add-overtime .overtime-pagination {
-    padding: 10px 16px 10px;
-}
-
-.modal-dialog-add-overtime table thead {
-    background-color: var(--color-wild-sand) !important;
-}
-
-.unselect-all {
-    color: var(--color-red);
-    margin: 0 20px !important;
-    cursor: pointer;
+.btn-submit-add input {
+    width: 100% !important;
 }
