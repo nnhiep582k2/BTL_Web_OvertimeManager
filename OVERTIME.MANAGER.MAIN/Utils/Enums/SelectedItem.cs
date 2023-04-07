@@ -17,7 +17,7 @@
         // Thời điểm làm thêm
         overtime_workingshift = 4,
         // Người duyệt
-        approvel = 5,
+        approval = 5,
         // Trạng thái đơn làm thêm trong trang thêm
         status_overtime = 6
     }

@@ -1,8 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Html;
-@using OVERTIME.MANAGER.MAIN.Utils.Enums;
 @using OVERTIME.MANAGER.MAIN.ViewModels;
-@using X.PagedList.Mvc.Core;
-@model OVERTIME.MANAGER.MAIN.ViewModels.OvertimeAdd;
+@using OVERTIME.MANAGER.MAIN.Utils.Enums;
+@model OVERTIME.MANAGER.MAIN.Models.Overtime
 
 @{
     ViewData["Title"] = "Overtime Add";
@@ -21,326 +20,112 @@
 
 <main class="container-fluid overtime-main">
     <div class="overtime-wrapper py-3">
-        <form method="POST" asp-action="OvertimeAdd">
-            <!-- Heading -->
-            <div class="overtime-heading d-flex align-items-center justify-content-between pb-3">
-                <div class="heading-left">
-                    <a asp-action="Index" asp-controller="OvertimeManager"><i class="fa-solid fa-arrow-left"></i></a>
-                    <div class="fs-5 fw-bold heading-title"> Overtime Add</div>
+        <!-- Heading -->
+        <div class="overtime-heading d-flex align-items-center justify-content-between pb-3">
+            <div class="heading-left">
+                <a asp-action="Index" asp-controller="OvertimeManager"><i class="fa-solid fa-arrow-left"></i></a>
+                <div class="fs-5 fw-bold heading-title"> Overtime Add</div>
+            </div>
+            <div class="btn-group-wrapper">
+                <a type="button" class="btn btn-danger btn-add" asp-controller="OvertimeManager" asp-action="Index">
+                    <span>Cancel</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="overtime-container-detail overtime-container-add">
+            <form asp-action="OvertimeAdd" method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="overtime-content-detail">
+                    <div class="overtime-content-row row justify-content-between">
+                        <div class="overtime-content-left">
+                            <div class="form-group">
+                                <label asp-for="EmployeeName" class="control-label"></label>
+                                <select asp-for="EmployeeName" class="form-control" asp-items="ViewBag.Employees"></select>
+                                <span asp-validation-for="EmployeeName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="OrganizationName" class="control-label"></label>
+                                <input readonly asp-for="OrganizationName" class="form-control" />
+                                <span asp-validation-for="OrganizationName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ApplyDate" class="control-label"></label>
+                                <input asp-for="ApplyDate" class="form-control" />
+                                <span asp-validation-for="ApplyDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="FromDate" class="control-label"></label>
+                                <input asp-for="FromDate" class="form-control" />
+                                <span asp-validation-for="FromDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BreakTimeFrom" class="control-label"></label>
+                                <input asp-for="BreakTimeFrom" class="form-control" />
+                                <span asp-validation-for="BreakTimeFrom" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BreakTimeTo" class="control-label"></label>
+                                <input asp-for="BreakTimeTo" class="form-control" />
+                                <span asp-validation-for="BreakTimeTo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ToDate" class="control-label"></label>
+                                <input asp-for="ToDate" class="form-control" />
+                                <span asp-validation-for="ToDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="WorkingShiftName" class="control-label"></label>
+                                <select asp-for="WorkingShiftName" class="form-control" asp-items="ViewBag.WorkingShifts"></select>
+                                <span asp-validation-for="WorkingShiftName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="OverTimeInWorkingShiftName" class="control-label"></label>
+                                <select asp-for="OverTimeInWorkingShiftName" class="form-control" asp-items="ViewBag.OWs"></select>
+                                <span asp-validation-for="OverTimeInWorkingShiftName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="overtime-content-right">
+                            <div class="form-group">
+                                <label asp-for="Reason" class="control-label"></label>
+                                <textarea asp-for="Reason" class="form-control"></textarea>
+                                <span asp-validation-for="Reason" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ApprovalName" class="control-label"></label>
+                                <select asp-for="ApprovalName" class="form-control" asp-items="ViewBag.Approvals"></select>
+                                <span asp-validation-for="ApprovalName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StatusOvertime" class="control-label"></label>
+                                <select asp-for="StatusOvertime" class="form-control" asp-items="ViewBag.StatusOvertimes"></select>
+                                <span asp-validation-for="StatusOvertime" class="text-danger"></span>
+                            </div>
+                            <div class="form-group btn-submit-add">
+                                <input type="submit" value="Save" class="btn btn-primary btn-add" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="btn-group-wrapper">
-                    <button type="submit" class="btn btn-primary btn-add">
-                        <span>Save</span>
-                    </button>
-                    <a type="button" class="btn btn-danger btn-add" asp-controller="OvertimeManager" asp-action="Index">
-                        <span>Cancel</span>
-                    </a>
+            </form>
+            <div class="overtime-content-below">
+                <div class="overtime-below-left">
+                    <span>LIST OVERTIME EMPLOYEES</span>
+                    <form asp-action="Index" method="get">
+                        <input type="text" name="searchQuery" class="form-control overtime-details-search" placeholder="Search" value="" />
+                    </form>
+                    <div class="content-below-data">No data to display</div>
+                </div>
+                <div class="overtime-below-right">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">Add</button>
                 </div>
             </div>
-
-            <!-- Content -->
-            <div class="overtime-container-detail overtime-container-add">
-                <div class="overtime-content-detail flex-row justify-content-between">
-                    <div class="overtime-content-left">
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.EmployeeName">Employee Name<span class="required">*</span></label>
-                            <select class="form-select" asp-items="@ViewBag.Employees"></select>
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.OrganizationName">Organization Name</label>
-                            <input readonly asp-for="@Model.overtime.OrganizationName" type="text" name="searchQuery" class="form-control overtime-search" placeholder="CTCP NNHIEP" />
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.ApplyDate">Apply Date<span class="required">*</span></label>
-                            <input class="form-control" asp-for="@Model.overtime.ApplyDate" type="datetime-local" />
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.FromDate">From Date<span class="required">*</span></label>
-                            <input class="form-control" asp-for="@Model.overtime.FromDate" type="datetime-local" />
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.BreakTimeFrom">Breaktime From</label>
-                            <input class="form-control" asp-for="@Model.overtime.BreakTimeFrom" type="datetime-local" />
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.BreakTimeTo">Breaktime To</label>
-                            <input class="form-control" asp-for="@Model.overtime.BreakTimeTo" type="datetime-local" />
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.ToDate">To Date<span class="required">*</span></label>
-                            <input class="form-control" asp-for="@Model.overtime.ToDate" type="datetime-local" />
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.WorkingShiftName">Workingshift<span class="required">*</span></label>
-                            <select class="form-select" asp-items="@ViewBag.WorkingShifts"></select>
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.OverTimeInWorkingShiftName" title="Overtime Workingshift">OW<span class="required">*</span></label>
-                            <select class="form-select" asp-for="@Model.overtime.OverTimeInWorkingShiftName" asp-items="@ViewBag.OWs"></select>
-                        </div>
-                    </div>
-                    <div class="overtime-content-right">
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.Reason">Reason<span class="required">*</span></label>
-                            <textarea asp-for="@Model.overtime.Reason" class="form-control" rows="3"></textarea>
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.ApprovalName">Approval<span class="required">*</span></label>
-                            <select class="form-select" asp-items="@ViewBag.Approvels"></select>
-                        </div>
-                        <div class="overtime-field unselect">
-                            <label asp-for="@Model.overtime.StatusOvertime">Status<span class="required">*</span></label>
-                            <select class="form-select" asp-items="@ViewBag.StatusOvertimes"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="overtime-content-below">
-                    <div class="overtime-below-left">
-                        <span>LIST OVERTIME EMPLOYEES</span>
-                        <form asp-action="Index" method="get">
-                            <input type="text" name="searchQuery" class="form-control overtime-details-search" placeholder="Search" value="" />
-                        </form>
-                        <div class="content-below-data">No data to display</div>
-                    </div>
-                    <div class="overtime-below-right">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">Add</button>
-                    </div>
-                </div>
-                <!-- Modal -->
-                @{
-                    var getUrl = "https://localhost:7251/api/OvertimeAPI/searchQuery=" + Model.searchQuery + "&pageIndex=" + Model.pageIndex + "&pageSize=" + Model.pageSize;
-                }
-                <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-hidden="false">
-                    <div class="modal-dialog modal-dialog-add-overtime" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Choose employee</h5>
-                                <button type="button" class="btn-close close" data-dismiss="modal" aria-label="Close">
-                                </button>
-                            </div>
-                            <div class="row overtime-toolbar overtime-toolbar-hide">
-                                <div class="align-items-center input-group">
-                                    <span>Selected <b class="selectedItem">0</b></span>
-                                    <span class="unselect-all">Unselect</span>
-                                </div>
-                            </div>
-                            <input type="text" name="searchQuery" class="form-control overtime-add-search" placeholder="Search" value="@Model.searchQuery" />
-                            <div class="modal-body">
-                                <div class="overtime-table">
-                                    @if (Model.totalRecord > 0)
-                                    {
-                                        <table class="table table-hover">
-                                            <thead class="unselect">
-                                                <tr>
-                                                    <th>
-                                                        <input type="checkbox" />
-                                                    </th>
-                                                    <th width="140px">Employee Code</th>
-                                                    <th width="180px">Employee Name</th>
-                                                    <th width="120px">JobPosition</th>
-                                                    <th width="140px">Organization</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="displayOvertime">
-                                                @foreach (var item in Model.list)
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            <input my-data="@item.EmployeeId" type="checkbox" />
-                                                        </td>
-                                                        <td>@item.EmployeeCode</td>
-                                                        <td>@item.EmployeeName</td>
-                                                        <td>@item.JobPositionName</td>
-                                                        <td>@item.OrganizationName</td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    }
-                                    else
-                                    {
-                                        <div class="no-data">No data to display</div>
-                                    }
-                                </div>
-
-                                <!-- Pagination-->
-                                <div class="overtime-pagination d-flex align-items-center justify-content-between">
-                                    <div class="pagination-total">Total records: <b id="totalRecord">@Model.totalRecord</b></div>
-                                    <div class="pagination-paging d-flex align-items-center">
-                                        <div class="dropdown mr-20">
-                                            <select class="form-select pageSize-navigation" name="pageSize" asp-for="pageSize" asp-items="@ViewBag.PageSizes">
-                                            </select>
-                                        </div>
-                                        @Html.PagedListPager(Model.list, page => Url.Action("OvertimeAdd", new {pageIndex=page, pageSize=Model.pageSize, searchQuery=Model.searchQuery}))
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary btn-close-popup" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">Choose</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </main>
 
 @section script {
     <script>
-        // Focus vào input search khi vừa vào trang - nnhiep
-        document.querySelector('.overtime-add-search')?.focus();
-
-        // Ẩn/Hiển thị toolbar khi click chọn ít nhất một hàng bất kỳ - nnhiep
-        document.querySelector('.overtime-table thead tr th:first-child')?.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                document.querySelector('.overtime-add-search').style.display = 'none';
-                document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
-            } else {
-                document.querySelector('.overtime-toolbar-hide').style.display = 'none';
-                document.querySelector('.overtime-add-search').style.display = 'flex';
-            }
-        })
-
-        // Lắng nghe thay đổi số bản ghi một trang - nnhiep
-        document.querySelector('.pageSize-navigation')?.addEventListener('change', (e) => {
-            var searchQuery = '@(Model.searchQuery)';
-            window.location.href = `/OvertimeManager/OvertimeAdd?pageIndex=1&pageSize=${e.target.value}&searchQuery=${searchQuery}`;
-        })
-
-        let selectedData = [];
-
-        // Xử lý tick chọn hết trong table - nnhiep
-        let checkAll = document.querySelector('.overtime-table table thead th:first-child input');
-        checkAll?.addEventListener('change', (e) => {
-            document.querySelectorAll('.overtime-table table tbody td:first-child input').forEach(item => {
-                let selectedKey = item.getAttribute("my-data");
-                item.checked = checkAll.checked;
-                if (checkAll.checked) {
-                    if (selectedData.indexOf(selectedKey) == -1) {
-                        selectedData.push(selectedKey);
-                    }
-                } else {
-                    selectedData = selectedData.filter(item => item !== selectedKey);
-                }
-            });
-            document.querySelector('.selectedItem').innerHTML = selectedData.length;
-        });
-
-        // Xử lý bỏ chọn hết - nnhiep
-        document.querySelector('.unselect-all')?.addEventListener('click', () => {
-            document.querySelectorAll('.overtime-table table tbody td:first-child input').forEach(item => {
-                let selectedKey = item.getAttribute("my-data");
-                item.checked = false;
-            });
-            checkAll.checked = false;
-            selectedData = [];
-            document.querySelector('.selectedItem').innerHTML = 0;
-            document.querySelector('.overtime-toolbar-hide').style.display = 'none';
-            document.querySelector('.overtime-add-search').style.display = 'flex';
-        });
-
-        // Xử lý tick chọn table - nnhiep
-        document.querySelectorAll('.overtime-table table tbody td:first-child input')?.forEach(item => {
-            item.addEventListener('change', () => {
-                let selectedKey = item.getAttribute("my-data");
-                if (selectedData.indexOf(selectedKey) == -1) {
-                    selectedData.push(selectedKey);
-                    if (selectedData.length == 1) {
-                        document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
-                        document.querySelector('.overtime-add-search').style.display = 'none';
-                    }
-                } else {
-                    selectedData = selectedData.filter(item => item !== selectedKey);
-                    if (selectedData.length == 0) {
-                        document.querySelector('.overtime-toolbar-hide').style.display = 'none';
-                        document.querySelector('.overtime-add-search').style.display = 'flex';
-                    }
-                }
-                document.querySelector('.selectedItem').innerHTML = selectedData.length;
-            });
-        });
-
-        let searchQuery = '';
-
-        // Xử lý tìm kiếm - nnhiep
-        document.querySelector('.overtime-add-search')?.addEventListener('change', async (e) => {
-            let getUrl = `https://localhost:7251/api/OvertimeAPI/searchQuery=${e.target.value}&pageIndex=${@Model.pageIndex}&pageSize=${@Model.pageSize}`;
-            await showOvertime(getUrl);
-            //window.location.href = `/OvertimeManager/OvertimeAdd?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${e.target.value}`;
-        });
-
-        function showOvertime(getUrl) {
-            var str = '';
-            $.ajax({
-                type: 'GET',
-                url: getUrl,
-                success: function (data) {
-                    if (data.list.length > 0) {
-                    $.each(data.list, function (key, val) {
-                            str += `<tr>
-                                        <td>
-                                            <input my-data="${val?.employeeId}" type="checkbox" />
-                                        </td>
-                                        <td>${val?.employeeCode}</td>
-                                        <td>${val?.employeeName}</td>
-                                        <td>${val?.jobPositionName}</td>
-                                        <td>${val?.organizationName}</td>
-                                    </tr>`;
-                        })
-                    }
-                    $('#displayOvertime').html(str);
-                    $('#totalRecord').html(data.list.length);
-                },
-                error: function (err) {
-                    console.log(err)
-                }
-            });
-        }
     </script>
 }
-
-<style>
-    .overtime-pagination {
-        width: 100%;
-        height: 46px;
-        font-size: 15px !important;
-        padding: 12px 0;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-        background-color: var(--color-wild-sand) !important;
-    }
-
-    .pagination-container .pagination {
-        margin: 0 !important;
-    }
-
-    .pagination li {
-        cursor: pointer;
-        margin: 0 3px;
-        padding: 2px 10px;
-        background-color: var(--color-alto);
-    }
-
-        .pagination li:hover {
-            background-color: var(--color-primary);
-        }
-
-            .pagination li:hover a {
-                color: var(--color-white) !important;
-            }
-
-        .pagination li a {
-            color: var(--color-black) !important;
-        }
-
-        .pagination li.active {
-            color: var(--color-white);
-            background-color: var(--color-primary);
-        }
-
-            .pagination li.active a {
-                color: var(--color-white) !important;
-            }
-</style>
