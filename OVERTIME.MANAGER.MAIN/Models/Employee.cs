@@ -45,7 +45,7 @@ public partial class Employee : BaseModel
     // Mật khẩu
     public string Pwd { get; set; } = null!;
 
-    // Vai trò người dùng
+    // Vai trò người dùng - 0 là người dùng bình thường và 1 là admin
     public byte EmployeeRole { get; set; }
 
     public virtual JobPosition JobPosition { get; set; } = null!;

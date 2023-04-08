@@ -1,8 +1,11 @@
-﻿@{
+﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
+@model UserRegister
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
     ViewData["Title"] = "Register";
     Layout = "_LayoutAccount";
 }
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @section link {
     <link rel="stylesheet" href="~/assets/components/register/css/regis.css" />
@@ -18,38 +21,45 @@
             <div class="col-md-6 right">
                 <div class="input-box">
                     <header>Register</header>
-                    <div class="input-field">
-                        <input type="text" class="input" id="fullname" required autocomplete="off">
-                        <label for="name">Full Name</label>
-                        <small></small>
-                    </div>
-                    <div class="input-field">
-                        <input type="email" class="input" id="email" required autocomplete="off">
-                        <label for="email">Code</label>
-                        <small></small>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" class="input" id="username" required autocomplete="off">
-                        <label for="username">Username</label>
-                        <small></small>
-                    </div>
-                    <div class="input-field">
-                        <input type="password" class="input" id="password" required autocomplete="off">
-                        <label for="password">Password</label>
-                        <small></small>
-                    </div>
-                    <div class="input-field">
-                        <input type="password" class="input" id="repassword" required autocomplete="off">
-                        <label for="repassword">Repeat Password</label>
-                        <small></small>
-                    </div>
-                    <div class="input-field ipsubmit">
-                        <input type="submit" class="submit" value="Sign Up">
-
-                    </div>
-                    <div class="signin">
-                        <span>Already have account? <a asp-controller="Access" asp-action="Login"> Login here</a></span>
-                    </div>
+                    @using (Html.BeginForm("Register", "Access", FormMethod.Post))
+                    {
+                        <div class="input-field">
+                            @Html.TextBoxFor(x => x.EmployeeName, new {@class="input", id="fullname", autocomplete="off", required="required", autofocus="autofocus"})
+                            <label for="name">Full Name</label>
+                            <small></small>
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="jobposition">JobPosition</label>
+                            <select class="form-control" asp-for="JobPositionId" asp-items="ViewBag.JobPosition"></select>
+                            <small></small>
+                        </div>
+                        <div class="input-wrapper">
+                            <label for="organization">Organization</label>
+                            <select class="form-control" asp-for="OrganizationId" asp-items="ViewBag.Organization"></select>
+                            <small></small>
+                        </div>
+                        <div class="input-field">
+                            @Html.TextBoxFor(x => x.Account, new {@class="input", id="username", autocomplete="off", required="required"})
+                            <label for="username">Account</label>
+                            <small></small>
+                        </div>
+                        <div class="input-field">
+                            @Html.TextBoxFor(x => x.Pwd, new {@class="input", id="password", type="password", autocomplete="off", required="required"})
+                            <label for="password">Password</label>
+                            <small></small>
+                        </div>
+                        <div class="input-field">
+                            @Html.TextBoxFor(x => x.RePwd, new {@class="input", id="repassword", autocomplete="off", type="password", required="required"})
+                            <label for="repassword">Repeat Password</label>
+                            <small></small>
+                        </div>
+                        <div class="input-field ipsubmit">
+                            <button type="submit" style="cursor:pointer" class="submit">Sign Up</button>
+                        </div>
+                        <div class="signin">
+                            <span>Already have account? <a asp-controller="Access" asp-action="Login"> Login here</a></span>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="col-md-6 side-image">

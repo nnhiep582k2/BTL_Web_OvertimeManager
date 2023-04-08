@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using OVERTIME.MANAGER.MAIN.Models;
+using OVERTIME.MANAGER.MAIN.Utils.Enums;
 using OVERTIME.MANAGER.MAIN.ViewModels;
 
 namespace OVERTIME.MANAGER.MAIN.Controllers
@@ -8,11 +10,15 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
     {
         private readonly OvertimeManagerContext db = new OvertimeManagerContext();
 
+#nullable disable
         [HttpGet]
         public IActionResult Register()
         {
             if (HttpContext.Session.GetString("Account") == null)
             {
+                ViewBag.JobPosition = GetSelectListItems(SelectedItem.jobposition);
+                ViewBag.Organization = GetSelectListItems(SelectedItem.organization);
+
                 return View();
             }
             else
@@ -22,9 +28,29 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(Employee employee)
+        public IActionResult Register(UserRegister userRegister)
         {
-            HttpContext.Session.SetString("Account", employee.Account.ToString());
+            DateTime now = DateTime.Now;
+            HttpContext.Session.SetString("Account", userRegister.Account.ToString());
+            int maxEmployeeCode = db.Employees.Max(x => Convert.ToInt32(x.EmployeeCode.Replace("NV", ""))) + 1;
+
+            Employee employee = new Employee
+            {
+                EmployeeId = Guid.NewGuid().ToString(),
+                EmployeeCode = "NV" + maxEmployeeCode.ToString(),
+                EmployeeName = userRegister.EmployeeName,
+                JobPositionId = userRegister.JobPositionId,
+                JobPositionName = db.JobPositions.FirstOrDefault(x => x.JobPositionId == userRegister.JobPositionId).JobPositionName,
+                OrganizationId = userRegister.OrganizationId,
+                OrganizationName = db.Organizations.FirstOrDefault(x => x.OrganizationId == userRegister.OrganizationId).OrganizationName,
+                Account = userRegister.Account,
+                Pwd = userRegister.Pwd,
+                EmployeeRole = 0,
+                CreatedBy = "nnhiep",
+                ModifiedBy = "nnhiep",
+                CreatedDate = now,
+                ModifiedDate = now,
+            };
 
             db.Employees.Add(employee);
             db.SaveChanges();
@@ -67,6 +93,32 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("Account");
             return RedirectToAction("Login", "Access");
+        }
+
+
+        /// <summary>
+        /// Hàm lấy giá trị dropdown
+        /// </summary>
+        /// <param name="item">Dropdown cần lấy</param>
+        /// <returns>Danh sách các giá trị của dropdown</returns>
+        /// @author nnhiep
+        public SelectList GetSelectListItems(SelectedItem item)
+        {
+            SelectList items;
+            OvertimeManagerContext db = new OvertimeManagerContext();
+            switch (item)
+            {
+                case (SelectedItem.jobposition):
+                    items = new SelectList(db.JobPositions.ToList(), "JobPositionId", "JobPositionName");
+                    break;
+                case (SelectedItem.organization):
+                    items = new SelectList(db.Organizations.ToList(), "OrganizationId", "OrganizationName");
+                    break;
+                default:
+                    items = null;
+                    break;
+            }
+            return items;
         }
     }
 }

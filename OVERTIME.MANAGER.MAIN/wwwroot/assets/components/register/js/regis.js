@@ -13,13 +13,15 @@ function ShowSuccess(input, message) {
 function checkEmptyError(listInput) {
     let isEmptyError = false;
     listInput.forEach(input => {
-        input.value = input.value.trim();
-        if (!input.value) {
-            isEmptyError = true;
-            ShowError(input, 'not be empty!');
-        }
-        else {
-            ShowSuccess(input);
+        if (input) {
+            input.value = input.value.trim();
+            if (!input.value) {
+                isEmptyError = true;
+                ShowError(input, 'not be empty!');
+            }
+            else {
+                ShowSuccess(input);
+            }
         }
     });
 
@@ -34,6 +36,5 @@ var repass = document.getElementById("repassword")
 var singup_btn = document.querySelector(".submit")
 
 singup_btn.addEventListener('click', function (e) {
-    e.preventDefault();
     checkEmptyError([fullname, email, username, pass, repass]);
 })

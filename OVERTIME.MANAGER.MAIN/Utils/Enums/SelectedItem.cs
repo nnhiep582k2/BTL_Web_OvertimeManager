@@ -19,6 +19,10 @@
         // Người duyệt
         approval = 5,
         // Trạng thái đơn làm thêm trong trang thêm
-        status_overtime = 6
+        status_overtime = 6,
+        // Vị trí công việc
+        jobposition = 7,
+        // Đơn vị công tác
+        organization = 8,
     }
 }
