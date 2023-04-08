@@ -4,7 +4,7 @@
 @model OVERTIME.MANAGER.MAIN.Models.Overtime
 
 @{
-    ViewData["Title"] = "Overtime Add";
+    ViewData["Title"] = "Overtime Update";
     Layout = "~/Views/Shared/_LayoutDefault.cshtml";
     var navigatorActive = new NavigatorActive { navigatorActive = "Index" };
     OvertimeManagerContext db = new OvertimeManagerContext();
@@ -12,12 +12,12 @@
 }
 
 @section header
-{
+    {
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
 
 @section link {
-    <link rel="stylesheet" href="../assets/components/overtime_add/css/style.css" />
+    <link rel="stylesheet" href="../assets/components/overtime_update/css/style.css" />
 }
 
 <main class="container-fluid overtime-main">
@@ -25,8 +25,8 @@
         <!-- Heading -->
         <div class="overtime-heading d-flex align-items-center justify-content-between pb-3">
             <div class="heading-left">
-                <a asp-action="Index" asp-controller="OvertimeManager"><i class="fa-solid fa-arrow-left"></i></a>
-                <div class="fs-5 fw-bold heading-title"> Overtime Add</div>
+                <a asp-action="OvertimeDetail" asp-controller="OvertimeManager" asp-route-overtimeId="@Model.OverTimeId"><i class="fa-solid fa-arrow-left"></i></a>
+                <div class="fs-5 fw-bold heading-title"> Overtime Update</div>
             </div>
             <div class="btn-group-wrapper">
                 <a type="button" class="btn btn-danger btn-add" asp-controller="OvertimeManager" asp-action="Index">
@@ -37,16 +37,17 @@
 
         <!-- Content -->
         <div class="overtime-container-detail overtime-container-add">
-            <form asp-action="OvertimeAdd" method="POST">
+            <form asp-action="OvertimeUpdate" method="POST">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="overtime-content-detail">
                     <div class="overtime-content-row row justify-content-between">
                         <div class="overtime-content-left">
                             <div class="form-group">
+                                <input hidden asp-for="OverTimeId" class="form-control" />
                                 <label asp-for="EmployeeName">Employee Name<span class="required">*</span></label>
                                 <div class="flex-col">
-                                    <select asp-for="EmployeeName" class="form-control dropdown-employee" asp-items="ViewBag.Employees"></select>
-                                    <span asp-validation-for="EmployeeName" class="text-danger"></span>
+                                    <select asp-for="EmployeeId" class="form-control dropdown-employee" asp-items="ViewBag.Employees"></select>
+                                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -95,15 +96,15 @@
                             <div class="form-group">
                                 <label asp-for="WorkingShiftName">Workingshift<span class="required">*</span></label>
                                 <div class="flex-col">
-                                    <select asp-for="WorkingShiftName" class="form-control" asp-items="ViewBag.WorkingShifts"></select>
-                                    <span asp-validation-for="WorkingShiftName" class="text-danger"></span>
+                                    <select asp-for="WorkingShiftId" class="form-control" asp-items="ViewBag.WorkingShifts"></select>
+                                    <span asp-validation-for="WorkingShiftId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="OverTimeInWorkingShiftName">Overtime Workingshift<span class="required">*</span></label>
                                 <div class="flex-col">
-                                    <select asp-for="OverTimeInWorkingShiftName" class="form-control" asp-items="ViewBag.OWs"></select>
-                                    <span asp-validation-for="OverTimeInWorkingShiftName" class="text-danger"></span>
+                                    <select asp-for="OverTimeInWorkingShiftId" class="form-control" asp-items="ViewBag.OWs"></select>
+                                    <span asp-validation-for="OverTimeInWorkingShiftId" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -118,8 +119,8 @@
                             <div class="form-group">
                                 <label asp-for="ApprovalName">Approval Name<span class="required">*</span></label>
                                 <div class="flex-col">
-                                    <select asp-for="ApprovalName" class="form-control" asp-items="ViewBag.Approvals"></select>
-                                    <span asp-validation-for="ApprovalName" class="text-danger"></span>
+                                    <select asp-for="ApprovalId" class="form-control" asp-items="ViewBag.Approvals"></select>
+                                    <span asp-validation-for="ApprovalId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -137,7 +138,7 @@
                                 </div>
                             </div>
                             <div class="form-group btn-submit-add">
-                                <input type="submit" value="Save" class="btn btn-primary btn-add" />
+                                <input type="submit" value="Save changes" class="btn btn-primary btn-add" />
                             </div>
                         </div>
                     </div>

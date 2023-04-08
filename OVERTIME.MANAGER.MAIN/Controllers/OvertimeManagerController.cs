@@ -10,8 +10,8 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 {
     public class OvertimeManagerController : Controller
     {
-        #nullable disable
-        private readonly OvertimeManagerContext db = new OvertimeManagerContext();
+#nullable disable
+        private OvertimeManagerContext db = new OvertimeManagerContext();
 
         /// <summary>
         /// Hàm filter, sort and paging
@@ -24,7 +24,9 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// @author nnhiep 20.03.2023
         public IActionResult Index(string searchQuery = "", int pageIndex = 1, int pageSize = 15, Byte status = 3)
         {
-            var lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())) && (x.StatusOvertime == status)).OrderByDescending(x => x.ModifiedDate);
+            IEnumerable<Overtime> lstOvertime;
+
+            lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())) && (x.StatusOvertime == status)).OrderByDescending(x => x.ModifiedDate);
 
             if (status == 3)
             {
@@ -54,11 +56,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// @author nnhiep
         public IActionResult OvertimeDetail(string overtimeId)
         {
-            OvertimeDetails overtimeDetail = new OvertimeDetails
-            {
-                overtime = db.Overtimes.AsNoTracking().FirstOrDefault(x => x.OverTimeId == overtimeId),
-                isEdit = false
-            };
+            Overtime overtimeDetail = db.Overtimes.AsNoTracking().FirstOrDefault(x => x.OverTimeId == overtimeId);
 
             return View(overtimeDetail);
         }
@@ -95,28 +93,56 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             ot.ModifiedDate = now;
             ot.CreatedDate = now;
             ot.EmployeeId = employeeID;
-            ot.EmployeeCode = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).EmployeeCode;
-            ot.EmployeeName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).EmployeeName;
-            ot.OrganizationName = db.Organizations.AsNoTracking().FirstOrDefault(x => x.OrganizationId == ot.OrganizationId).OrganizationName;
             ot.OverTimeInWorkingShiftId = owsID;
-            ot.OverTimeInWorkingShiftCode = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == owsID).OverTimeInWorkingShiftCode;
-            ot.OverTimeInWorkingShiftName = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == owsID).OverTimeInWorkingShiftName;
             ot.WorkingShiftId = workingShiftID;
-            ot.WorkingShiftCode = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == workingShiftID).WorkingShiftCode;
-            ot.WorkingShiftName = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == workingShiftID).WorkingShiftName;
             ot.ApprovalId = approvalID;
-            ot.ApprovalName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == approvalID).EmployeeName;
-            ot.Dsc = ot.Dsc ?? "";
             ot.OverTimeEmployeeIds = ot.OverTimeEmployeeIds ?? "";
             ot.OverTimeEmployeeCodes = ot.OverTimeEmployeeCodes ?? "";
             ot.OverTimeEmployeeNames = ot.OverTimeEmployeeNames ?? "";
+            ot.EmployeeCode = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).EmployeeCode;
+            ot.EmployeeName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).EmployeeName;
+            ot.JobPositionId = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).JobPositionId;
+            ot.JobPositionName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == employeeID).JobPositionName;
+            ot.OverTimeInWorkingShiftCode = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == owsID).OverTimeInWorkingShiftCode;
+            ot.OverTimeInWorkingShiftName = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == owsID).OverTimeInWorkingShiftName;
+            ot.WorkingShiftCode = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == workingShiftID).WorkingShiftCode;
+            ot.WorkingShiftName = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == workingShiftID).WorkingShiftName;
+            ot.ApprovalName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == approvalID).EmployeeName;
+            ot.Employee = db.Employees.FirstOrDefault(x => x.EmployeeId == employeeID);
+            ot.JobPosition = db.JobPositions.FirstOrDefault(x => x.JobPositionId == ot.JobPositionId);
+            ot.Organization = db.Organizations.FirstOrDefault(x => x.OrganizationId == ot.OrganizationId);
+            ot.Approval = db.Employees.FirstOrDefault(x => x.EmployeeId == approvalID);
+            ot.WorkingShift = db.WorkingShifts.FirstOrDefault(x => x.WorkingShiftId == workingShiftID);
+            ot.OverTimeInWorkingShift = db.OverTimeInWorkingShifts.FirstOrDefault(x => x.OverTimeInWorkingShiftId == owsID);
 
-            if (ModelState.IsValid)
+            try
             {
                 db.Overtimes.Add(ot);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
+                ViewBag.WorkingShifts = GetSelectListItems(SelectedItem.workingshift);
+                ViewBag.OWs = GetSelectListItems(SelectedItem.overtime_workingshift);
+                ViewBag.Approvals = GetSelectListItems(SelectedItem.approval);
+                ViewBag.StatusOvertimes = GetSelectListItems(SelectedItem.status_overtime);
+
+                return View(ot);
+            }
+        }
+
+        /// <summary>
+        /// Sửa thông tin đơn làm thêm
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult OvertimeUpdate(string overtimeId)
+        {
+            Overtime ot = db.Overtimes.AsNoTracking().FirstOrDefault(x => x.OverTimeId == overtimeId);
 
             ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
             ViewBag.WorkingShifts = GetSelectListItems(SelectedItem.workingshift);
@@ -125,6 +151,54 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             ViewBag.StatusOvertimes = GetSelectListItems(SelectedItem.status_overtime);
 
             return View(ot);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult OvertimeUpdate(Overtime ot)
+        {
+            DateTime now = DateTime.Now;
+
+            ot.ModifiedBy = "nnhiep";
+            ot.ModifiedDate = now;
+            ot.OverTimeEmployeeIds = ot.OverTimeEmployeeIds ?? "";
+            ot.OverTimeEmployeeCodes = ot.OverTimeEmployeeCodes ?? "";
+            ot.OverTimeEmployeeNames = ot.OverTimeEmployeeNames ?? "";
+            ot.EmployeeCode = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == ot.EmployeeId).EmployeeCode;
+            ot.EmployeeName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == ot.EmployeeId).EmployeeName;
+            ot.JobPositionId = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == ot.EmployeeId).JobPositionId;
+            ot.JobPositionName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == ot.EmployeeId).JobPositionName;
+            ot.OverTimeInWorkingShiftCode = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == ot.OverTimeInWorkingShiftId).OverTimeInWorkingShiftCode;
+            ot.OverTimeInWorkingShiftName = db.OverTimeInWorkingShifts.AsNoTracking().FirstOrDefault(x => x.OverTimeInWorkingShiftId == ot.OverTimeInWorkingShiftId).OverTimeInWorkingShiftName;
+            ot.WorkingShiftCode = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == ot.WorkingShiftId).WorkingShiftCode;
+            ot.WorkingShiftName = db.WorkingShifts.AsNoTracking().FirstOrDefault(x => x.WorkingShiftId == ot.WorkingShiftId).WorkingShiftName;
+            ot.ApprovalName = db.Employees.AsNoTracking().FirstOrDefault(x => x.EmployeeId == ot.ApprovalId).EmployeeName;
+            ot.Employee = db.Employees.FirstOrDefault(x => x.EmployeeId == ot.EmployeeId);
+            ot.JobPosition = db.JobPositions.FirstOrDefault(x => x.JobPositionId == ot.JobPositionId);
+            ot.Organization = db.Organizations.FirstOrDefault(x => x.OrganizationId == ot.OrganizationId);
+            ot.Approval = db.Employees.FirstOrDefault(x => x.EmployeeId == ot.ApprovalId);
+            ot.WorkingShift = db.WorkingShifts.FirstOrDefault(x => x.WorkingShiftId == ot.WorkingShiftId);
+            ot.OverTimeInWorkingShift = db.OverTimeInWorkingShifts.FirstOrDefault(x => x.OverTimeInWorkingShiftId == ot.OverTimeInWorkingShiftId);
+
+            try
+            {
+                db.Attach(ot);
+                db.Entry(ot).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
+                ViewBag.WorkingShifts = GetSelectListItems(SelectedItem.workingshift);
+                ViewBag.OWs = GetSelectListItems(SelectedItem.overtime_workingshift);
+                ViewBag.Approvals = GetSelectListItems(SelectedItem.approval);
+                ViewBag.StatusOvertimes = GetSelectListItems(SelectedItem.status_overtime);
+
+                return View(ot);
+            }
         }
 
         /// <summary>
@@ -137,6 +211,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         {
             SelectList items;
             List<ListTemplate> temp = null;
+            OvertimeManagerContext db = new OvertimeManagerContext();
             switch (item)
             {
                 case (SelectedItem.pageSize):

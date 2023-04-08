@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Html;
 @using OVERTIME.MANAGER.MAIN.Utils.Enums;
 @using OVERTIME.MANAGER.MAIN.ViewModels;
-@model OvertimeDetails;
+@model Overtime;
 
 @{
     ViewData["Title"] = "Overtime Detail";
@@ -58,25 +58,11 @@
                 <a asp-action="Index" asp-controller="OvertimeManager"><i class="fa-solid fa-arrow-left"></i></a>
                 <div class="fs-5 fw-bold heading-title"> Overtime Detail</div>
             </div>
-            @if (Model.isEdit == true)
-            {
-                <div class="btn-group-wrapper">
-                    <button type="button" class="btn btn-primary btn-add">
-                        <span>Save</span>
-                    </button>
-                    <a type="button" class="btn btn-danger btn-add" asp-controller="OvertimeManager" asp-action="Index">
-                        <span>Cancel</span>
-                    </a>
-                </div>
-            }
-            else
-            {
-                <div class="btn-group-wrapper">
-                    <a type="button" class="btn btn-primary btn-add" asp-controller="OvertimeManager" asp-action="">
-                        <span><i class="fa-solid fa-pencil"></i><span class="btn-text">Edit</span></span>
-                    </a>
-                </div>
-            }
+            <div class="btn-group-wrapper">
+                <a type="button" class="btn btn-primary btn-add" asp-controller="OvertimeManager" asp-action="OvertimeUpdate" asp-route-overtimeId="@Model.OverTimeId">
+                    <span><i class="fa-solid fa-pencil"></i><span class="btn-text">Edit</span></span>
+                </a>
+            </div>
         </div>
 
         <!-- Content -->
@@ -84,164 +70,58 @@
             <div class="overtime-content-detail flex-row justify-content-between">
                 <div class="overtime-content-left">
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.EmployeeName">Employee Name<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <select asp-for="@Model.overtime.EmployeeName">
-                                <option>Nguyễn Ngọc Hiệp</option>
-                                <option>Ứng Phương Thảo</option>
-                                <option>Nguyễn Ngọc Sơn</option>
-                                <option>Nguyễn Thị Hoa</option>
-                                <option>Nguyễn Ngọc Điệp</option>
-                            </select>
-                        }
-                        else
-                        {
-                            <p>@Model.overtime.EmployeeName</p>
-                        }
+                        <label asp-for="@Model.EmployeeName">Employee Name<span class="required">*</span></label>
+                        <p>@Model.EmployeeName</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.OrganizationName">Organization Name</label>
-                        @if (Model.isEdit == true)
-                        {
-                            <input asp-for="@Model.overtime.OrganizationName" type="text" />
-                        }
-                        else
-                        {
-                            <p>@Model.overtime.OrganizationName</p>
-                        }
+                        <label asp-for="@Model.OrganizationName">Organization Name</label>
+                        <p>@Model.OrganizationName</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.ApplyDate">Apply Date<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <input asp-for="@Model.overtime.ApplyDate" type="datetime" />
-                        }
-                        else
-                        {
-                            <p>@formatDate(Model.overtime.ApplyDate)</p>
-                        }
+                        <label asp-for="@Model.ApplyDate">Apply Date<span class="required">*</span></label>
+                        <p>@formatDate(Model.ApplyDate)</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.FromDate">From Date<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <input asp-for="@Model.overtime.FromDate" type="datetime" />
-                        }
-                        else
-                        {
-                            <p>@formatDate(Model.overtime.FromDate)</p>
-                        }
+                        <label asp-for="@Model.FromDate">From Date<span class="required">*</span></label>
+                        <p>@formatDate(Model.FromDate)</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.BreakTimeFrom">Breaktime From</label>
-                        @if (Model.isEdit == true)
-                        {
-                            <input asp-for="@Model.overtime.BreakTimeFrom" type="datetime" />
-                        }
-                        else
-                        {
-                            <p>@formatDate(Model.overtime.BreakTimeFrom)</p>
-                        }
+                        <label asp-for="@Model.BreakTimeFrom">Breaktime From</label>
+                        <p>@formatDate(Model.BreakTimeFrom)</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.BreakTimeTo">Breaktime To</label>
-                        @if (Model.isEdit == true)
-                        {
-                            <input asp-for="@Model.overtime.BreakTimeTo" type="datetime" />
-                        }
-                        else
-                        {
-                            <p>@formatDate(Model.overtime.BreakTimeTo)</p>
-                        }
+                        <label asp-for="@Model.BreakTimeTo">Breaktime To</label>
+                        <p>@formatDate(Model.BreakTimeTo)</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.ToDate">To Date<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <input asp-for="@Model.overtime.ToDate" type="datetime" />
-                        }
-                        else
-                        {
-                            <p>@formatDate(Model.overtime.ToDate)</p>
-                        }
+                        <label asp-for="@Model.ToDate">To Date<span class="required">*</span></label>
+                        <p>@formatDate(Model.ToDate)</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.WorkingShiftName">Workingshift<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <select asp-for="@Model.overtime.WorkingShiftName">
-                                <option>Hành chính</option>
-                                <option>Cuối tuần</option>
-                                <option>Ngày lễ</option>
-                                <option>Ngoài giờ</option>
-                            </select>
-                        }
-                        else
-                        {
-                            <p>@Model.overtime.WorkingShiftName</p>
-                        }
+                        <label asp-for="@Model.WorkingShiftName">Workingshift<span class="required">*</span></label>
+                        <p>@Model.WorkingShiftName</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.OverTimeInWorkingShiftName">Overtime Workingshift<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <select asp-for="@Model.overtime.OverTimeInWorkingShiftName">
-                                <option>Trước ca</option>
-                                <option>Giữa ca</option>
-                                <option>Sau ca</option>
-                                <option>Cuối tuần</option>
-                            </select>
-                        }
-                        else
-                        {
-                            <p>@Model.overtime.OverTimeInWorkingShiftName</p>
-                        }
+                        <label asp-for="@Model.OverTimeInWorkingShiftName">Overtime Workingshift<span class="required">*</span></label>
+                        <p>@Model.OverTimeInWorkingShiftName</p>
                     </div>
                 </div>
                 <div class="overtime-content-right">
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.Reason">Reason<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <textarea asp-for="@Model.overtime.Reason"></textarea>
-                        }
-                        else
-                        {
-                            <p>@Model.overtime.Reason</p>
-                        }
+                        <label asp-for="@Model.Reason">Reason<span class="required">*</span></label>
+                        <p>@Model.Reason</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.ApprovalName">Approval<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <select asp-for="@Model.overtime.ApprovalName">
-                                <option>Nguyễn Ngọc Hiệp</option>
-                                <option>Ứng Phương Thảo</option>
-                                <option>Nguyễn Ngọc Sơn</option>
-                                <option>Nguyễn Thị Hoa</option>
-                                <option>Nguyễn Ngọc Điệp</option>
-                            </select>
-                        }
-                        else
-                        {
-                            <p>@Model.overtime.ApprovalName</p>
-                        }
+                        <label asp-for="@Model.ApprovalName">Approval Name<span class="required">*</span></label>
+                        <p>@Model.ApprovalName</p>
                     </div>
                     <div class="overtime-field unselect">
-                        <label asp-for="@Model.overtime.StatusOvertime">Status<span class="required">*</span></label>
-                        @if (Model.isEdit == true)
-                        {
-                            <select asp-for="@Model.overtime.StatusOvertime">
-                                <option>Chờ duyệt</option>
-                                <option>Đã duyệt</option>
-                                <option>Từ chối</option>
-                            </select>
-                        }
-                        else
-                        {
-                            <p>@formatStatus(Model.overtime.StatusOvertime)</p>
-                        }
+                        <label asp-for="@Model.StatusOvertime">Status<span class="required">*</span></label>
+                        <p>@formatStatus(Model.StatusOvertime)</p>
+                    </div>
+                    <div class="overtime-field unselect">
+                        <label asp-for="@Model.Dsc">Description</label>
+                        <p>@Model.Dsc</p>
                     </div>
                 </div>
             </div>
