@@ -12,7 +12,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
     public class OvertimeManagerController : Controller
     {
 #nullable disable
-        private OvertimeManagerContext db = new OvertimeManagerContext();
+        private readonly OvertimeManagerContext db = new OvertimeManagerContext();
 
         /// <summary>
         /// Hàm filter, sort and paging
@@ -23,6 +23,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// <param name="status">Trạng thái đơn làm thêm</param>
         /// <returns>Danh sách đơn làm thêm thỏa mãn điều kiện lọc</returns>
         /// @author nnhiep 20.03.2023
+        [Authentication]
         public IActionResult Index(string searchQuery = "", int pageIndex = 1, int pageSize = 15, Byte status = 3)
         {
             IEnumerable<Overtime> lstOvertime;
@@ -55,6 +56,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <param name="overtimeId">ID đơn làm thêm</param>
         /// @author nnhiep
+        [Authentication]
         public IActionResult OvertimeDetail(string overtimeId)
         {
             Overtime overtimeDetail = db.Overtimes.AsNoTracking().FirstOrDefault(x => x.OverTimeId == overtimeId);
@@ -67,6 +69,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// @author nnhiep
         [HttpGet]
+        [Authentication]
         public IActionResult OvertimeAdd()
         {
             ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
@@ -80,6 +83,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authentication]
         public IActionResult OvertimeAdd(Overtime ot)
         {
             DateTime now = DateTime.Now;
@@ -140,6 +144,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// Sửa thông tin đơn làm thêm
         /// </summary>
         /// <returns></returns>
+        [Authentication]
         [HttpGet]
         public IActionResult OvertimeUpdate(string overtimeId, bool isDuplicate)
         {
@@ -160,6 +165,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         }
 
         [HttpPost]
+        [Authentication]
         [ValidateAntiForgeryToken]
         public IActionResult OvertimeUpdate(Overtime ot, bool isDuplicate)
         {
@@ -283,6 +289,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
+        [Authentication]
         public IActionResult WorkingShiftManager()
         {
             return View();
@@ -293,6 +300,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
+        [Authentication]
         public IActionResult OvertimeWorkingShiftManager()
         {
             return View();
@@ -303,6 +311,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
+        [Authentication]
         public IActionResult JobPositionManager()
         {
             return View();
@@ -313,6 +322,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
+        [Authentication]
         public IActionResult OrganizationManager()
         {
             return View();
@@ -323,6 +333,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
+        [Authentication]
         public IActionResult EmployeeManager()
         {
             return View();

@@ -31,6 +31,5 @@ var pass = document.getElementById("password");
 var singup_btn = document.querySelector(".submit");
 
 singup_btn.addEventListener('click', function (e) {
-    e.preventDefault();
     checkEmptyError([user, pass]);
 });

@@ -1,0 +1,51 @@
+﻿@using OVERTIME.MANAGER.MAIN.ViewModels
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model UserLogin
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LayoutAccount";
+}
+
+@section link {
+    <link rel="stylesheet" href="../assets/components/login/css/style.css" />
+}
+
+@section script {
+    <script src="../assets/components/login/js/login.js"></script>
+}
+
+<div class="wrapper">
+    <div class="container main">
+        <div class="row">
+            <div class="col-md-6 side-image">
+                <!-------Image-------->
+                <img src="images/white.png" alt="" />
+            </div>
+            <div class="col-md-6 right">
+                <div class="input-box">
+                    <h1>Sign into your account</h1>
+                    @using(Html.BeginForm("Login", "Access", FormMethod.Post))
+                    {
+                        <div class="input-field">
+                            @Html.TextBoxFor(x => x.Account, new {@class="input", id="user", autocomplete="off", required="required", autofocus="autofocus"})
+                            <label for="user"> Username</label>
+                            <small></small>
+                        </div>
+                        <div class="input-field">
+                            @Html.TextBoxFor(x => x.Pwd, new {@class="input", id="password", autocomplete="off", type="password", required="required", autofocus="autofocus"})
+                            <label for="password">Password</label>
+                            <small></small>
+                        </div>
+                        <div class="input-field inpSubmit">
+                            <button type="submit" style="cursor:pointer" class="submit">Sign In</button>
+                        </div>
+                        <div class="signin">
+                            <span>Don't have an account? <a asp-controller="Access" asp-action="Register"> Register here</a></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
