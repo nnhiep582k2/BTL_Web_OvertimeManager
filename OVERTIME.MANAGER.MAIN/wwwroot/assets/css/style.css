@@ -28,6 +28,17 @@
     color: var(--color-white) !important;
 }
 
+.details-item a {
+    padding: 0 !important;
+    color: #444444 !important;
+    font-weight: 400 !important;
+}
+
+.details-item:hover a {
+    color: var(--color-white) !important;
+}
+
+
 
 
 

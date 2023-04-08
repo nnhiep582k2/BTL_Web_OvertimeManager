@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using OVERTIME.MANAGER.MAIN.Models;
 using OVERTIME.MANAGER.MAIN.Utils.Enums;
 using OVERTIME.MANAGER.MAIN.ViewModels;
@@ -95,7 +96,6 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             return RedirectToAction("Login", "Access");
         }
 
-
         /// <summary>
         /// Hàm lấy giá trị dropdown
         /// </summary>
@@ -119,6 +119,39 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                     break;
             }
             return items;
+        }
+
+        /// <summary>
+        /// Đổi mật khẩu
+        /// </summary>
+        /// @author nnhiep
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        /// <summary>
+        /// Đổi mật khẩu
+        /// </summary>
+        /// <param name="newPassword">Mật khẩu mới</param>
+        /// @author nnhiep
+        public IActionResult ChangePassword(UserChangePwd userChangePwd)
+        {
+            Employee temp = db.Employees.FirstOrDefault(x => x.Account.Equals(HttpContext.Session.GetString("Account")));
+
+            if(temp != null && userChangePwd.OldPwd.Equals(temp.Pwd) && !string.IsNullOrEmpty(userChangePwd.NewPwd.Trim()))
+            {
+                temp.Pwd = userChangePwd.NewPwd;
+                db.Attach(temp);
+                db.Entry(temp).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "OvertimeManager");
+            } else
+            {
+                return View();
+            }
         }
     }
 }
