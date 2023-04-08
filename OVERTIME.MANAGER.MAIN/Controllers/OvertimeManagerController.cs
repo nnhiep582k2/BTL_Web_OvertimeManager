@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using OVERTIME.MANAGER.MAIN.Models;
 using OVERTIME.MANAGER.MAIN.Utils.Enums;
@@ -140,8 +141,13 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult OvertimeUpdate(string overtimeId)
+        public IActionResult OvertimeUpdate(string overtimeId, bool isDuplicate)
         {
+            if(isDuplicate == true)
+            {
+                ViewBag.isDuplicate = true;
+            } 
+
             Overtime ot = db.Overtimes.AsNoTracking().FirstOrDefault(x => x.OverTimeId == overtimeId);
 
             ViewBag.Employees = GetSelectListItems(SelectedItem.employee);
@@ -155,9 +161,14 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult OvertimeUpdate(Overtime ot)
+        public IActionResult OvertimeUpdate(Overtime ot, bool isDuplicate)
         {
             DateTime now = DateTime.Now;
+
+            if(isDuplicate == true)
+            {
+                ot.OverTimeId = Guid.NewGuid().ToString();
+            }
 
             ot.ModifiedBy = "nnhiep";
             ot.ModifiedDate = now;
@@ -182,6 +193,13 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 
             try
             {
+                if (isDuplicate == true)
+                {
+                    db.Overtimes.Add(ot);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                
                 db.Attach(ot);
                 db.Entry(ot).State = EntityState.Modified;
                 db.SaveChanges();
