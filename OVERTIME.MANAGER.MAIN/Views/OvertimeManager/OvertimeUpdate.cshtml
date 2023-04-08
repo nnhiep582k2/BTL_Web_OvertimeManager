@@ -37,7 +37,7 @@
 
         <!-- Content -->
         <div class="overtime-container-detail overtime-container-add">
-            <form asp-action="OvertimeUpdate" method="POST">
+            <form asp-action="OvertimeUpdate" asp-route-isDuplicate="@ViewBag.isDuplicate" method="POST">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="overtime-content-detail">
                     <div class="overtime-content-row row justify-content-between">

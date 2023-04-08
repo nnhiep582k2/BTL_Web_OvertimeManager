@@ -188,7 +188,7 @@
                                     <td>@item.Dsc</td>
                                     <td class="text-center">@formatStatus(@item.StatusOvertime)</td>
                                     <td class="overtime-action-wrapper">
-                                        <a class="overtime-action" asp-action="" asp-route-overtimeId="@item.OverTimeId">
+                                        <a class="overtime-action" asp-action="OvertimeUpdate" asp-route-isDuplicate="@true" asp-route-overtimeId="@item.OverTimeId">
                                             <i class="fa-regular fa-clipboard"></i>
                                         </a>
                                         <a class="overtime-action" asp-controller="OvertimeManager" asp-action="OvertimeDetail" asp-route-overtimeId="@item.OverTimeId">
