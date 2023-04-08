@@ -1,0 +1,17 @@
+﻿.form-change-pwd .form-group {
+    width: 450px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.form-change-pwd .form-group:nth-child(3) input {
+    width: 450px;
+}
+
+.form-change-pwd {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
