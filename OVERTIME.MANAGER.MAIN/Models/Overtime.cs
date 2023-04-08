@@ -97,6 +97,7 @@ public partial class Overtime : BaseModel
     public Byte StatusOvertime { get; set; }
 
     // Ghi chú của đơn làm thêm
+    [DisplayName("Description")]
     public string? Dsc { get; set; }
 
     // Danh sách ID của nhân viên đi làm thêm

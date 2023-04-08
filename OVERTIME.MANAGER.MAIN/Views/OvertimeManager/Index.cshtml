@@ -52,7 +52,7 @@
 
 @await Html.PartialAsync("DialogPartial", new DialogInformation {
     title = "Delete overtime",
-    description = "Are you sure to delete this overtime?",
+    description = "",
     negativeButton = "Cancel",
     positiveButton = "Delete",
     negativeColor = "btn-secondary",
@@ -194,8 +194,8 @@
                                         <a class="overtime-action" asp-controller="OvertimeManager" asp-action="OvertimeDetail" asp-route-overtimeId="@item.OverTimeId">
                                             <i class="fa-solid fa-circle-info"></i>
                                         </a>
-                                        <a class="overtime-action delete" asp-action="" asp-route-overtimeId="@item.OverTimeId" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                            <i class="fa-solid fa-trash"></i>
+                                        <a class="overtime-action delete" data-employee="@item.EmployeeName" data-overtimeId="@item.OverTimeId" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                            <i data-employee="@item.EmployeeName" data-overtimeId="@item.OverTimeId" class="fa-solid fa-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -315,8 +315,29 @@
             window.location.href = `/OvertimeManager?pageIndex=1&pageSize=${@Model.pageSize}&searchQuery=${e.target.value}&status=${@Model.status}`;
         });
 
+        let overtimeDeleteId = '';
+
+        // Xử lý click xóa - nnhiep
+        document.querySelectorAll('.overtime-action.delete').forEach(item => {
+            item.addEventListener('click', (e) => {
+                overtimeDeleteId = e.target.getAttribute("data-overtimeId");
+                let modalBody = document.querySelector('#deleteModal .modal-body');
+                modalBody.innerHTML = `Are you sure to delete <b>${e.target.getAttribute("data-employee")}</b>'s overtime?`;
+            })
+        });
+
         // Xử lý xóa thành công - nnhiep
         document.querySelector(".dialog-btn-close").onclick = function () {
+            $.ajax({
+                url: 'https://localhost:7251/api/OvertimeAPI/deleteById/' + overtimeDeleteId,
+                method: 'DELETE',
+                success: function (data) {
+                    window.location.href = 'https://localhost:7251/OvertimeManager';
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
             var toastElList = [].slice.call(document.querySelectorAll('.toast'))
             var toastList = toastElList.map(function (toastEl) {
                 return new bootstrap.Toast(toastEl)

@@ -66,7 +66,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.Addr)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -81,7 +81,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.EmployeeName)
                 .HasMaxLength(100)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.JobPositionId)
                 .HasMaxLength(36)
@@ -91,7 +91,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("JobPositionID");
             entity.Property(e => e.JobPositionName)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -104,7 +104,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("OrganizationID");
             entity.Property(e => e.OrganizationName)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -148,7 +148,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.JobPositionName)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(20)
@@ -184,7 +184,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.OrganizationName)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
         });
 
@@ -214,7 +214,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.OverTimeInWorkingShiftName)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
         });
 
@@ -239,7 +239,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("ApprovalID");
             entity.Property(e => e.ApprovalName)
                 .HasMaxLength(100)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.BreakTimeFrom).HasColumnType("datetime");
             entity.Property(e => e.BreakTimeTo).HasColumnType("datetime");
@@ -249,7 +249,7 @@ public partial class OvertimeManagerContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.Dsc)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.EmployeeCode)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -262,7 +262,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("EmployeeID");
             entity.Property(e => e.EmployeeName)
                 .HasMaxLength(100)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.FromDate).HasColumnType("datetime");
             entity.Property(e => e.JobPositionId)
@@ -273,7 +273,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("JobPositionID");
             entity.Property(e => e.JobPositionName)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -286,7 +286,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("OrganizationID");
             entity.Property(e => e.OrganizationName)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.OverTimeEmployeeCodes).HasColumnType("text");
             entity.Property(e => e.OverTimeEmployeeIds)
                 .HasColumnType("text")
@@ -304,11 +304,11 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("OverTimeInWorkingShiftID");
             entity.Property(e => e.OverTimeInWorkingShiftName)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.Reason)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.ToDate).HasColumnType("datetime");
             entity.Property(e => e.WorkingShiftCode)
@@ -323,7 +323,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("WorkingShiftID");
             entity.Property(e => e.WorkingShiftName)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
 
             entity.HasOne(d => d.Approval).WithMany(p => p.OvertimeApprovals)
@@ -388,7 +388,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("EmployeeID");
             entity.Property(e => e.EmployeeName)
                 .HasMaxLength(100)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.JobPositionId)
                 .HasMaxLength(36)
@@ -398,7 +398,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("JobPositionID");
             entity.Property(e => e.JobPositionName)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -411,7 +411,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasColumnName("OrganizationID");
             entity.Property(e => e.OrganizationName)
                 .HasMaxLength(255)
-                .IsUnicode(false);
+                .IsUnicode(true);
             entity.Property(e => e.OverTimeId)
                 .HasMaxLength(36)
                 .IsUnicode(false)
@@ -468,7 +468,7 @@ public partial class OvertimeManagerContext : DbContext
                 .HasDefaultValueSql("('')");
             entity.Property(e => e.WorkingShiftName)
                 .HasMaxLength(255)
-                .IsUnicode(false)
+                .IsUnicode(true)
                 .HasDefaultValueSql("('')");
         });
 

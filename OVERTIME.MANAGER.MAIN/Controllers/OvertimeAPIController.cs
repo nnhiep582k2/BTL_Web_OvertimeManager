@@ -30,5 +30,26 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 
             return lst;
         }
+
+        [HttpDelete]
+        [Route("deleteById/{overtimeId}")]    
+        public IActionResult DeleteOneRecord(string overtimeId)
+        {
+            var ot = db.Overtimes.Find(overtimeId);
+
+            try
+            {
+                if(ot != null)
+                {
+                    db.Overtimes.Remove(ot);
+                    db.SaveChanges();
+                }
+            } catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
