@@ -13,27 +13,20 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             _logger = logger;
         }
 
-        public IActionResult Login()
-        {
-			return View();
-		}
-
-        public IActionResult Register()
-        {
-            return View();
-        }
-
+        [Authentication]
         public IActionResult Index()
         {
             return View();
         }
-        
+
+        [Authentication]
         // Điều khoản và dịch vụ
         public IActionResult TermsOfService()
 		{
 			return View();
         }
 
+        [Authentication]
         // Chính sách bảo mật
         public IActionResult PrivacyPolicy()
         {
