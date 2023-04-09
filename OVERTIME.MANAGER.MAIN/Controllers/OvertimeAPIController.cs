@@ -106,5 +106,24 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 return Ok();
             }
         }
+
+        [HttpPost]
+        [Route("GetExcelFileOption")]
+        public async Task<IActionResult> GetExcelFile([FromBody] string[] overtimeIds)
+        {
+            try
+            {
+                byte[] data = await ExportExcel.GenerateExcelFileOption(overtimeIds);
+                string filePath = Path.Combine("C:\\Users\\Admin\\Desktop", "list_overtimes.xlsx");
+                System.IO.File.WriteAllBytes(filePath, data);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return Ok();
+            }
+        }
     }
 }

@@ -2,6 +2,9 @@
 {
     public class OvertimeExport
     {
+        // Id đơn làm thêm
+        public string? OvertimeId { get; set; }
+
         // Mã nhân viên nộp đơn làm thêm
         public string EmployeeCode { get; set; } = null!;
 

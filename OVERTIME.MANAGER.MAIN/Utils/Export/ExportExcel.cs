@@ -26,6 +26,21 @@ namespace OVERTIME.MANAGER.MAIN.Utils
             return await package.GetAsByteArrayAsync();
         }
 
+        // Khởi tạo file excel lựa chọn toolbar ẩn - nnhiep
+        public static async Task<byte[]> GenerateExcelFileOption(string[] overtimeIds)
+        {
+            var package = new ExcelPackage();
+            package.Workbook.Properties.Author = "nnhiep";
+            var workSheet = package.Workbook.Worksheets.Add("List Overtime");
+
+            List<OvertimeExport> data = GetData(overtimeIds);
+
+            FormatFile(workSheet, data);
+            FillData(workSheet, data);
+
+            return await package.GetAsByteArrayAsync();
+        }
+
         // Định dạng File - nnhiep
         public static void FormatFile(ExcelWorksheet workSheet, List<OvertimeExport> data)
         {
@@ -146,7 +161,30 @@ namespace OVERTIME.MANAGER.MAIN.Utils
                 OverTimeEmployeeNames = x.OverTimeEmployeeNames,
             }).OrderBy(x => x.EmployeeCode).ToList();
         }
-    
+
+        // Lấy dữ liệu theo toolbar ẩn - nnhiep
+        public static List<OvertimeExport> GetData(string[] overtimeIds)
+        {
+            return db.Overtimes.Select(x => new OvertimeExport
+            {
+                OvertimeId = x.OverTimeId,
+                EmployeeCode = x.EmployeeCode,
+                EmployeeName = x.EmployeeName,
+                JobPositionName = x.JobPositionName,
+                OrganizationName = x.OrganizationName,
+                ApplyDate = x.ApplyDate,
+                FromDate = x.FromDate,
+                ToDate = x.ToDate,
+                Reason = x.Reason,
+                WorkingShiftName = x.WorkingShiftName,
+                OverTimeInWorkingShiftName = x.OverTimeInWorkingShiftName,
+                ApprovalName = x.ApprovalName,
+                StatusOvertime = x.StatusOvertime,
+                OverTimeEmployeeCodes = x.OverTimeEmployeeCodes,
+                OverTimeEmployeeNames = x.OverTimeEmployeeNames,
+            }).Where(x => overtimeIds.Contains(x.OvertimeId)).OrderBy(x => x.EmployeeCode).ToList();
+        }
+
         // Đổ dữ liệu ra file - nnhiep
         public static void FillData(ExcelWorksheet workSheet, List<OvertimeExport> data)
         {
