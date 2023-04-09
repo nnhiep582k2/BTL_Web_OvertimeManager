@@ -143,6 +143,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             if(temp != null && userChangePwd.OldPwd.Equals(temp.Pwd) && !string.IsNullOrEmpty(userChangePwd.NewPwd.Trim()))
             {
                 temp.Pwd = userChangePwd.NewPwd;
+                temp.ModifiedDate = DateTime.Now;
                 db.Attach(temp);
                 db.Entry(temp).State = EntityState.Modified;
                 db.SaveChanges();

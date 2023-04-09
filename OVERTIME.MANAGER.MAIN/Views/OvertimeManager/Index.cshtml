@@ -407,5 +407,37 @@
                 }
             });
         })
+    
+        // Click toolbar ẩn Refuse
+        document.querySelector('.btn-hide-refuse').addEventListener('click', () => {
+            $.ajax({
+                url: 'https://localhost:7251/api/OvertimeAPI/ConvertToRefuse',
+                method: 'POST',
+                data: JSON.stringify(selectedData),
+                contentType: 'application/json',
+                success: function (data) {
+                    window.location.href = 'https://localhost:7251/OvertimeManager';
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        })
+
+        // Click toolbar ẩn Approve
+        document.querySelector('.btn-hide-approve').addEventListener('click', () => {
+            $.ajax({
+                url: 'https://localhost:7251/api/OvertimeAPI/ConvertToApprove',
+                method: 'POST',
+                data: JSON.stringify(selectedData),
+                contentType: 'application/json',
+                success: function (data) {
+                    window.location.href = 'https://localhost:7251/OvertimeManager';
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        })
     </script>
 }

@@ -125,5 +125,61 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 return Ok();
             }
         }
+
+        /// <summary>
+        /// Từ chối nhiều đơn làm thêm
+        /// </summary>
+        [HttpPost]
+        [Route("ConvertToRefuse")]
+        public IActionResult UpdateStatusRefuse([FromBody] string[] overtimeIds)
+        {
+            var ot = db.Overtimes.Where(x => overtimeIds.Contains(x.OverTimeId) && x.StatusOvertime != (int)OvertimeStatus.refused);
+
+            try
+            {
+                foreach (var item in ot)
+                {
+                    item.StatusOvertime = (int)OvertimeStatus.refused;
+                    item.ModifiedDate = DateTime.Now;
+                }
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Duyệt nhiều đơn làm thêm
+        /// </summary>
+        [HttpPost]
+        [Route("ConvertToApprove")]
+        public IActionResult UpdateStatusApprove([FromBody] string[] overtimeIds)
+        {
+            var ot = db.Overtimes.Where(x => overtimeIds.Contains(x.OverTimeId) && x.StatusOvertime != (int)OvertimeStatus.approved);
+
+            try
+            {
+                foreach (var item in ot)
+                {
+                    item.StatusOvertime = (int)OvertimeStatus.approved;
+                    item.ModifiedDate = DateTime.Now;
+                }
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
