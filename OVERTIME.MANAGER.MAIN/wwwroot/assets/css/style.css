@@ -38,6 +38,10 @@
     color: var(--color-white) !important;
 }
 
+.toast {
+    z-index: 1000 !important;
+}
+
 
 
 

@@ -8,6 +8,8 @@
     ViewData["Title"] = "MAIN";
     Layout = "_LayoutDefault";
     var navigatorActive = new NavigatorActive { navigatorActive = "Index" };
+    OvertimeManagerContext db = new OvertimeManagerContext();
+    var temp = db.Overtimes.ToList();
 }
 
 @{
@@ -106,7 +108,7 @@
                         <i class="fa-solid fa-arrows-rotate"></i>
                     </a>
 
-                    <button class="btn btn-outline-primary mr-8" type="button">
+                    <button class="btn btn-outline-primary mr-8 btn-overtime-export" type="button">
                         <i class="fa-solid fa-file-export"></i>
                     </button>
 
@@ -224,7 +226,6 @@
     </div>
 </main>
 
-
 @section script {
     <script src="../assets/components/overtime/js/script.js"></script>
     <script>
@@ -326,13 +327,24 @@
             })
         });
 
+        let myData = @Html.Raw(Json.Serialize(temp));
+
         // Xử lý xóa thành công - nnhiep
         document.querySelector(".dialog-btn-close").onclick = function () {
             $.ajax({
                 url: 'https://localhost:7251/api/OvertimeAPI/deleteById/' + overtimeDeleteId,
                 method: 'DELETE',
                 success: function (data) {
-                    window.location.href = 'https://localhost:7251/OvertimeManager';
+                    let isValid = true;
+                    myData?.forEach(item => {
+                        if (item.overTimeId == overtimeDeleteId) {
+                            if (item.statusOvertime == 1) {
+                                isValid = false;
+                                window.location.href = 'https://localhost:7251/Home/DontHavePermission';
+                            }
+                        }
+                    });
+                    if(isValid) window.location.href = 'https://localhost:7251/OvertimeManager';
                 },
                 error: function (error) {
                     console.error(error);
@@ -345,5 +357,21 @@
             $('#deleteModal').modal('hide');
             toastList.forEach(toast => toast.show());
         }
+
+        // Lắng nghe sự kiện click export
+        document.querySelector('.btn-overtime-export').addEventListener('click', () => {
+            $.ajax({
+                url: 'https://localhost:7251/api/OvertimeAPI/GetExcelFile',
+                method: 'GET',
+                success: function (data) {
+                    setTimeout(() => {
+                        window.location.href = 'https://localhost:7251/OvertimeManager';
+                    }, 800);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        })
     </script>
 }

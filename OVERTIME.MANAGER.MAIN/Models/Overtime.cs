@@ -38,7 +38,7 @@ public partial class Overtime : BaseModel
     [DisplayName("Apply Date")]
     public DateTime ApplyDate { get; set; }
 
-    // Thời gian lmà thêm từ
+    // Thời gian làm thêm từ
     [Required]
     [DisplayName("From Date")]
     public DateTime FromDate { get; set; }
