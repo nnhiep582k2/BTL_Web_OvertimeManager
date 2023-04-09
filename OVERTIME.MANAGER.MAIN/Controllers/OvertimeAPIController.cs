@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OVERTIME.MANAGER.MAIN.Models;
+using OVERTIME.MANAGER.MAIN.Utils;
 using OVERTIME.MANAGER.MAIN.Utils.Enums;
 using OVERTIME.MANAGER.MAIN.ViewModels;
+using System;
 using X.PagedList;
 
 #nullable disable
@@ -14,6 +16,9 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
     {
         private readonly OvertimeManagerContext db = new OvertimeManagerContext();
 
+        /// <summary>
+        /// Lấy danh sách đơn làm thêm theo bộ lọc và phân trang
+        /// </summary>
         [HttpGet]
         [Route("searchQuery={searchQuery}&pageIndex={pageIndex}&pageSize={pageSize}")]
         public ListItem<Employee> GetByFilter(string searchQuery = "", int pageIndex = 1, int pageSize = 15)
@@ -32,6 +37,9 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             return lst;
         }
 
+        /// <summary>
+        /// Xóa một đơn làm thêm
+        /// </summary>
         [HttpDelete]
         [Route("deleteById/{overtimeId}")]    
         public IActionResult DeleteOneRecord(string overtimeId)
@@ -56,6 +64,24 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 }
 
                 return RedirectToAction("Index");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetExcelFile")]    
+        public async Task<IActionResult> GetExcelFile()
+        {
+            try
+            {
+                byte[] data = await ExportExcel.GenerateExcelFile();
+                string filePath = Path.Combine("C:\\Users\\Admin\\Desktop", "list_overtimes.xlsx");
+                System.IO.File.WriteAllBytes(filePath, data);
+
+                return Ok();
+            } catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return Ok();
             }
         }
     }
