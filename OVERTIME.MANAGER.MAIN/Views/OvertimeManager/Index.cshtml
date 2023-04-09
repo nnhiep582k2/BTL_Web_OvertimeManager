@@ -375,8 +375,9 @@
 
         // Click toolbar ẩn export
         document.querySelector('.btn-hide-export').addEventListener('click', () => {
+            console.log(123)
             $.ajax({
-                url: 'https://localhost:7251/api/OvertimeAPI/GetExcelFile',
+                url: 'https://localhost:7251/api/OvertimeAPI/GetExcelFileOption',
                 method: 'POST',
                 data: JSON.stringify(selectedData),
                 contentType: 'application/json',
