@@ -123,20 +123,19 @@
                 <div class="col-12 col-md-12 align-items-center input-group">
                     <span>Selected <b class="selectedItem">0</b></span>
                     <span class="unselect-all">Unselect</span>
-
-                    <button class="btn btn-outline-warning mr-8" type="button">
+                    <button class="btn btn-outline-warning mr-8 btn-hide-refuse" type="button">
                         <i class="fa-solid fa-ban"></i>
                         Refuse
                     </button>
-                    <button class="btn btn-outline-success mr-8" type="button">
+                    <button class="btn btn-outline-success mr-8 btn-hide-approve" type="button">
                         <i class="fa-regular fa-circle-check"></i>
                         Approve
                     </button>
-                    <button class="btn btn-outline-primary mr-8" type="button">
+                    <button class="btn btn-outline-primary mr-8 btn-hide-export" type="button">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         Export
                     </button>
-                    <button class="btn btn-outline-danger mr-8" type="button">
+                    <button class="btn btn-outline-danger mr-8 btn-hide-delete" type="button">
                         <i class="fa-solid fa-trash"></i>
                         Delete
                     </button>
@@ -367,6 +366,40 @@
                     setTimeout(() => {
                         window.location.href = 'https://localhost:7251/OvertimeManager';
                     }, 800);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        })
+
+        // Click toolbar ẩn export
+        document.querySelector('.btn-hide-export').addEventListener('click', () => {
+            $.ajax({
+                url: 'https://localhost:7251/api/OvertimeAPI/GetExcelFile',
+                method: 'POST',
+                data: JSON.stringify(selectedData),
+                contentType: 'application/json',
+                success: function (data) {
+                    setTimeout(() => {
+                        window.location.href = 'https://localhost:7251/OvertimeManager';
+                    }, 800);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        })
+
+        // Click toolbar ẩn delete
+        document.querySelector('.btn-hide-delete').addEventListener('click', () => {
+            $.ajax({
+                url: 'https://localhost:7251/api/OvertimeAPI/bulk/delete',
+                method: 'POST',
+                data: JSON.stringify(selectedData),
+                contentType: 'application/json',
+                success: function (data) {
+                    window.location.href = 'https://localhost:7251/OvertimeManager';
                 },
                 error: function (error) {
                     console.error(error);

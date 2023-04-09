@@ -67,6 +67,28 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             }
         }
 
+        /// <summary>
+        /// Xóa nhiều đơn làm thêm
+        /// </summary>
+        [HttpPost]
+        [Route("bulk/delete")]
+        public IActionResult DeleteRecords([FromBody] string[] overtimeIds)
+        {
+            var ot = db.Overtimes.Where(x => overtimeIds.Contains(x.OverTimeId) && x.StatusOvertime != (int)OvertimeStatus.approved);
+
+            try
+            {
+                db.Overtimes.RemoveRange(ot);
+                db.SaveChanges();
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         [Route("GetExcelFile")]    
         public async Task<IActionResult> GetExcelFile()
