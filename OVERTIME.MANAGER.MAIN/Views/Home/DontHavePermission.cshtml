@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Don't have permission";
+    Layout = "_LayoutDefault";
+}
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="text-center">
+        <h1 class="display-1 fw-bold">Don't have permission</h1>
+        <p class="fs-3"> <span class="text-danger">Opps!</span> Can't do this.</p>
+        <p class="lead">
+            Don't have permission. Please try to delete another record!
+        </p>
+        <a asp-action="Index" asp-controller="OvertimeManager" class="btn btn-primary">Go back</a>
+    </div>
+</div>

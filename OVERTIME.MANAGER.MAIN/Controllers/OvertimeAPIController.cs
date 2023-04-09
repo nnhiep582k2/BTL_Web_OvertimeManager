@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OVERTIME.MANAGER.MAIN.Models;
+using OVERTIME.MANAGER.MAIN.Utils.Enums;
 using OVERTIME.MANAGER.MAIN.ViewModels;
 using X.PagedList;
 
@@ -36,20 +37,26 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         public IActionResult DeleteOneRecord(string overtimeId)
         {
             var ot = db.Overtimes.Find(overtimeId);
-
-            try
+            if(ot.StatusOvertime == (int)OvertimeStatus.approved)
             {
-                if(ot != null)
+                return RedirectToAction("DontHavePermission", "Home");
+            } else
+            {
+                try
                 {
-                    db.Overtimes.Remove(ot);
-                    db.SaveChanges();
+                    if (ot != null)
+                    {
+                        db.Overtimes.Remove(ot);
+                        db.SaveChanges();
+                    }
                 }
-            } catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
         }
     }
 }

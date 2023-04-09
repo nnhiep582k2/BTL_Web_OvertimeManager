@@ -27,12 +27,25 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         public IActionResult Index(string searchQuery = "", int pageIndex = 1, int pageSize = 15, Byte status = 3)
         {
             IEnumerable<Overtime> lstOvertime;
+            Employee temp = db.Employees.FirstOrDefault(x => x.Account.Equals(HttpContext.Session.GetString("Account")));
 
-            lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())) && (x.StatusOvertime == status)).OrderByDescending(x => x.ModifiedDate);
+            if (temp != null && temp.EmployeeRole == (int)Role.normal)
+            {
+                lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeId == temp.EmployeeId) && (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())) && (x.StatusOvertime == status)).OrderByDescending(x => x.ModifiedDate);
+            } else
+            {
+                lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())) && (x.StatusOvertime == status)).OrderByDescending(x => x.ModifiedDate);
+            }
 
             if (status == 3)
             {
-                lstOvertime = db.Overtimes.AsNoTracking().Where(x => x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())).OrderByDescending(x => x.ModifiedDate);
+                if(temp != null && temp.EmployeeRole == (int)Role.normal)
+                {
+                    lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeId.Equals(temp.EmployeeId)) && (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower()))).OrderByDescending(x => x.ModifiedDate);
+                } else
+                {
+                    lstOvertime = db.Overtimes.AsNoTracking().Where(x => x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())).OrderByDescending(x => x.ModifiedDate);
+                }
             }
 
             ListItem<Overtime> lst = new ListItem<Overtime>()
@@ -170,6 +183,11 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         public IActionResult OvertimeUpdate(Overtime ot, bool isDuplicate)
         {
             DateTime now = DateTime.Now;
+
+            if(ot.StatusOvertime == (int)OvertimeStatus.approved || ot.StatusOvertime == (int)OvertimeStatus.refused)
+            {
+                return RedirectToAction("DontHavePermission", "Home");
+            }
 
             if(isDuplicate == true)
             {

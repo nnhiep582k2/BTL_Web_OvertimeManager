@@ -34,6 +34,15 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         }
 
         /// <summary>
+        /// Không có quyền
+        /// </summary>
+        /// author nnhiep
+        public IActionResult DontHavePermission()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 404 page
         /// </summary>
         /// <param name="statusCode">Giá trị trạng thái trả về</param>
