@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace OVERTIME.MANAGER.MAIN.Models
@@ -15,7 +15,7 @@ namespace OVERTIME.MANAGER.MAIN.Models
                         { "Controller", "Access" },
                         { "Action", "Login" }
                     });
-            }
+            } 
         }
     }
 }
