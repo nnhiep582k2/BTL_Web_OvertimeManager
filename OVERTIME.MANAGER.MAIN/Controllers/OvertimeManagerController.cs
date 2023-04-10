@@ -345,16 +345,5 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         {
             return View();
         }
-
-        /// <summary>
-        /// Quản lý nhân viên
-        /// </summary>
-        /// <returns>View</returns>
-        /// @author nnhiep 15.03.2023
-        [Authentication]
-        public IActionResult EmployeeManager()
-        {
-            return View();
-        }
     }
 }
