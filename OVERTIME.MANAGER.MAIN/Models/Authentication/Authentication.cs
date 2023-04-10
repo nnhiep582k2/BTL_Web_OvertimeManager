@@ -7,15 +7,7 @@ namespace OVERTIME.MANAGER.MAIN.Models
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if(context.HttpContext.Session.GetString("Account") == null)
-            {
-                context.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary
-                    {
-                        { "Controller", "Access" },
-                        { "Action", "Login" }
-                    });
-            }
+            
         }
     }
 }

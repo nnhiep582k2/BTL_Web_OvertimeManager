@@ -11,4 +11,26 @@
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
 
-<h1>JobPositionManager</h1>
+<a asp-action="AddJobPositionManager"  style="text-decoration: none">
+                            <button type="button" class="btn-sm btn-gradient-danger">
+                                Add
+                            </button>
+                        </a>
+@model List<JobPosition>
+@foreach (var item in Model)
+{
+    <h1>@item.JobPositionId <span> @item.JobPositionName</span>
+        <a  asp-action="EditJobPositionManager" asp-route-ma="@item.JobPositionId" style="text-decoration: none">
+                            <button type="button" class="btn-sm btn-gradient-dark ">
+                                Edit
+                            </button>
+                        </a>
+
+
+        <a asp-action="DeleteJobPositionManager" asp-route-ma="@item.JobPositionId" style="text-decoration: none">
+                            <button type="button" class="btn-sm btn-gradient-danger">
+                                Delete
+                            </button>
+                        </a>
+    </h1>
+}

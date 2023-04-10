@@ -332,9 +332,55 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         [Authentication]
         public IActionResult JobPositionManager()
         {
+            var lstsp = db.JobPositions.AsNoTracking().OrderBy(x => x.JobPositionId).ToList();
+            return View(lstsp);
+        }
+        [Route("AddJobPositionManager")]
+        public IActionResult AddJobPositionManager()
+        {
+           
             return View();
         }
+        [Route("AddJobPositionManager")]
+        [HttpPost]
+        public IActionResult AddJobPositionManager(JobPosition job)
+        {
+            if (ModelState.IsValid)
+            {
+                db.JobPositions.Add(job);
+                db.SaveChanges();
+                return RedirectToAction("JobPositionManager");
+            }
+            return View(job);
+        }
+        [Route("EditJobPositionManager")]
+        public IActionResult EditJobPositionManager(string ma)
+        {
+            var spedit = db.JobPositions.SingleOrDefault(x => x.JobPositionId == ma);
+            return View(spedit);
+        }
+        [Route("EditJobPositionManager")]
+        [HttpPost]
+        public IActionResult EditJobPositionManager(JobPosition job)
+        {
 
+            if (ModelState.IsValid)
+            {
+                db.Entry(job).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("JobPositionManager");
+            }
+            return View(job);
+        }
+
+        [Route("DeleteJobPositionManager")]
+        public IActionResult DeleteJobPositionManager(string ma)
+        {
+            
+            db.Remove(db.JobPositions.Find(ma));
+            db.SaveChanges();
+            return RedirectToAction("JobPositionManager");
+        }
         /// <summary>
         /// Quản lý đơn vị công tác
         /// </summary>
