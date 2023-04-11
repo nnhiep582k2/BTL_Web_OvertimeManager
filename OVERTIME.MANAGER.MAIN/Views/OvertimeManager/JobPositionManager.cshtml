@@ -1,5 +1,7 @@
 ﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
-
+@using Microsoft.AspNetCore.Html;
+@using X.PagedList.Mvc.Core
+@using OVERTIME.MANAGER.MAIN.Utils.Enums;
 @{
     ViewData["Title"] = "Quản lý vị trí công việc";
     Layout = "~/Views/Shared/_LayoutDefault.cshtml";
@@ -11,26 +13,132 @@
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
 
-<a asp-action="AddJobPositionManager"  style="text-decoration: none">
-                            <button type="button" class="btn-sm btn-gradient-danger">
-                                Add
-                            </button>
+@section link {
+    <link rel="stylesheet" href="../assets/components/overtime/css/style.css" />
+}
+
+<main class="container-fluid overtime-main">
+    <div class="overtime-wrapper py-3">
+        <!-- Heading -->
+        <div class="overtime-heading d-flex align-items-center justify-content-between pb-3">
+            <div class="fs-5 fw-bold">Job Position Manager</div>
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                <a type="button" class="btn btn-primary btn-add" asp-controller="OvertimeManager" asp-action="AddJobPositionManager">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add</span>
+                </a>
+                <div class="btn-group" role="group">
+                    <button id="btnGroupDrop" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop">
+                        <a class="dropdown-item" href="#">
+                            <i class="fa-solid fa-file-import"></i>
+                            <span class="ml-8">Import</span>
                         </a>
-@model List<JobPosition>
-@foreach (var item in Model)
-{
-    <h1>@item.JobPositionId <span> @item.JobPositionName</span>
-        <a  asp-action="EditJobPositionManager" asp-route-ma="@item.JobPositionId" style="text-decoration: none">
-                            <button type="button" class="btn-sm btn-gradient-dark ">
-                                Edit
-                            </button>
-                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="overtime-content flex-row align-items-center justify-content-between">
+           
+
+            <!-- Table -->
+            <div class="overtime-table">
+                    <table class="table table-hover">
+                        <thead class="unselect">
+                            <tr>
+                                <th width="140px"></th>
+                                <th width="100px">ID</th>
+                                <th width="160px">Code</th>
+                                <th width="120px">Name</th>
+                                <th width="180px">Created Date</th>
+                                <th width="120px">Created By</th>
+                                <th width="180px">Modified Date</th>
+                                <th width="120px">Modified By</th>
+                                <th class="text-center">Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <input my-data="@item.JobPositionId" type="checkbox" />
+                                    </td>
+                                    <td>@item.JobPositionId</td>
+                                    <td>@item.JobPositionCode</td>
+                                    <td>@item.JobPositionName</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>@item.CreatedBy</td>
+                                    <td>@item.ModifiedDate</td>
+                                    <td>@item.ModifiedBy</td>
+                                    <td class="overtime-action-wrapper">
+                                    <a class="overtime-action" asp-controller="OvertimeManager" asp-action="EditJobPositionManager" asp-route-ma="@item.JobPositionId">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </a>
+                                    <a class="overtime-action delete" asp-action="DeleteJobPositionManager" asp-route-ma="@item.JobPositionId">
+                                        <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+            </div>
+
+            <!-- Pagination-->
+            <div class="overtime-pagination d-flex align-items-center justify-content-between">
+                <div class="pagination-total">Total records: <b></b></div>
+                <div class="pagination-paging d-flex align-items-center">
+                    <div class="dropdown mr-20">
+                        <select class="form-select pageSize-navigation" name="pageSize"  asp-items="@ViewBag.PageSizes">
+                        </select>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section script {
+    <script src="../assets/components/overtime/js/script.js"></script>
+    <script>
+        // Focus vào input search khi vừa vào trang - nnhiep
+        document.querySelector('.overtime-search')?.focus();
+
+        // Ẩn/Hiển thị toolbar khi click chọn ít nhất một hàng bất kỳ - nnhiep
+        document.querySelector('.overtime-table thead tr th:first-child')?.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.querySelector('.overtime-toolbar-show').style.display = 'none';
+                document.querySelector('.overtime-toolbar-hide').style.display = 'flex';
+            } else {
+                document.querySelector('.overtime-toolbar-hide').style.display = 'none';
+                document.querySelector('.overtime-toolbar-show').style.display = 'flex';
+            }
+        })
 
 
-        <a asp-action="DeleteJobPositionManager" asp-route-ma="@item.JobPositionId" style="text-decoration: none">
-                            <button type="button" class="btn-sm btn-gradient-danger">
-                                Delete
-                            </button>
-                        </a>
-    </h1>
+        let selectedData = [];
+
+        // Xử lý tick chọn hết trong table - nnhiep
+        let checkAll = document.querySelector('.overtime-table table thead th:first-child input');
+        checkAll?.addEventListener('change', (e) => {
+            document.querySelectorAll('.overtime-table table tbody td:first-child input').forEach(item => {
+                let selectedKey = item.getAttribute("my-data");
+                item.checked = checkAll.checked;
+                if (checkAll.checked) {
+                    if (selectedData.indexOf(selectedKey) == -1) {
+                        selectedData.push(selectedKey);
+                    }
+                } else {
+                    selectedData = selectedData.filter(item => item !== selectedKey);
+                }
+            });
+            document.querySelector('.selectedItem').innerHTML = selectedData.length;
+        });
+    </script>
 }
