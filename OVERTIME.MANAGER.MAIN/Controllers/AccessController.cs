@@ -154,5 +154,49 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 return View();
             }
         }
+
+        [HttpGet]
+        public IActionResult ChangeInformation()
+        {
+            Employee temp = db.Employees.FirstOrDefault(x => x.Account.Equals(HttpContext.Session.GetString("Account")));
+
+            ViewBag.JobPosition = GetSelectListItems(SelectedItem.jobposition);
+            ViewBag.Organization = GetSelectListItems(SelectedItem.organization);
+
+            return View(temp);
+        }
+
+        [HttpPost]
+        /// <summary>
+        /// Đổi mật khẩu
+        /// </summary>
+        /// @author nnhiep
+        public IActionResult ChangeInformation(Employee employee)
+        {
+            Employee temp = db.Employees.FirstOrDefault(x => x.Account.Equals(HttpContext.Session.GetString("Account")));
+
+            string jobPositionName = db.JobPositions.FirstOrDefault(x => x.JobPositionId == employee.JobPositionId).JobPositionName.ToString();
+            string organizationName = db.Organizations.FirstOrDefault(x => x.OrganizationId == employee.OrganizationId).OrganizationName.ToString();
+
+            if (temp != null)
+            {
+                temp.EmployeeName = employee.EmployeeName;
+                temp.OrganizationId = employee.OrganizationId;
+                temp.OrganizationName = employee.OrganizationName;
+                temp.JobPositionId = employee.JobPositionId;
+                temp.JobPositionName = employee.JobPositionName;
+                temp.PhoneNumber = employee.PhoneNumber;
+                temp.ModifiedDate = DateTime.Now;
+                db.Attach(temp);
+                db.Entry(temp).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "OvertimeManager");
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }
