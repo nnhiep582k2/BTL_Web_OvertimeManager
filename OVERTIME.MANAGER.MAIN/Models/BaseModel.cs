@@ -2,8 +2,12 @@
 {
     public class BaseModel
     {
-        // Ngày tạo
-        public DateTime? CreatedDate { get; set; }
+       
+        public DateTime? CreatedDate {
+            get;
+
+            set;
+        }
 
         // Người tạo
         public string? CreatedBy { get; set; }

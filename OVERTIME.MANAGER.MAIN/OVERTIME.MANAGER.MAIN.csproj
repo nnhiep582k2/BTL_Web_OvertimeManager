@@ -36,6 +36,31 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\assets\components\crud_table\bootstrap\bootstrap-grid.css.map" />
+    <None Include="wwwroot\assets\components\crud_table\bootstrap\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\assets\components\crud_table\bootstrap\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\assets\components\crud_table\bootstrap\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\assets\components\crud_table\bootstrap\bootstrap.css.map" />
+    <None Include="wwwroot\assets\components\crud_table\bootstrap\bootstrap.min.css.map" />
+    <None Include="wwwroot\assets\components\crud_table\fonts\flexslider-icon.svg" />
+    <None Include="wwwroot\assets\components\crud_table\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\assets\components\crud_table\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\assets\components\crud_table\fonts\slick.svg" />
+    <None Include="wwwroot\assets\components\crud_table\font_icon\flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" />
+    <None Include="wwwroot\assets\components\crud_table\jquery\jquery.js" />
+    <None Include="wwwroot\assets\components\crud_table\jquery\jquery.min.js" />
+    <None Include="wwwroot\assets\components\crud_table\jquery\jquery.min.map" />
+    <None Include="wwwroot\assets\components\crud_table\jquery\jquery.slim.js" />
+    <None Include="wwwroot\assets\components\crud_table\jquery\jquery.slim.min.js" />
+    <None Include="wwwroot\assets\components\crud_table\jquery\jquery.slim.min.map" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.js" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.js.map" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.min.js" />
+    <None Include="wwwroot\assets\components\crud_table\js\bootstrap.min.js.map" />
     <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-grid.css.map" />
     <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-grid.min.css.map" />
     <None Include="wwwroot\assets\lib\bootstrap_v5.3\bootstrap-grid.rtl.css.map" />
