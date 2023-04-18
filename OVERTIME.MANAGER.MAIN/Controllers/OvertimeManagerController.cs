@@ -32,17 +32,19 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             if (temp != null && temp.EmployeeRole == (int)Role.normal)
             {
                 lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeId == temp.EmployeeId) && (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())) && (x.StatusOvertime == status)).OrderByDescending(x => x.ModifiedDate);
-            } else
+            }
+            else
             {
                 lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())) && (x.StatusOvertime == status)).OrderByDescending(x => x.ModifiedDate);
             }
 
             if (status == 3)
             {
-                if(temp != null && temp.EmployeeRole == (int)Role.normal)
+                if (temp != null && temp.EmployeeRole == (int)Role.normal)
                 {
                     lstOvertime = db.Overtimes.AsNoTracking().Where(x => (x.EmployeeId.Equals(temp.EmployeeId)) && (x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower()))).OrderByDescending(x => x.ModifiedDate);
-                } else
+                }
+                else
                 {
                     lstOvertime = db.Overtimes.AsNoTracking().Where(x => x.EmployeeName.ToLower().Contains(searchQuery.ToLower()) || x.EmployeeCode.ToLower().Contains(searchQuery.ToLower()) || x.JobPositionName.ToLower().Contains(searchQuery.ToLower()) || x.OrganizationName.ToLower().Contains(searchQuery.ToLower())).OrderByDescending(x => x.ModifiedDate);
                 }
@@ -161,10 +163,10 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         [HttpGet]
         public IActionResult OvertimeUpdate(string overtimeId, bool isDuplicate)
         {
-            if(isDuplicate == true)
+            if (isDuplicate == true)
             {
                 ViewBag.isDuplicate = true;
-            } 
+            }
 
             Overtime ot = db.Overtimes.AsNoTracking().FirstOrDefault(x => x.OverTimeId == overtimeId);
 
@@ -184,12 +186,12 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         {
             DateTime now = DateTime.Now;
 
-            if(ot.StatusOvertime == (int)OvertimeStatus.approved || ot.StatusOvertime == (int)OvertimeStatus.refused)
+            if (ot.StatusOvertime == (int)OvertimeStatus.approved || ot.StatusOvertime == (int)OvertimeStatus.refused)
             {
                 return RedirectToAction("DontHavePermission", "Home");
             }
 
-            if(isDuplicate == true)
+            if (isDuplicate == true)
             {
                 ot.OverTimeId = Guid.NewGuid().ToString();
             }
@@ -223,7 +225,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                
+
                 db.Attach(ot);
                 db.Entry(ot).State = EntityState.Modified;
                 db.SaveChanges();
@@ -307,12 +309,8 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
-<<<<<<< HEAD
         [Authentication]
-        public IActionResult WorkingShiftManager()
-=======
-        public IActionResult WorkingShiftManager(string SearchText="",int page=1)
->>>>>>> 395fd65 (feat: hoan thien)
+        public IActionResult WorkingShiftManager(string SearchText = "", int page = 1)
         {
             int pageNumber = page;
             int pageSize = 5;
@@ -326,33 +324,32 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 
                 workingShifts = db.WorkingShifts.AsNoTracking().ToList();
 
-            PagedList<WorkingShift> lst = new PagedList<WorkingShift>(workingShifts,pageNumber,pageSize);
+            PagedList<WorkingShift> lst = new PagedList<WorkingShift>(workingShifts, pageNumber, pageSize);
             return View(lst);
             //var lstWks = db.WorkingShifts.ToList();
             //return View(lstWks);
         }
+
         [HttpGet]
         public IActionResult CreateWorkingShirt()
         {
-            WorkingShift workingShift = new WorkingShift(); 
+            WorkingShift workingShift = new WorkingShift();
             return PartialView("_PatialViewWorkingshirtCreate", workingShift);
         }
+
         [HttpPost]
-        public IActionResult CreateWorkingShirt( WorkingShift working)
+        public IActionResult CreateWorkingShirt(WorkingShift working)
         {
             DateTime now = DateTime.Now;
-
             var wsId = db.WorkingShifts.Max(x => x.WorkingShiftId);
             long wsNo;
 
             Int64.TryParse(wsId.Substring(2, wsId.Length - 2), out wsNo);
-            if(wsNo > 0)
+            if (wsNo > 0)
             {
                 wsNo = wsNo + 1;
                 wsId = "WS" + wsNo.ToString();
             }
-           
-
 
             var wsCode = db.WorkingShifts.Max(x => x.WorkingShiftCode);
             long wsNoCode;
@@ -360,51 +357,40 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             if (wsNoCode > 0)
             {
                 wsNoCode = wsNoCode + 1;
-
-                wsCode ="WC"+ wsNoCode.ToString();
+                wsCode = "WC" + wsNoCode.ToString();
             }
 
 
             working.WorkingShiftCode = wsCode;
             working.WorkingShiftId = wsId;
-
             working.CreatedBy = "npBac";
-
             working.CreatedDate = now;
 
             db.Add(working);
-
-          
-
-   
             db.SaveChanges();
             return RedirectToAction("WorkingShiftManager");
         }
 
-        public IActionResult EditWorkingshirt( string id )
+        public IActionResult EditWorkingshirt(string id)
         {
-            WorkingShift working = db.WorkingShifts.Where(x=>x.WorkingShiftId == id).FirstOrDefault();
+            WorkingShift working = db.WorkingShifts.Where(x => x.WorkingShiftId == id).FirstOrDefault();
             return PartialView("_PartialViewEditWorkingshift", working);
-
-
-
         }
+
         [HttpPost]
 
         public IActionResult EditWorkingshirt(WorkingShift workingShift)
         {
             DateTime now = DateTime.Now;
             workingShift.ModifiedDate = now;
-
             workingShift.ModifiedBy = "npBac";
             db.WorkingShifts.Update(workingShift);
-          
             db.SaveChanges();
             return RedirectToAction("WorkingShiftManager");
 
         }
 
-        public IActionResult DeleteWorkingShift( string id )
+        public IActionResult DeleteWorkingShift(string id)
         {
             //var model = db.WorkingShifts.Find(id);
             //db.WorkingShifts.Remove(model);
@@ -416,7 +402,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
 
         }
         [HttpPost]
-        
+
         public IActionResult DeleteWorkingShift(WorkingShift workingShift)
         {
             db.WorkingShifts.Remove(workingShift);
@@ -424,8 +410,6 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             return RedirectToAction("WorkingShiftManager");
 
         }
-
-       
 
         /// <summary>
         /// Quản lý thời điểm làm thêm
@@ -452,7 +436,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         [Route("AddJobPositionManager")]
         public IActionResult AddJobPositionManager()
         {
-           
+
             return View();
         }
         [Route("AddJobPositionManager")]
@@ -490,7 +474,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         [Route("DeleteJobPositionManager")]
         public IActionResult DeleteJobPositionManager(string ma)
         {
-            
+
             db.Remove(db.JobPositions.Find(ma));
             db.SaveChanges();
             return RedirectToAction("JobPositionManager");
