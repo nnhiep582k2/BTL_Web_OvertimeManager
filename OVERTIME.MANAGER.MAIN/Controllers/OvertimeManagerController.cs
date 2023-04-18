@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using OVERTIME.MANAGER.MAIN.Models;
 using OVERTIME.MANAGER.MAIN.Utils.Enums;
 using OVERTIME.MANAGER.MAIN.ViewModels;
+using System.Data;
 using X.PagedList;
 
 namespace OVERTIME.MANAGER.MAIN.Controllers
@@ -484,10 +485,98 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
+<<<<<<< HEAD
         [Authentication]
         public IActionResult OrganizationManager()
         {
             return View();
         }
+=======
+        /// 
+
+        [HttpGet]
+        public IActionResult OrganizationManager(int? page)
+        {
+
+            int pageSize = 5;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstsanpham = db.Organizations.AsNoTracking().OrderBy(x => x.OrganizationName);
+            PagedList<Organization> lst = new PagedList<Organization>(lstsanpham, pageNumber, pageSize);
+            return View(lst);
+        }
+        //Thêm//////////////////
+        [Route("AddOrganization")]
+        public IActionResult AddOrganization()
+        {
+            return View();
+        }
+        [Route("AddOrganization")]
+        [HttpPost]
+        public IActionResult AddOrganization(Organization donvi)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Organizations.Add(donvi);
+                db.SaveChanges();
+                return RedirectToAction("OrganizationManager");
+            }
+            return View(donvi);
+        }
+        // Sửa//////////////////
+
+        [Route("EditOrganization")]
+        public IActionResult EditOrganization(string ma)
+        {
+            var spedit = db.Organizations.SingleOrDefault(x => x.OrganizationId == ma);
+            return View(spedit);
+        }
+        [Route("EditOrganization")]
+        [HttpPost]
+        public IActionResult EditOrganization(Organization donvi)
+        {
+        
+            if (ModelState.IsValid)
+            {
+                db.Entry(donvi).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("OrganizationManager");
+            }
+            return View(donvi);
+        }
+
+
+
+    
+
+        //Xoá
+        [Route("DeleteOrganization")]
+        public IActionResult DeleteOrganization(string ma)
+            {
+                var spedit = db.Organizations.Where(x => x.OrganizationId == ma);
+                var spedit1 = db.Employees.Where(x => x.OrganizationId == ma);
+                if (spedit1 != null) db.RemoveRange(spedit1);
+                var spedit2 = db.OvertimeEmployees.Where(x => x.OrganizationId == ma);
+                if (spedit2 != null) db.RemoveRange(spedit2);
+                var spedit3 = db.Overtimes.Where(x => x.OrganizationId == ma);
+                if (spedit3 != null) db.RemoveRange(spedit3);
+                db.RemoveRange(spedit);
+                db.SaveChanges();
+                return RedirectToAction("OrganizationManager");
+            }
+        /// <summary>
+        /// Quản lý nhân viên
+        /// </summary>
+        /// <returns>View</returns>
+        /// @author nnhiep 15.03.2023
+        public IActionResult EmployeeManager()
+        {
+            return View();
+        }
+>>>>>>> f450f77 (feat: hoan thien)
     }
 }
+//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+
+  

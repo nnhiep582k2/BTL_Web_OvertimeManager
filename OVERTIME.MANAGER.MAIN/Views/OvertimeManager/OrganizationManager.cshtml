@@ -1,5 +1,6 @@
 ﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
-
+@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<Organization>
 @{
     ViewData["Title"] = "Quản lý đơn vị công tác";
     Layout = "~/Views/Shared/_LayoutDefault.cshtml";
@@ -10,5 +11,80 @@
 {
     <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
 }
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <h1>OrganizationManager</h1>
+
+<p>
+    <a asp-action="AddOrganization" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                OrganizationCode
+            </th>
+            <th>
+                OrganizationName
+            </th>
+            <th>
+                CreatedDate
+            </th>
+            <th>
+                CreatedBy
+            </th>
+            <th>
+                ModifiedDate
+            </th>
+            <th>
+                ModifiedBy
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrganizationCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrganizationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedBy)
+                </td>
+                <td>
+                    <a asp-action="EditOrganization" asp-route-ma="@item.OrganizationId" style="text-decoration: none">
+                        <button type="button" class="btn-sm btn-gradient-danger" asp-action="Edit" asp-route-id="@item.OrganizationId">
+                            Edit
+                        </button>
+                    </a>
+                    <a asp-action="DeleteOrganization" asp-route-ma="@item.OrganizationId" style="text-decoration: none">
+                        <button type="button" class="btn-sm btn-gradient-danger" asp-action="Delete" asp-route-id="@item.OrganizationId">
+                            Delete
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager(Model,page=>Url.Action("OrganizationManager",new {page=page}),new
+X.PagedList.Web.Common.PagedListRenderOptions(){
+    LiElementClasses = new List<String>{"page-item"},
+    PageClasses = new List<String>{"page-link"}
+})
+
+
+
+

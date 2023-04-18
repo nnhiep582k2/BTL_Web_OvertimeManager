@@ -1,0 +1,79 @@
+﻿@model OVERTIME.MANAGER.MAIN.Models.Organization
+@using OVERTIME.MANAGER.MAIN.ViewModels;
+
+@{
+    ViewData["Title"] = "Quản lý đơn vị công tác";
+    Layout = "~/Views/Shared/_LayoutDefault.cshtml";
+    var navigatorActive = new NavigatorActive { navigatorActive = "EmployeeManager" };
+}
+
+
+
+@section header
+    {
+        <partial name="~/Views/OvertimeManager/_HeaderOM.cshtml" model="navigatorActive" />
+}
+
+<main class="container-fluid overtime-main">
+    <div class="overtime-wrapper py-3">
+        <!-- Heading -->
+        <div class="overtime-heading d-flex align-items-center justify-content-between pb-3">
+            <div class="heading-left">
+                <a asp-action="OrganizationManager" asp-controller="OvertimeManager"><i class="fa-solid fa-arrow-left"></i></a>
+                <div class="fs-5 fw-bold heading-title"> Edit Organization</div>
+            </div>
+            <div class="btn-group-wrapper">
+                <a type="button" class="btn btn-danger btn-add" asp-controller="OvertimeManager" asp-action="OrganizationManager">
+                    <span>Cancel</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="overtime-container-detail overtime-container-add">
+            <div class="row">
+                <div class="col-md-4">
+                    <form method="post" asp-action="EditOrganization">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="OrganizationId" />
+                        <div class="form-group">
+                            <label asp-for="OrganizationCode" class="control-label"></label>
+                            <input asp-for="OrganizationCode" class="form-control" />
+                            <span asp-validation-for="OrganizationCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="OrganizationName" class="control-label"></label>
+                            <input asp-for="OrganizationName" class="form-control" />
+                            <span asp-validation-for="OrganizationName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CreatedDate" class="control-label"></label>
+                            <input asp-for="CreatedDate" class="form-control" />
+                            <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CreatedBy" class="control-label"></label>
+                            <input asp-for="CreatedBy" class="form-control" />
+                            <span asp-validation-for="CreatedBy" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ModifiedDate" class="control-label"></label>
+                            <input asp-for="ModifiedDate" class="form-control" />
+                            <span asp-validation-for="ModifiedDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ModifiedBy" class="control-label"></label>
+                            <input asp-for="ModifiedBy" class="form-control" />
+                            <span asp-validation-for="ModifiedBy" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary"    />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+

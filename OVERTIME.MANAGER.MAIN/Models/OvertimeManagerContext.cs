@@ -30,9 +30,15 @@ public partial class OvertimeManagerContext : DbContext
     public virtual DbSet<WorkingShift> WorkingShifts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+<<<<<<< HEAD
     => optionsBuilder.UseSqlServer("Data Source=NNHIEP\\SQLEXPRESS01;Initial Catalog=OvertimeManager;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;MultipleActiveResultSets=True;");
 
 protected override void OnModelCreating(ModelBuilder modelBuilder)
+=======
+        => optionsBuilder.UseSqlServer("Data Source=DUYCHINH\\SQLEXPRESS02;Initial Catalog=OvertimeManager;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+>>>>>>> f450f77 (feat: hoan thien)
     {
         modelBuilder.Entity<Employee>(entity =>
         {
