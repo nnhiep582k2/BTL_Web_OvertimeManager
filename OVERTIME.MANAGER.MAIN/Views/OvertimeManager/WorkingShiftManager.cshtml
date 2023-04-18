@@ -1,4 +1,8 @@
 ﻿@using OVERTIME.MANAGER.MAIN.ViewModels;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@*@model List<WorkingShift>*@
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<WorkingShift>
 
 @{
     ViewData["Title"] = "Quản lý Ca làm việc";
@@ -28,6 +32,9 @@
 
     <script src="../assets/components/crud_table/jquery/jquery.min.js"></script>
     <script src="../assets/components/crud_table/js/bootstrap.min.js"> </script>
+   @*// <script src="../assets/components/crud_table/js/FileSave.js"> </script>*@
+
+    
 
 
     <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -89,7 +96,7 @@
 
         .table-title {
             color: #fff;
-            background: #4b5366;
+            background: #706DF2;
             padding: 16px 25px;
             margin: -20px -25px 10px;
             border-radius: 3px 3px 0 0;
@@ -287,26 +294,55 @@
         .table-wrapper .btn-success {
             background-color: #0D6EFD;
             color: #fff;
+          
+           font-size:16px;
         }
 
         .table-wrapper .btn-secondary {
             background-color: #0D6EFD;
             color: #fff;
+            font-size: 16px;
         }
 
         .table-wrapper .btn-primary {
             background-color: #0D6EFD;
             color: #fff;
+            font-size: 16px;
         }
         td a i{
-            font-size:20px;
+            font-size:16px;
             
         }
         tr td:last-child {
-            display: flex;
+
             justify-content: space-between;
         }
         }
+
+
+        .product__pagination li {
+            margin-right: 10px;
+        }
+
+        .product__pagination {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+            .product__pagination li.active {
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #b2b2b2;
+                background: #0D6EFD;
+                border-color: #0D6EFD;
+                color: #ffffff;
+                font-weight: bold;
+                font-size: 14px;
+            }
 
 
         /* fallback */
@@ -329,148 +365,132 @@
                         </div>
                         <div class="col-sm-8">
 
-                            <a href="#" class="btn btn-primary"><i class="fa-solid fa-arrows-rotate" style="color: #f4f5f5;"></i> <span>Refresh List</span></a>
-                            <a href="#" class="btn btn-secondary"><i class="fa-solid fa-file-excel" style="color: #f0f2f4;"></i> <span>Export to Excel</span></a>
-                            <a href="#" class="btn btn-success"><i class="fa-solid fa-plus" style="color: #e5e1e1;"></i> <span>Add New Employee</span></a>
+                            <a aria-current="page" asp-controller="OvertimeManager" asp-action="WorkingShiftManager" class="btn btn-primary"><i class="fa-solid fa-arrows-rotate" style="color: #f4f5f5;"></i> <span>Refresh List</span></a>
+                            
+                            <button class="btn btn-primary"><i class="fa-solid fa-file-excel" style="color: #f0f2f4;"></i> <span>Export To Excel</span> </button>
+                           
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addWorkingShirt"> Add <i class="fa-solid fa-plus" style="color: #e5e1e1;"></i> </button>
                         </div>
                     </div>
                 </div>
                 <div class="table-filter">
                     <div class="row">
                         <div class="col-sm-3">
-                            <div class="show-entries">
-                                <span>Show</span>
-                                <select class="form-control">
-                                    <option>5</option>
-                                    <option>10</option>
-                                    <option>15</option>
-                                    <option>20</option>
-                                </select>
-                                <span>entries</span>
-                            </div>
+                           
                         </div>
                         <div class="col-sm-9">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                            <div class="filter-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="filter-group">
-                                <label>Location</label>
-                                <select class="form-control">
-                                    <option>All</option>
-                                    <option>Berlin</option>
-                                    <option>London</option>
-                                    <option>Madrid</option>
-                                    <option>New York</option>
-                                    <option>Paris</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label>Status</label>
-                                <select class="form-control">
-                                    <option>Any</option>
-                                    <option>Delivered</option>
-                                    <option>Shipped</option>
-                                    <option>Pending</option>
-                                    <option>Cancelled</option>
-                                </select>
-                            </div>
-                            <span class="filter-icon"><i class="fa fa-filter"></i></span>
+                            <form asp-controller="OvertimeManager" asp-action="WorkingShiftManager">
+                              
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                <div class="filter-group">
+                                    <label>WorkingShift Name</label>
+                                    <input type="text" placeholder="Searching..." class="form-control" name="SearchText">
+                                </div>
+                            </form>
+                          
+                           
                         </div>
                     </div>
                 </div>
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="dataTable">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Customer</th>
-                            <th>Location</th>
-                            <th>Order Date</th>
-                            <th>Status</th>
-                            <th>Net Amount</th>
+                            <th>WorkingShiftID</th>
+                            <th>WorkingShiftCode</th>
+                            <th>WorkingShiftName</th>
+                            <th>CreateDate</th>
+                            <th>CreateBy</th>
+                            <th>ModifiedDate</th>
+                            <th>ModeifiedBy</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><a href="#"><img src="/examples/images/avatar/1.jpg" class="avatar" alt="Avatar"> Michael Holz</a></td>
-                            <td>London</td>
-                            <td>Jun 15, 2017</td>
-                            <td><span class="status text-success">&bull;</span> Delivered</td>
-                            <td>$254</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="fa-solid fa-pen-to-square" style="color: #1bc045;"></i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fa-sharp fa-solid fa-trash" style="color: #d80e40;"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><a href="#"><img src="/examples/images/avatar/2.jpg" class="avatar" alt="Avatar"> Paula Wilson</a></td>
-                            <td>Madrid</td>
-                            <td>Jun 21, 2017</td>
-                            <td><span class="status text-info">&bull;</span> Shipped</td>
-                            <td>$1,260</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="fa-solid fa-pen-to-square" style="color: #1bc045;"></i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fa-sharp fa-solid fa-trash" style="color: #d80e40;"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><a href="#"><img src="/examples/images/avatar/3.jpg" class="avatar" alt="Avatar"> Antonio Moreno</a></td>
-                            <td>Berlin</td>
-                            <td>Jul 04, 2017</td>
-                            <td><span class="status text-danger">&bull;</span> Cancelled</td>
-                            <td>$350</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="fa-solid fa-pen-to-square" style="color: #1bc045;"></i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fa-sharp fa-solid fa-trash" style="color: #d80e40;"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><a href="#"><img src="/examples/images/avatar/4.jpg" class="avatar" alt="Avatar"> Mary Saveley</a></td>
-                            <td>New York</td>
-                            <td>Jul 16, 2017</td>
-                            <td><span class="status text-warning">&bull;</span> Pending</td>
-                            <td>$1,572</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="fa-solid fa-pen-to-square" style="color: #1bc045;"></i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fa-sharp fa-solid fa-trash" style="color: #d80e40;"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td><a href="#"><img src="/examples/images/avatar/5.jpg" class="avatar" alt="Avatar"> Martin Sommer</a></td>
-                            <td>Paris</td>
-                            <td>Aug 04, 2017</td>
-                            <td><span class="status text-success">&bull;</span> Delivered</td>
-                            <td>$580</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="fa-solid fa-pen-to-square" style="color: #1bc045;"></i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="fa-sharp fa-solid fa-trash" style="color: #d80e40;"></i>
-                            </td>
-                        </tr>
+                        @foreach(var item in Model)
+                        {
+                           <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.WorkingShiftId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.WorkingShiftCode)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.WorkingShiftName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ModifiedBy)
+                                </td>
+
+                                <td>
+                                    <a class="edit" data-toggle="modal" data-target="@("#EditWorkingShift-" + item.WorkingShiftId)" data-url="@Url.Action($"EditWorkingshirt/{item.WorkingShiftId}")"><i class="fa-solid fa-pen-to-square" title="Edit" style="color: #1bc045;"></i></a>
+                                    @await Html.PartialAsync("_PartialViewEditWorkingshift",item)
+                                    <a class="delete" data-toggle="modal" data-target="@("#DeleteWorkingShift-" + item.WorkingShiftId)" data-url="@Url.Action($"DeleteWorkingShift/{item.WorkingShiftId}")">
+                                        <i class="fa-sharp fa-solid fa-trash" title="delete" style="color: #d80e40;"></i></a>
+                                     @await Html.PartialAsync("_PartialDeleteWorkingShift",item)
+
+                                    </td>
+
+                           </tr>
+                           
+                            
+                        }
+                   
                     </tbody>
                 </table>
                 <div class="clearfix">
-                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item"><a href="#" class="page-link">1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item active"><a href="#" class="page-link">4</a></li>
-                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                        <li class="page-item"><a href="#" class="page-link">6</a></li>
-                        <li class="page-item"><a href="#" class="page-link">7</a></li>
-                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                    </ul>
+                  
+               
+                    <div class="product__pagination">
+                        @Html.PagedListPager(Model,page=>Url.Action("WorkingShiftManager",new{page=page}))
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+   
+ @*   <script>
+        function fnExcelReport(id) {
+            var tab_text = '<html xmlns: x="urn:schemas-microsoft-com:office:excel">';
+            tab_text = tab_text + '<head><xml><x: ExcelWorkbook><x: ExcelWorksheets><x: ExcelWorksheet>';
+            tab_text = tab_text + '<x: Name>Test Sheet</x: Name>';
+            tab_text = tab_text + '<x: WorksheetOptions><x: Panes></x: Panes></x: WorksheetOptions ></x: ExcelWorksheet > ';
+            tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+            tab_text = tab_text + "<table border='1px' style='color:black'>";
+
+
+            var exportTable = $('#' + id).clone();
+            exportTable.find('th').last().remove();
+            exportTable.find('input').each(function (index, elem) { $(elem).remove(); });
+            exportTable.find('a').each(function (index, elem) { $(elem).remove(); });
+
+            tab_text = tab_text + exportTable.html();
+            tab_text = tab_text + '</table></body></html>';
+
+            var fileName = "Demo" + '.xls';
+
+            //Save the file
+            var blob = new Blob([tab_text], { type: "application/vnd.ms-excel;charset=utf-8" })
+            window.saveAs(blob, fileName);
+        }
+     </script>*@
+   
 </body>
+
 </html>
+@await Html.PartialAsync("_PatialViewWorkingshirtCreate",new WorkingShift())

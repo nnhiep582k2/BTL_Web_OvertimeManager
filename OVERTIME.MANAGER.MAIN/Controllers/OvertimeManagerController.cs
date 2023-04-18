@@ -307,11 +307,125 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
+<<<<<<< HEAD
         [Authentication]
         public IActionResult WorkingShiftManager()
+=======
+        public IActionResult WorkingShiftManager(string SearchText="",int page=1)
+>>>>>>> 395fd65 (feat: hoan thien)
         {
-            return View();
+            int pageNumber = page;
+            int pageSize = 5;
+            List<WorkingShift> workingShifts;
+            if (SearchText != "" && SearchText != null)
+            {
+                workingShifts = db.WorkingShifts.Where(p => p.WorkingShiftName.Contains(SearchText)).AsNoTracking().ToList();
+
+            }
+            else
+
+                workingShifts = db.WorkingShifts.AsNoTracking().ToList();
+
+            PagedList<WorkingShift> lst = new PagedList<WorkingShift>(workingShifts,pageNumber,pageSize);
+            return View(lst);
+            //var lstWks = db.WorkingShifts.ToList();
+            //return View(lstWks);
         }
+        [HttpGet]
+        public IActionResult CreateWorkingShirt()
+        {
+            WorkingShift workingShift = new WorkingShift(); 
+            return PartialView("_PatialViewWorkingshirtCreate", workingShift);
+        }
+        [HttpPost]
+        public IActionResult CreateWorkingShirt( WorkingShift working)
+        {
+            DateTime now = DateTime.Now;
+
+            var wsId = db.WorkingShifts.Max(x => x.WorkingShiftId);
+            long wsNo;
+
+            Int64.TryParse(wsId.Substring(2, wsId.Length - 2), out wsNo);
+            if(wsNo > 0)
+            {
+                wsNo = wsNo + 1;
+                wsId = "WS" + wsNo.ToString();
+            }
+           
+
+
+            var wsCode = db.WorkingShifts.Max(x => x.WorkingShiftCode);
+            long wsNoCode;
+            Int64.TryParse(wsCode.Substring(2, wsCode.Length - 2), out wsNoCode);
+            if (wsNoCode > 0)
+            {
+                wsNoCode = wsNoCode + 1;
+
+                wsCode ="WC"+ wsNoCode.ToString();
+            }
+
+
+            working.WorkingShiftCode = wsCode;
+            working.WorkingShiftId = wsId;
+
+            working.CreatedBy = "npBac";
+
+            working.CreatedDate = now;
+
+            db.Add(working);
+
+          
+
+   
+            db.SaveChanges();
+            return RedirectToAction("WorkingShiftManager");
+        }
+
+        public IActionResult EditWorkingshirt( string id )
+        {
+            WorkingShift working = db.WorkingShifts.Where(x=>x.WorkingShiftId == id).FirstOrDefault();
+            return PartialView("_PartialViewEditWorkingshift", working);
+
+
+
+        }
+        [HttpPost]
+
+        public IActionResult EditWorkingshirt(WorkingShift workingShift)
+        {
+            DateTime now = DateTime.Now;
+            workingShift.ModifiedDate = now;
+
+            workingShift.ModifiedBy = "npBac";
+            db.WorkingShifts.Update(workingShift);
+          
+            db.SaveChanges();
+            return RedirectToAction("WorkingShiftManager");
+
+        }
+
+        public IActionResult DeleteWorkingShift( string id )
+        {
+            //var model = db.WorkingShifts.Find(id);
+            //db.WorkingShifts.Remove(model);
+            //db.SaveChanges();
+            //return RedirectToAction("WorkingShiftManager");
+            WorkingShift working = db.WorkingShifts.Where(x => x.WorkingShiftId == id).FirstOrDefault();
+            return PartialView("_PartialDeleteWorkingShift", working);
+
+
+        }
+        [HttpPost]
+        
+        public IActionResult DeleteWorkingShift(WorkingShift workingShift)
+        {
+            db.WorkingShifts.Remove(workingShift);
+            db.SaveChanges();
+            return RedirectToAction("WorkingShiftManager");
+
+        }
+
+       
 
         /// <summary>
         /// Quản lý thời điểm làm thêm
