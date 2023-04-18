@@ -340,27 +340,20 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         public IActionResult CreateWorkingShirt(WorkingShift working)
         {
             DateTime now = DateTime.Now;
-            var wsId = db.WorkingShifts.Max(x => x.WorkingShiftId);
-            long wsNo;
-
-            Int64.TryParse(wsId.Substring(2, wsId.Length - 2), out wsNo);
-            if (wsNo > 0)
-            {
-                wsNo = wsNo + 1;
-                wsId = "WS" + wsNo.ToString();
-            }
+            var wsId = Guid.NewGuid().ToString();
 
             var wsCode = db.WorkingShifts.Max(x => x.WorkingShiftCode);
             long wsNoCode;
             Int64.TryParse(wsCode.Substring(2, wsCode.Length - 2), out wsNoCode);
+
             if (wsNoCode > 0)
             {
                 wsNoCode = wsNoCode + 1;
                 wsCode = "WC" + wsNoCode.ToString();
             }
 
-            working.WorkingShiftCode = wsCode;
             working.WorkingShiftId = wsId;
+            working.WorkingShiftCode = wsCode;
             working.CreatedBy = "npBac";
             working.CreatedDate = now;
 
@@ -439,12 +432,19 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         [HttpPost]
         public IActionResult AddJobPositionManager(JobPosition job)
         {
-            if (ModelState.IsValid)
+            job.JobPositionId = Guid.NewGuid().ToString();
+
+            try
             {
                 db.JobPositions.Add(job);
                 db.SaveChanges();
                 return RedirectToAction("JobPositionManager");
+            } catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return View(job);
             }
+            
             return View(job);
         }
 
@@ -507,12 +507,20 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         [HttpPost]
         public IActionResult AddOrganization(Organization donvi)
         {
-            if (ModelState.IsValid)
+            donvi.OrganizationId = Guid.NewGuid().ToString();
+
+            try
             {
                 db.Organizations.Add(donvi);
                 db.SaveChanges();
                 return RedirectToAction("OrganizationManager");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return View(donvi);
+            }
+
             return View(donvi);
         }
 
