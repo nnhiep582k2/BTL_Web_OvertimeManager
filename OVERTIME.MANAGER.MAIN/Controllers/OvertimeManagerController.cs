@@ -543,12 +543,6 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         public IActionResult DeleteOrganization(string ma)
         {
             var spedit = db.Organizations.Where(x => x.OrganizationId == ma);
-            var spedit1 = db.Employees.Where(x => x.OrganizationId == ma);
-            if (spedit1 != null) db.RemoveRange(spedit1);
-            var spedit2 = db.OvertimeEmployees.Where(x => x.OrganizationId == ma);
-            if (spedit2 != null) db.RemoveRange(spedit2);
-            var spedit3 = db.Overtimes.Where(x => x.OrganizationId == ma);
-            if (spedit3 != null) db.RemoveRange(spedit3);
             db.RemoveRange(spedit);
             db.SaveChanges();
             return RedirectToAction("OrganizationManager");
