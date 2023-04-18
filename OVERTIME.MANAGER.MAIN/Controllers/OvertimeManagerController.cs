@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using OVERTIME.MANAGER.MAIN.Models;
 using OVERTIME.MANAGER.MAIN.Utils.Enums;
 using OVERTIME.MANAGER.MAIN.ViewModels;
+using System.Data;
 using X.PagedList;
 
 namespace OVERTIME.MANAGER.MAIN.Controllers
@@ -320,17 +321,14 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 workingShifts = db.WorkingShifts.Where(p => p.WorkingShiftName.Contains(SearchText)).AsNoTracking().ToList();
 
             }
-            else
-
-                workingShifts = db.WorkingShifts.AsNoTracking().ToList();
+            else workingShifts = db.WorkingShifts.AsNoTracking().ToList();
 
             PagedList<WorkingShift> lst = new PagedList<WorkingShift>(workingShifts, pageNumber, pageSize);
             return View(lst);
-            //var lstWks = db.WorkingShifts.ToList();
-            //return View(lstWks);
         }
 
         [HttpGet]
+        [Authentication]
         public IActionResult CreateWorkingShirt()
         {
             WorkingShift workingShift = new WorkingShift();
@@ -338,6 +336,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         }
 
         [HttpPost]
+        [Authentication]
         public IActionResult CreateWorkingShirt(WorkingShift working)
         {
             DateTime now = DateTime.Now;
@@ -360,7 +359,6 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
                 wsCode = "WC" + wsNoCode.ToString();
             }
 
-
             working.WorkingShiftCode = wsCode;
             working.WorkingShiftId = wsId;
             working.CreatedBy = "npBac";
@@ -371,6 +369,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             return RedirectToAction("WorkingShiftManager");
         }
 
+        [Authentication]
         public IActionResult EditWorkingshirt(string id)
         {
             WorkingShift working = db.WorkingShifts.Where(x => x.WorkingShiftId == id).FirstOrDefault();
@@ -378,7 +377,7 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
         }
 
         [HttpPost]
-
+        [Authentication]
         public IActionResult EditWorkingshirt(WorkingShift workingShift)
         {
             DateTime now = DateTime.Now;
@@ -387,28 +386,22 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             db.WorkingShifts.Update(workingShift);
             db.SaveChanges();
             return RedirectToAction("WorkingShiftManager");
-
         }
 
+        [Authentication]
         public IActionResult DeleteWorkingShift(string id)
         {
-            //var model = db.WorkingShifts.Find(id);
-            //db.WorkingShifts.Remove(model);
-            //db.SaveChanges();
-            //return RedirectToAction("WorkingShiftManager");
             WorkingShift working = db.WorkingShifts.Where(x => x.WorkingShiftId == id).FirstOrDefault();
             return PartialView("_PartialDeleteWorkingShift", working);
-
-
         }
-        [HttpPost]
 
+        [HttpPost]
+        [Authentication]
         public IActionResult DeleteWorkingShift(WorkingShift workingShift)
         {
             db.WorkingShifts.Remove(workingShift);
             db.SaveChanges();
             return RedirectToAction("WorkingShiftManager");
-
         }
 
         /// <summary>
@@ -433,12 +426,15 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             var lstsp = db.JobPositions.AsNoTracking().OrderBy(x => x.JobPositionId).ToList();
             return View(lstsp);
         }
+
+        [Authentication]
         [Route("AddJobPositionManager")]
         public IActionResult AddJobPositionManager()
         {
-
             return View();
         }
+
+        [Authentication]
         [Route("AddJobPositionManager")]
         [HttpPost]
         public IActionResult AddJobPositionManager(JobPosition job)
@@ -451,17 +447,20 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             }
             return View(job);
         }
+
+        [Authentication]
         [Route("EditJobPositionManager")]
         public IActionResult EditJobPositionManager(string ma)
         {
             var spedit = db.JobPositions.SingleOrDefault(x => x.JobPositionId == ma);
             return View(spedit);
         }
+
+        [Authentication]
         [Route("EditJobPositionManager")]
         [HttpPost]
         public IActionResult EditJobPositionManager(JobPosition job)
         {
-
             if (ModelState.IsValid)
             {
                 db.Entry(job).State = EntityState.Modified;
@@ -471,23 +470,96 @@ namespace OVERTIME.MANAGER.MAIN.Controllers
             return View(job);
         }
 
+        [Authentication]
         [Route("DeleteJobPositionManager")]
         public IActionResult DeleteJobPositionManager(string ma)
         {
-
             db.Remove(db.JobPositions.Find(ma));
             db.SaveChanges();
             return RedirectToAction("JobPositionManager");
         }
+
         /// <summary>
         /// Quản lý đơn vị công tác
         /// </summary>
         /// <returns>View</returns>
         /// @author nnhiep 15.03.2023
         [Authentication]
-        public IActionResult OrganizationManager()
+        [HttpGet]
+        public IActionResult OrganizationManager(int? page)
+        {
+            int pageSize = 5;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            var lstsanpham = db.Organizations.AsNoTracking().OrderBy(x => x.OrganizationName);
+            PagedList<Organization> lst = new PagedList<Organization>(lstsanpham, pageNumber, pageSize);
+            return View(lst);
+        }
+
+        [Authentication]
+        [Route("AddOrganization")]
+        public IActionResult AddOrganization()
+        {
+            return View();
+        }
+
+        [Authentication]
+        [Route("AddOrganization")]
+        [HttpPost]
+        public IActionResult AddOrganization(Organization donvi)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Organizations.Add(donvi);
+                db.SaveChanges();
+                return RedirectToAction("OrganizationManager");
+            }
+            return View(donvi);
+        }
+
+        [Authentication]
+        [Route("EditOrganization")]
+        public IActionResult EditOrganization(string ma)
+        {
+            var spedit = db.Organizations.SingleOrDefault(x => x.OrganizationId == ma);
+            return View(spedit);
+        }
+
+        [Authentication]
+        [Route("EditOrganization")]
+        [HttpPost]
+        public IActionResult EditOrganization(Organization donvi)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(donvi).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("OrganizationManager");
+            }
+            return View(donvi);
+        }
+
+        [Authentication]
+        [Route("DeleteOrganization")]
+        public IActionResult DeleteOrganization(string ma)
+        {
+            var spedit = db.Organizations.Where(x => x.OrganizationId == ma);
+            db.RemoveRange(spedit);
+            db.SaveChanges();
+            return RedirectToAction("OrganizationManager");
+        }
+
+        [Authentication]
+        /// <summary>
+        /// Quản lý nhân viên
+        /// </summary>
+        /// <returns>View</returns>
+        /// @author nnhiep 15.03.2023
+        public IActionResult EmployeeManager()
         {
             return View();
         }
     }
 }
+
+
+
